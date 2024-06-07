@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e919c91c-a251-4b69-9445-f1ec07c31c1a" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hs_err_pid321027.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/Behinder.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/MemoryHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/ArrayPointerConverter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/ClassLoaderData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/ConstMethod.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/FieldInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/Klass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/MemoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/MethodPtr.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/ModifierHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/Oop.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/OpcodesHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/PointerArray.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/PointerLinkedList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/Symbol.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/TypePointer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/U1Array.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/U2Array.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/cst/ClassConstant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/cst/Constant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/cst/ConstantItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/cst/ConstantPool.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/cst/FieldReferenceConstant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/cst/InvokeDynamicConstant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/cst/MethodHandleConstant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/cst/MethodReferenceConstant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/cst/MethodTypeConstant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/cst/NameAndTypeConstant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/memory/cst/Utf8Constant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/sa-jdi.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Test.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/java/lang/Class.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/java/lang/ClassLoader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/java/lang/Runtime.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/java/lang/SecurityManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/java/lang/Shutdown.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/java/lang/Thread.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/java/util/AbstractList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/java/util/ArrayList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/jdk/internal/misc/TerminatingThreadLocal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/xdark/shell/JVMUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/xdark/shell/NativeLibrary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/xdark/shell/ShellcodeRunner.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/InternalUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/ObjectUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/HotSpotAgent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/classfile/ClassLoaderData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/Dictionary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/DictionaryEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/SystemDictionary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/AccessFlags.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Field.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/FieldIdentifier.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/FieldType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/IndexableFieldIdentifier.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/InstanceKlass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Klass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Mark.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Metadata.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/NamedFieldIdentifier.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ObjectHeap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Oop.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Symbol.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/BasicType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/ObjectMonitor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/ObjectSynchronizer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VM.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VMObject.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VMObjectFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VirtualBaseConstructor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/BasicHashtable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/BasicHashtableEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/GenericArray.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/Hashtable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/HashtableBucket.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/HashtableEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/SystemDictionaryHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/TwoOopHashtable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/U2Array.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/reflection/ReflectionHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/BackingFile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ByteArrayAsFile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfDynamicSection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfFile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfGnuHashTable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfHashTable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfNoteSection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfRelocation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfRelocationAddend.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfRelocationAddendSection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfRelocationSection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfRelocationTypes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfSection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfSectionHeader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfSegment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfStringTable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfSymbol.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/ElfSymbolTableSection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/MappedFile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/fornwall/jelf/MemoizedObject.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/BinarySearch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/ChangeVmFlag.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/DisableStructs.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/Dump.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/Field.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/FieldInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/GetBytecode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/GetMemoryUsage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/HeapInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/JVM.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/JVMException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/MethodEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/ObjectAddress.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/Queens.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/StackTrace.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/Symbols.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/ThreadList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/Type.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/Utils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/VMThread.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/CodeCache.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/CompressedReadStream.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/CompressedStream.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/ConstantPool.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Frame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Interpreter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/JavaThread.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Klass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Method.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/NMethod.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/OopMapSet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/OopMapValue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/RegisterMap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/StubRoutines.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Symbol.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/VFrame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/VMRegImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/X86Frame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/scope/Location.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/scope/PCDesc.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/scope/ScopeDesc.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/scope/ScopeValue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sun/instrument/InstrumentationImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sun/instrument/TransformerManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sun/management/MemoryManagerImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sun/reflect/NativeMethodAccessorImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sun/reflect/misc/ReflectUtil.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package-info" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2hFkw0PA5ZITVbKICgo2kOJeWY6" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Gradle.MemoryUtils [:BasicHashtable.main()].executor": "Run",
+    "Gradle.MemoryUtils [:BasicHashtableEntry.main()].executor": "Run",
+    "Gradle.MemoryUtils [:GetBytecode.main()].executor": "Run",
+    "Gradle.MemoryUtils [:HashtableBucket.main()].executor": "Run",
+    "Gradle.MemoryUtils [:JVM.main()].executor": "Run",
+    "Gradle.MemoryUtils [:ObjectSynchronizer.main()].executor": "Run",
+    "Gradle.MemoryUtils [:ObjectUtils.main()].executor": "Run",
+    "Gradle.MemoryUtils [:Oop.main()].executor": "Run",
+    "Gradle.MemoryUtils [:ParseSO.main()].executor": "Run",
+    "Gradle.MemoryUtils [:Queens.main()].executor": "Run",
+    "Gradle.MemoryUtils [:Symbol.main()].executor": "Run",
+    "Gradle.MemoryUtils [:Symbols.main()].executor": "Run",
+    "Gradle.MemoryUtils [:SystemDictionary.main()].executor": "Run",
+    "Gradle.MemoryUtils [:SystemDictionaryHelper.main()].executor": "Run",
+    "Gradle.MemoryUtils [:Test.main()].executor": "Run",
+    "JavaMethodFindUsagesOptions.isIncludeOverloadUsages": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/root/IdeaProjects/MemoryUtils/libs",
+    "project.structure.last.edited": "项目",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/libs" />
+      <recent name="$PROJECT_DIR$/src/main/java" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="miku.lib.jvm.hotspot.runtime" />
+      <recent name="miku.lib.memory" />
+    </key>
+  </component>
+  <component name="RunManager" selected="应用程序.Test">
+    <configuration name="JVM" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="one.helfy.JVM" />
+      <module name="MemoryUtils.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="one.helfy.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Queens" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="one.helfy.Queens" />
+      <module name="MemoryUtils.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="one.helfy.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Symbols" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="one.helfy.Symbols" />
+      <module name="MemoryUtils.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="one.helfy.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SystemDictionaryHelper" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="miku.lib.jvm.hotspot.utilities.SystemDictionaryHelper" />
+      <module name="MemoryUtils.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="miku.lib.jvm.hotspot.utilities.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Test" />
+      <module name="MemoryUtils.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.JVM" />
+        <item itemvalue="Application.SystemDictionaryHelper" />
+        <item itemvalue="应用程序.Queens" />
+        <item itemvalue="应用程序.Symbols" />
+        <item itemvalue="应用程序.Test" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="e919c91c-a251-4b69-9445-f1ec07c31c1a" name="更改" comment="" />
+      <created>1717197447399</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1717197447399</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/utilities/SystemDictionaryHelper.class</url>
+          <line>29</line>
+          <properties class="sun.jvm.hotspot.utilities.SystemDictionaryHelper" method="getAllInstanceKlasses">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/oops/Oop.class</url>
+          <line>106</line>
+          <properties class="sun.jvm.hotspot.oops.Oop" method="identityHash">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/HotSpotAgent.class</url>
+          <line>381</line>
+          <properties class="sun.jvm.hotspot.HotSpotAgent" method="setupJVMLibNames">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/types/basic/BasicVtblAccess.class</url>
+          <line>24</line>
+          <properties class="sun.jvm.hotspot.types.basic.BasicVtblAccess" method="getVtblForType">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/debugger/linux/LinuxDebuggerLocal.class</url>
+          <line>54</line>
+          <properties class="sun.jvm.hotspot.debugger.linux.LinuxDebuggerLocal" method="lookupByName0">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/oops/Metadata.class</url>
+          <line>24</line>
+          <properties class="sun.jvm.hotspot.oops.Metadata" method="initialize">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/ui/Inspector.class</url>
+          <line>73</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/runtime/VM.class</url>
+          <line>153</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/HotSpotAgent.class</url>
+          <line>210</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/HotSpotAgent.class</url>
+          <line>211</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
