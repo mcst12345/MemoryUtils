@@ -204,9 +204,9 @@ public final class JVMUtil {
         NativeLibrary loadLibrary(String path) throws Throwable {
             Object library = CNSTR_NATIVE_LIBRARY.newInstance(JVMUtil.class, path, false);
             if (MH_NATIVE_LOAD.getParameterCount() == 3) {
-                MH_NATIVE_LOAD.invoke(library, path, false, true);
+                MH_NATIVE_LOAD.invoke(library, path, false, false);
             } else {
-                MH_NATIVE_LOAD.invoke(library, path, true);
+                MH_NATIVE_LOAD.invoke(library, path, false);
             }
             ObjectUtils.fillValue(MH_NATIVE_LOADED_RFIElD, library, true);
             return entry -> {

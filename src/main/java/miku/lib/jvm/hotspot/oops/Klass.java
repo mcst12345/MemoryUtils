@@ -52,7 +52,6 @@ public class Klass extends Metadata {
             return cache.get(clazz);
         }
         long addr = jvm.intConstant("oopSize") == 8 ? unsafe.getLong(clazz, (long) jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(clazz, jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL;
-        Type type = jvm.findDynamicTypeForAddress(addr, "Metadata");
         Klass klass = new InstanceKlass(clazz);
         cache1.put(klass.getAddress(), klass);
         cache.put(clazz, klass);

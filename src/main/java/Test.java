@@ -1,4 +1,5 @@
 import miku.lib.InternalUtils;
+import miku.lib.jvm.hotspot.oops.InstanceKlass;
 import miku.lib.jvm.hotspot.oops.Klass;
 import one.helfy.JVM;
 import sun.misc.Unsafe;
@@ -12,7 +13,7 @@ public class Test {
 
     public static void main(String[] args) {
         try {
-            Unsafe unsafe = InternalUtils.getUnsafe();
+            /*Unsafe unsafe = InternalUtils.getUnsafe();
             JVM jvm = JVM.getInstance();
             Klass k = Klass.getKlass(Static[].class);
             long vtb = jvm.vtblForType(jvm.type("InstanceKlass"));
@@ -21,6 +22,9 @@ public class Test {
             System.out.println(nmsl);
             System.out.println(vtb - nmsl);
             System.out.println(jvm.findDynamicTypeForAddress(k.getAddress(), jvm.type("Metadata")).name);
+             */
+            InstanceKlass klass = (InstanceKlass) Klass.getKlass(ArrayList.class);
+            System.out.println(klass.getName());
         } catch (Throwable t) {
             t.printStackTrace();
         }
