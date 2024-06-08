@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import me.xdark.shell.JVMUtil;
 import me.xdark.shell.NativeLibrary;
 import miku.lib.InternalUtils;
+import miku.lib.jvm.hotspot.debugger.windbg.DLL;
 import net.fornwall.jelf.ElfFile;
 import net.fornwall.jelf.ElfSymbol;
 import sun.misc.Unsafe;
@@ -42,10 +43,8 @@ public final class JVM {
         if (linux) {
             try {
                 getSymbol("__vt_10JavaThread");
-                System.out.println("old abi.");
                 this.vt = "__vt_";
             } catch (NoSuchElementException e) {
-                System.out.println("new abi.");
                 this.vt = "_ZTV";
             }
         } else {
@@ -74,8 +73,7 @@ public final class JVM {
                 throw new RuntimeException(e);
             }
         } else {
-            //TODO
-            return 0;
+            return DLL.lookupSymbolOffset(name);
         }
 
     }
@@ -128,7 +126,6 @@ public final class JVM {
         if (this.vtblForType(baseType) == 0) {
             throw new InternalError(baseType + " does not appear to be polymorphic");
         } else {
-            System.out.println("vtbl of base:" + this.vtblForType(baseType));
             long loc1 = unsafe.getAddress(addr);
 
             long loc2 = 0;
@@ -136,18 +133,13 @@ public final class JVM {
             long offset2 = baseType.size;
             offset2 = offset2 - offset2 % unsafe.pageSize() - unsafe.pageSize();
             if (offset2 > 0L) {
-                System.out.println("o2:" + offset2);
                 loc2 = unsafe.getAddress(addr + offset2);
-                System.out.println("l2:" + loc2);
             }
             long offset3 = offset2 - unsafe.pageSize();
             if (offset3 > 0L) {
-                System.out.println("o3:" + offset3);
                 loc3 = unsafe.getAddress(addr + offset3);
-                System.out.println("l3:" + loc3);
             }
 
-            System.out.println("l1:" + loc1);
 
             Type loc2Match = null;
             Type loc3Match = null;
@@ -161,9 +153,7 @@ public final class JVM {
                 }
 
                 if (superClass != null) {
-                    System.out.println("Check for:" + type.name);
-                    long vtblAddr = this.vtblForType(type) - 941672;
-                    System.out.println("vtbl:" + vtblAddr);
+                    long vtblAddr = this.vtblForType(type) - (linux ? 941672 : 0);
                     if (vtblAddr != 0) {
                         if (vtblAddr == loc1) {
                             return type;
@@ -275,7 +265,12 @@ public final class JVM {
         }
     }
 
+    private static long libBase = 0;
+
     public long getLibBase() {
+        if(libBase != 0){
+            return libBase;
+        }
         if (linux) {
             try {
                 FileReader fin = new FileReader("/proc/self/maps");
@@ -285,14 +280,18 @@ public final class JVM {
                     String[] splits = line.trim().split(" ");
                     if (line.endsWith("libjvm.so")) {
                         String[] addr_range = splits[0].split("-");
-                        return Long.parseLong(addr_range[0], 16);
+                        libBase = Long.parseLong(addr_range[0], 16);
+                        return libBase;
                     }
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
-            //TODO
+            long offset = SymbolOffset("??_7InstanceKlass@@6B@");
+            long vtbl = unsafe.getAddress(jvm.intConstant("oopSize") == 8 ? unsafe.getLong(Object.class, (long) jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(Object.class, jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL);
+            libBase = vtbl - offset;
+            return libBase;
         }
         throw new JVMException("Cannot find libbase!");
     }
@@ -392,6 +391,9 @@ public final class JVM {
             if (address == 0) {
                 throw new NoSuchElementException("No such symbol: " + name);
             }
+            return address;
+        }
+        if(name.startsWith("??_7") && name.endsWith("@@6B@")){
             return address;
         }
         return getLong(address);
