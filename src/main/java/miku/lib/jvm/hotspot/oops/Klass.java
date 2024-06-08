@@ -1,7 +1,6 @@
 package miku.lib.jvm.hotspot.oops;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import miku.lib.InternalUtils;
 import one.helfy.JVM;
 import one.helfy.Type;
@@ -10,8 +9,7 @@ import sun.misc.Unsafe;
 public class Klass extends Metadata {
 
 
-    private static final Object2ObjectOpenHashMap<Class<?>, Klass> cache = new Object2ObjectOpenHashMap<>();
-    private static final Long2ObjectOpenHashMap<Klass> cache1 = new Long2ObjectOpenHashMap<>();
+    private static final Long2ObjectOpenHashMap<Klass> cachedKlass = new Long2ObjectOpenHashMap<>();
     private int _layout_helper;
     private Symbol name;
     private AccessFlags _access_flags;
@@ -19,7 +17,7 @@ public class Klass extends Metadata {
     private Klass _super;
     private Oop _java_mirror;
 
-    Klass(long address) {
+    public Klass(long address) {
         super(address);
         Type type = jvm.type("Klass");
         long _layout_helper_offset = type.offset("_layout_helper");
@@ -38,24 +36,19 @@ public class Klass extends Metadata {
         this(jvm.intConstant("oopSize") == 8 ? unsafe.getLong(clazz, (long) jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(clazz, jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL);
     }
 
-    public static Klass getKlass(long klass) {
-        if (cache1.containsKey(klass)) {
-            return cache1.get(klass);
+    public static Klass getKlass(long address) {
+        if (cachedKlass.containsKey(address)) {
+            return cachedKlass.get(address);
         }
-        Klass k = new InstanceKlass(klass);
-        cache1.put(klass, k);
-        return k;
+
+        Klass klass = (Klass) Metadata.instantiateWrapperFor(address);
+        cachedKlass.put(address, klass);
+        return klass;
     }
 
     public static Klass getKlass(Class<?> clazz) {
-        if (cache.containsKey(clazz)) {
-            return cache.get(clazz);
-        }
         long addr = jvm.intConstant("oopSize") == 8 ? unsafe.getLong(clazz, (long) jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(clazz, jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL;
-        Klass klass = new InstanceKlass(clazz);
-        cache1.put(klass.getAddress(), klass);
-        cache.put(clazz, klass);
-        return klass;
+        return getKlass(addr);
     }
 
     public Oop getMirror() {

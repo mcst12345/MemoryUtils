@@ -9,7 +9,7 @@ public abstract class VMObject {
     public static final JVM jvm = JVM.getInstance();
     private final long address;
 
-    protected VMObject(long address) {
+    public VMObject(long address) {
         this.address = address;
     }
 

@@ -11,7 +11,7 @@ public class VMObjectFactory {
             if (addr == 0L) {
                 return null;
             } else {
-                Constructor<? extends VMObject> c = clazz.getConstructor(long.class);
+                Constructor<? extends VMObject> c = clazz.getDeclaredConstructor(long.class);
                 return c.newInstance(addr);
             }
         } catch (InvocationTargetException var3) {

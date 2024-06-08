@@ -17,7 +17,7 @@ public class InstanceKlass extends Klass {
     private U2Array _fields;
     private int _java_fields_count;
 
-    InstanceKlass(long address) {
+    public InstanceKlass(long address) {
         super(address);
         Type type = jvm.type("InstanceKlass");
         long offset = type.offset("_class_loader_data");

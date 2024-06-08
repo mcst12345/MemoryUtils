@@ -1,4 +1,5 @@
 import miku.lib.InternalUtils;
+import miku.lib.jvm.hotspot.oops.Klass;
 import one.helfy.JVM;
 import sun.misc.Unsafe;
 
@@ -18,16 +19,9 @@ public class Test {
         //System.out.println(JVM.SymbolOffset("??_7InstanceKlass@@6B@"));
         //exit();
         try {
-            long addr = getKlassAddr(Object.class);
-            System.out.println(jvm.findDynamicTypeForAddress(addr,jvm.type("Metadata")).name);
-            addr = getKlassAddr(Class.class);
-            System.out.println(jvm.findDynamicTypeForAddress(addr,jvm.type("Metadata")).name);
-            addr = getKlassAddr(Class[].class);
-            System.out.println(jvm.findDynamicTypeForAddress(addr,jvm.type("Metadata")).name);
-            addr = getKlassAddr(ClassLoader.class);
-            System.out.println(jvm.findDynamicTypeForAddress(addr,jvm.type("Metadata")).name);
-            addr = getKlassAddr(int[].class);
-            System.out.println(jvm.findDynamicTypeForAddress(addr,jvm.type("Metadata")).name);
+            Klass klass = Klass.getKlass(Object.class);
+            System.out.println(klass.getName());
+            System.out.println(klass.getClass().getName());
         } catch (Throwable t) {
             t.printStackTrace();
         }
