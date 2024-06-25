@@ -3,6 +3,7 @@ package one.helfy;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import me.xdark.shell.JVMUtil;
 import me.xdark.shell.NativeLibrary;
+import miku.lib.HSDB.HSDB;
 import miku.lib.InternalUtils;
 import miku.lib.jvm.hotspot.debugger.windbg.DLL;
 import net.fornwall.jelf.ElfFile;
@@ -29,26 +30,23 @@ public final class JVM {
         }
     }
 
-    private final Map<Type, Long> typeToVtblMap = new HashMap<>();
-    private final Object2LongOpenHashMap<Type> typeToVtbl = new Object2LongOpenHashMap();
-    private final Map<String, Type> types = new LinkedHashMap<>();
-    private final Map<String, Number> constants = new LinkedHashMap<>();
-    private String vt;
+    private static final Map<Type, Long> typeToVtblMap = new HashMap<>();
+    private static final Object2LongOpenHashMap<Type> typeToVtbl = new Object2LongOpenHashMap<>();
+    private static final Map<String, Type> types = new LinkedHashMap<>();
+    private static final Map<String, Number> constants = new LinkedHashMap<>();
+    private static String vt;
 
-    private JVM() {
+    private static final boolean useGCC32ABI = (HSDB.getSymbol("__vt_10JavaThread") == 0L);
+
+    static {
         readVmTypes(readVmStructs());
         readVmIntConstants();
         readVmLongConstants();
+    }
 
+    private JVM() {
         if (linux) {
-            try {
-                getSymbol("__vt_10JavaThread");
-                this.vt = "__vt_";
-            } catch (NoSuchElementException e) {
-                this.vt = "_ZTV";
-            }
-        } else {
-
+            vt = useGCC32ABI ? "_ZTV" : "__vt_";
         }
     }
 
@@ -78,7 +76,7 @@ public final class JVM {
 
     }
 
-    private String vtblSymbolForType(Type type) {
+    public static String vtblSymbolForType(Type type) {
         if (linux) {
             return vt + type.name.length() + type.name;
         } else {
@@ -86,28 +84,34 @@ public final class JVM {
         }
     }
 
-    public long getVtblForType(Type type) {
+    public static long getVtblForType(Type type) {
         if (type == null) {
             return 0;
         } else {
             if (typeToVtblMap.containsKey(type)) {
                 return typeToVtblMap.get(type);
             } else {
-                String vtblSymbol = this.vtblSymbolForType(type);
-                try {
-                    long addr = getSymbol(vtblSymbol);
-                    this.typeToVtblMap.put(type, addr);
-                    return addr;
-                } catch (NoSuchElementException e) {
-                    e.printStackTrace();
-                    this.typeToVtblMap.put(type, 0L);
-                    return 0;
+                if(linux){
+                    long raw = HSDB.getSymbol(type);
+                    return useGCC32ABI && vtblSymbolForType(type).startsWith("_ZTV") ? raw + 2L * unsafe.addressSize() : raw;
+                }
+                else {
+                    String vtblSymbol = vtblSymbolForType(type);
+                    try {
+                        long addr = getSymbol(vtblSymbol);
+                        typeToVtblMap.put(type, addr);
+                        return addr;
+                    } catch (NoSuchElementException e) {
+                        e.printStackTrace();
+                        typeToVtblMap.put(type, 0L);
+                        return 0;
+                    }
                 }
             }
         }
     }
 
-    public long vtblForType(Type type) {
+    public static long vtblForType(Type type) {
         if (!typeToVtbl.containsKey(type)) {
             long vtblAddr = typeToVtbl.getLong(type);
             if (vtblAddr == 0) {
@@ -122,8 +126,8 @@ public final class JVM {
         return typeToVtbl.getLong(type);
     }
 
-    public Type findDynamicTypeForAddress(long addr, Type baseType) {
-        if (this.vtblForType(baseType) == 0) {
+    public static Type findDynamicTypeForAddress(long addr, Type baseType) {
+        if (vtblForType(baseType) == 0) {
             throw new InternalError(baseType + " does not appear to be polymorphic");
         } else {
             long loc1 = unsafe.getAddress(addr);
@@ -143,7 +147,7 @@ public final class JVM {
 
             Type loc2Match = null;
             Type loc3Match = null;
-            Iterator<Type> iter = this.getTypes();
+            Iterator<Type> iter = getTypes();
 
             while (iter.hasNext()) {
                 Type type = iter.next();
@@ -153,7 +157,7 @@ public final class JVM {
                 }
 
                 if (superClass != null) {
-                    long vtblAddr = this.vtblForType(type) - (linux ? 941672 : 0);
+                    long vtblAddr = vtblForType(type);
                     if (vtblAddr != 0) {
                         if (vtblAddr == loc1) {
                             return type;
@@ -176,11 +180,11 @@ public final class JVM {
         }
     }
 
-    public Iterator<Type> getTypes() {
+    public static Iterator<Type> getTypes() {
         return types.values().iterator();
     }
 
-    public void print(boolean Types, boolean Constants, boolean fields) {
+    public static void print(boolean Types, boolean Constants, boolean fields) {
         if (Types) {
             types.forEach((s, v) -> {
                 System.out.println(s);
@@ -200,19 +204,19 @@ public final class JVM {
         }
     }
 
-    public <T> T getObject(T obj, long addr) {
+    public static <T> T getObject(T obj, long addr) {
         return (T) unsafe.getObject(obj, addr);
     }
 
-    public long fieldOffset(java.lang.reflect.Field field) {
+    public static long fieldOffset(java.lang.reflect.Field field) {
         return unsafe.objectFieldOffset(field);
     }
 
-    public Type findDynamicTypeForAddress(long addr, String type) {
+    public static Type findDynamicTypeForAddress(long addr, String type) {
         return findDynamicTypeForAddress(addr, type(type));
     }
 
-    private Map<String, Set<Field>> readVmStructs() {
+    private static Map<String, Set<Field>> readVmStructs() {
         long entry = getSymbol("gHotSpotVMStructs");
         long typeNameOffset = getSymbol("gHotSpotVMStructEntryTypeNameOffset");
         long fieldNameOffset = getSymbol("gHotSpotVMStructEntryFieldNameOffset");
@@ -240,7 +244,7 @@ public final class JVM {
         return structs;
     }
 
-    private void readVmTypes(Map<String, Set<Field>> structs) {
+    private static void readVmTypes(Map<String, Set<Field>> structs) {
         long entry = getSymbol("gHotSpotVMTypes");
         long typeNameOffset = getSymbol("gHotSpotVMTypeEntryTypeNameOffset");
         long superclassNameOffset = getSymbol("gHotSpotVMTypeEntrySuperclassNameOffset");
@@ -267,7 +271,7 @@ public final class JVM {
 
     private static long libBase = 0;
 
-    public long getLibBase() {
+    public static long getLibBase() {
         if(libBase != 0){
             return libBase;
         }
@@ -296,7 +300,7 @@ public final class JVM {
         throw new JVMException("Cannot find libbase!");
     }
 
-    private void readVmIntConstants() {
+    private static void readVmIntConstants() {
         long entry = getSymbol("gHotSpotVMIntConstants");
         long nameOffset = getSymbol("gHotSpotVMIntConstantEntryNameOffset");
         long valueOffset = getSymbol("gHotSpotVMIntConstantEntryValueOffset");
@@ -311,7 +315,7 @@ public final class JVM {
         }
     }
 
-    private void readVmLongConstants() {
+    private static void readVmLongConstants() {
         long entry = getSymbol("gHotSpotVMLongConstants");
         long nameOffset = getSymbol("gHotSpotVMLongConstantEntryNameOffset");
         long valueOffset = getSymbol("gHotSpotVMLongConstantEntryValueOffset");
@@ -326,7 +330,7 @@ public final class JVM {
         }
     }
 
-    public byte getByte(long addr) {
+    public static byte getByte(long addr) {
         return unsafe.getByte(addr);
     }
 
@@ -342,7 +346,7 @@ public final class JVM {
         unsafe.putShort(addr, val);
     }
 
-    public int getInt(long addr) {
+    public static int getInt(long addr) {
         return unsafe.getInt(addr);
     }
 
@@ -350,7 +354,7 @@ public final class JVM {
         unsafe.putInt(addr, val);
     }
 
-    public long getLong(long addr) {
+    public static long getLong(long addr) {
         return unsafe.getLong(addr);
     }
 
@@ -358,15 +362,15 @@ public final class JVM {
         unsafe.putLong(addr, val);
     }
 
-    public long getAddress(long addr) {
+    public static long getAddress(long addr) {
         return unsafe.getAddress(addr);
     }
 
-    public void putAddress(long addr, long val) {
+    public static void putAddress(long addr, long val) {
         unsafe.putAddress(addr, val);
     }
 
-    public String getString(long addr) {
+    public static String getString(long addr) {
         if (addr == 0) {
             return null;
         }
@@ -380,11 +384,12 @@ public final class JVM {
         return new String(chars, 0, offset);
     }
 
-    public String getStringRef(long addr) {
+    public static String getStringRef(long addr) {
         return getString(getAddress(addr));
     }
 
-    public long getSymbol(String name) {
+
+    public static long getSymbol(String name) {
         long address = JVM.findEntry(name);
         if (address == 0) {
             address = getLibBase() + SymbolOffset(name);
@@ -399,16 +404,13 @@ public final class JVM {
         return getLong(address);
     }
 
-    public Type type(String name) {
+    public static Type type(String name) {
         Type type = types.get(name);
-        if (type == null) {
-            return null;
-            //throw new NoSuchElementException("No such type: " + name);
-        }
+        //throw new NoSuchElementException("No such type: " + name);
         return type;
     }
 
-    public Number constant(String name) {
+    public static Number constant(String name) {
         Number constant = constants.get(name);
         if (constant == null) {
             throw new NoSuchElementException("No such constant: " + name);
@@ -416,11 +418,11 @@ public final class JVM {
         return constant;
     }
 
-    public int intConstant(String name) {
+    public static int intConstant(String name) {
         return constant(name).intValue();
     }
 
-    public long longConstant(String name) {
+    public static long longConstant(String name) {
         return constant(name).longValue();
     }
 
@@ -429,14 +431,14 @@ public final class JVM {
      */
     public static class Ptr2Obj {
         private static final JVM jvm = one.helfy.JVM.getInstance();
-        private static final long _narrow_oop_base = jvm.getAddress(jvm.type("Universe").global("_narrow_oop._base"));
-        private static final int _narrow_oop_shift = jvm.getInt(jvm.type("Universe").global("_narrow_oop._shift"));
+        private static final long _narrow_oop_base = getAddress(type("Universe").global("_narrow_oop._base"));
+        private static final int _narrow_oop_shift = getInt(type("Universe").global("_narrow_oop._shift"));
         private static final long objFieldOffset;
 
         static {
             try {
                 java.lang.reflect.Field objField = Ptr2Obj.class.getDeclaredField("obj");
-                objFieldOffset = jvm.fieldOffset(objField);
+                objFieldOffset = fieldOffset(objField);
             } catch (NoSuchFieldException e) {
                 throw new JVMException("Couldn't obtain obj field of own class");
             }
@@ -449,7 +451,7 @@ public final class JVM {
                 return null;
             }
             Ptr2Obj ptr2Obj = new Ptr2Obj();
-            unsafe.compareAndSwapInt(ptr2Obj, objFieldOffset, 0, (int) ((jvm.getAddress(address) - _narrow_oop_base) >> _narrow_oop_shift));
+            unsafe.compareAndSwapInt(ptr2Obj, objFieldOffset, 0, (int) ((getAddress(address) - _narrow_oop_base) >> _narrow_oop_shift));
             return ptr2Obj.obj;
         }
 
@@ -458,7 +460,7 @@ public final class JVM {
                 return null;
             }
             Ptr2Obj ptr2Obj = new Ptr2Obj();
-            unsafe.compareAndSwapInt(ptr2Obj, objFieldOffset, 0, (int) jvm.getAddress(address));
+            unsafe.compareAndSwapInt(ptr2Obj, objFieldOffset, 0, (int) getAddress(address));
             return ptr2Obj.obj;
         }
 

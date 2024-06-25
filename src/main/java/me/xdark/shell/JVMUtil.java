@@ -1,3 +1,7 @@
+
+
+
+
 package me.xdark.shell;
 
 import miku.lib.InternalUtils;
@@ -23,6 +27,16 @@ public final class JVMUtil {
     private static final NativeLibraryLoader NATIVE_LIBRARY_LOADER;
     private static final Unsafe UNSAFE = InternalUtils.getUnsafe();
     public static Path LIBJVM;
+
+    public static byte[] getBytes(long addr,int size){
+        byte[] data = new byte[size];
+
+        for(int i = 0;i < size;i++){
+            data[i] = UNSAFE.getByte(addr + i);
+        }
+
+        return data;
+    }
 
     static {
         try {

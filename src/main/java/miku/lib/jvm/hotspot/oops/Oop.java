@@ -2,6 +2,7 @@ package miku.lib.jvm.hotspot.oops;
 
 import miku.lib.ObjectUtils;
 import miku.lib.jvm.hotspot.runtime.ObjectSynchronizer;
+import miku.lib.jvm.hotspot.runtime.VM;
 import miku.lib.jvm.hotspot.runtime.VMObject;
 import one.helfy.JVM;
 
@@ -51,5 +52,9 @@ public class Oop extends VMObject {
 
     public Object getObject() {
         return object;
+    }
+
+    public static long alignObjectSize(long size) {
+        return VM.alignUp(size, VM.minObjAlignmentInBytes);
     }
 }

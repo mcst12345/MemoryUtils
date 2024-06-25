@@ -16,4 +16,9 @@ public class Field {
         this.id = id;
         this.isVMField = isVMField;
     }
+
+    Field(InstanceKlass holder,int fieldIndex){
+        this.holder = holder;
+        this.fieldIndex = fieldIndex;
+    }
 }

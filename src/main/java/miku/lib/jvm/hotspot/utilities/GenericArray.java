@@ -2,7 +2,6 @@ package miku.lib.jvm.hotspot.utilities;
 
 import miku.lib.jvm.hotspot.runtime.VMObject;
 import one.helfy.Type;
-import sun.jvm.hotspot.debugger.Address;
 
 public abstract class GenericArray extends VMObject {
     private static long sizeOfArray;

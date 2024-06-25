@@ -4,7 +4,7 @@ import miku.lib.jvm.hotspot.runtime.VMObject;
 import miku.lib.jvm.hotspot.runtime.VirtualBaseConstructor;
 
 public abstract class Metadata extends VMObject {
-    protected Metadata(long address) {
+    public Metadata(long address) {
         super(address);
     }
 

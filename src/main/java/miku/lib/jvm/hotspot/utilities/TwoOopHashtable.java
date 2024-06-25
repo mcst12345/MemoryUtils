@@ -1,7 +1,7 @@
 package miku.lib.jvm.hotspot.utilities;
 
+import miku.lib.jvm.hotspot.oops.Oop;
 import miku.lib.jvm.hotspot.oops.Symbol;
-import sun.jvm.hotspot.oops.Oop;
 
 public class TwoOopHashtable extends Hashtable {
     protected TwoOopHashtable(long address) {

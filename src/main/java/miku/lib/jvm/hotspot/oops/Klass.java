@@ -10,6 +10,11 @@ public class Klass extends Metadata {
 
 
     private static final Long2ObjectOpenHashMap<Klass> cachedKlass = new Long2ObjectOpenHashMap<>();
+    private static final long _layout_helper_offset;
+    private static final long _name_offset;
+    private static final long _access_flags_offset;
+    private static final long _modifier_flags_offset;
+    private static final long _java_mirror_offset;
     private int _layout_helper;
     private Symbol name;
     private AccessFlags _access_flags;
@@ -17,18 +22,21 @@ public class Klass extends Metadata {
     private Klass _super;
     private Oop _java_mirror;
 
+    static {
+        Type type = jvm.type("Klass");
+        _layout_helper_offset = type.offset("_layout_helper");
+        _name_offset = type.offset("_name");
+        _access_flags_offset = type.offset("_access_flags");
+        _modifier_flags_offset = type.offset("_modifier_flags");
+        _java_mirror_offset = type.offset("_java_mirror");
+    }
+
     public Klass(long address) {
         super(address);
-        Type type = jvm.type("Klass");
-        long _layout_helper_offset = type.offset("_layout_helper");
         _layout_helper = unsafe.getInt(address + _layout_helper_offset);
-        long name_offset = type.offset("_name");
-        name = new Symbol(unsafe.getAddress(address + name_offset));
-        long _access_flags_offset = type.offset("_access_flags");
+        name = new Symbol(unsafe.getAddress(address + _name_offset));
         _access_flags = new AccessFlags(address + _access_flags_offset);
-        long _modifier_flags_offset = type.offset("_modifier_flags");
         _modifier_flags = unsafe.getInt(address + _modifier_flags_offset);
-        long _java_mirror_offset = type.offset("_java_mirror");
         _java_mirror = new Oop(unsafe.getAddress(address + _java_mirror_offset));
     }
 
@@ -47,7 +55,9 @@ public class Klass extends Metadata {
     }
 
     public static Klass getKlass(Class<?> clazz) {
-        long addr = jvm.intConstant("oopSize") == 8 ? unsafe.getLong(clazz, (long) jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(clazz, jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL;
+        long addr = JVM.intConstant("oopSize") == 8 ? unsafe.getLong(clazz, (long) jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(clazz, jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL;
+        System.out.println("Klass address:"+addr);
+        System.out.println(unsafe.getAddress(addr));
         return getKlass(addr);
     }
 
@@ -71,8 +81,8 @@ public class Klass extends Metadata {
         setSuper(getKlass(clazz));
     }
 
-    public int getAccessFlags() {
-        return _access_flags.getFlags();
+    public AccessFlags getAccessFlags() {
+        return _access_flags;
     }
 
     public void setAccessFlags(int flags) {
@@ -85,40 +95,14 @@ public class Klass extends Metadata {
         return name.toString();
     }
 
-    //private static final LongSet AllocatedSymbols = new LongOpenHashSet();
+    public Symbol getSymbol(){
+        return name;
+    }
 
     public void setName(String str) {
-        JVM jvm = JVM.getInstance();
-        Type type = jvm.type("Klass");
         Unsafe unsafe = InternalUtils.getUnsafe();
-        long name_offset = type.offset("_name");
-        /*long oldSym = unsafe.getAddress(address + name_offset);
-        short old_length = unsafe.getShort(oldSym);
-        byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
-        short neo_length = (short) bytes.length;
-        if (old_length > neo_length) {
-            System.out.println("Over limit.Allocating memory.");
-            long neoSym = unsafe.allocateMemory(neo_length + 8);
-            AllocatedSymbols.add(neoSym);
-            unsafe.putShort(neoSym, neo_length);
-            for (int i = 0; i < neo_length; i++) {
-                unsafe.putByte(neoSym + 8 + i, bytes[i]);
-            }
-            unsafe.putAddress(address + 16L, neoSym);
-            if (AllocatedSymbols.contains(oldSym)) {
-                System.out.println("We allocated memories before. Freeing them.");
-                unsafe.freeMemory(oldSym);
-                AllocatedSymbols.remove(oldSym);
-            }
-        } else {
-            unsafe.putShort(oldSym, neo_length);
-            for (int i = 0; i < neo_length; i++) {
-                unsafe.putByte(oldSym + 8 + i, bytes[i]);
-            }
-        }
-         */
         Symbol symbol = new Symbol(str);
-        unsafe.putAddress(getAddress() + name_offset, symbol.getAddress());
+        unsafe.putAddress(getAddress() + _name_offset, symbol.getAddress());
         this.name = symbol;
     }
 

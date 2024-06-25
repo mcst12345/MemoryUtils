@@ -1,30 +1,112 @@
 package miku.lib.jvm.hotspot.runtime;
 
+import it.unimi.dsi.fastutil.objects.Object2ByteOpenHashMap;
+import miku.lib.InternalUtils;
+import one.helfy.Field;
 import one.helfy.JVM;
 import one.helfy.Type;
-
-import java.util.ArrayList;
-import java.util.List;
+import sun.misc.Unsafe;
 
 public class VM {
-    private static VM soleInstance;
-    private static long stackBias;
-    private static int invocationEntryBCI;
-    private static int invalidOSREntryBCI;
-    private static int bytesPerWord;
+
+    private static final JVM jvm = JVM.getInstance();
+    public static final int JIntSize = jvm.type("jint").size;
+    public static final int objectAlignmentInBytes;
+    public static final int minObjAlignmentInBytes;
+    public static final long stackBias;
+    public static final int invocationEntryBCI;
+    public static final int invalidOSREntryBCI;
+    public static final int bytesPerWord;
+    public static final int heapWordSize;
+    public static final int oopSize;
+
+    private static final Unsafe unsafe = InternalUtils.getUnsafe();
+
+    public static final int AddressSize = unsafe.addressSize();
+    public static final int bytesPerLong;
+
+    public static final int heapOopSize;
+    public static final int klassPtrSize;
+
+
+    public static final boolean compressedOopsEnabled;
+    public static final Object2ByteOpenHashMap<String> Flags = new Object2ByteOpenHashMap<>();
+
+    private static void readCommandLineFlags() {
+        Type flagType = jvm.type("Flag");
+        int flagSize = flagType.size;
+
+        Field flagsField = flagType.field("flags");
+        long flagsFieldAddress = jvm.getAddress(flagsField.offset);
+
+        Field numFlagsField = flagType.field("numFlags");
+        int numFlagsValue = jvm.getInt(numFlagsField.offset);
+
+        Field _nameField = flagType.field("_name");
+        Field _addrField = flagType.field("_addr");
+
+        // iterate until `numFlagsValue - 1` because last flag contains null values
+        for (int i = 0; i < numFlagsValue - 1; i++) {
+            long flagAddress = flagsFieldAddress + ((long) i * flagSize);
+            long flagValueAddress = jvm.getAddress(flagAddress + _addrField.offset);
+            long flagNameAddress = jvm.getAddress(flagAddress + _nameField.offset);
+            String flagName = jvm.getString(flagNameAddress);
+            /*if ("UnlockDiagnosticVMOptions".equals(flagName)) {
+                if (jvm.getByte(flagValueAddress) == 0) {
+                    jvm.putByte(flagValueAddress, (byte) 1);
+                    System.out.println(flagName + " has been enabled");
+                } else {
+                    System.out.println(flagName + " is already enabled");
+                }
+            }
+             */
+            Flags.put(flagName,unsafe.getByte(flagValueAddress));
+        }
+    }
+
+    public static final boolean compressedKlassPointersEnabled;
+
 
     static {
-        JVM jvm = JVM.getInstance();
 
+        readCommandLineFlags();
         stackBias = jvm.intConstant("STACK_BIAS");
         invocationEntryBCI = jvm.intConstant("InvocationEntryBci");
         invalidOSREntryBCI = jvm.intConstant("InvalidOSREntryBci");
         bytesPerWord = jvm.intConstant("BytesPerWord");
+        oopSize = jvm.intConstant("oopSize");
+        heapWordSize = jvm.intConstant("HeapWordSize");
+        bytesPerLong = jvm.intConstant("BytesPerLong");
 
-        Type type = jvm.type("Abstract_VM_Versio");
+        compressedOopsEnabled = Flags.getByte("UseCompressedOops") == 1;
+        compressedKlassPointersEnabled = Flags.getByte("UseCompressedClassPointers") == 1;
+
+        if(compressedOopsEnabled){
+            heapOopSize = JIntSize;
+        } else {
+            heapOopSize = oopSize;
+        }
+
+        if(compressedKlassPointersEnabled){
+            klassPtrSize = JIntSize;
+        } else {
+            klassPtrSize = oopSize;
+        }
+
+        objectAlignmentInBytes = Flags.getByte("ObjectAlignmentInBytes");
+        minObjAlignmentInBytes = objectAlignmentInBytes;
+
     }
 
-    public int getBytesPerWord() {
-        return this.bytesPerWord;
+    public static long alignUp(long size, long alignment) {
+        return size + alignment - 1L & -alignment;
+    }
+
+    public static long buildLongFromIntsPD(int oneHalf, int otherHalf) {
+        return (long)oneHalf << 32 | (long)otherHalf & 4294967295L;
+    }
+
+    public static int buildIntFromShorts(short low, short high) {
+        return high << 16 | low & '\uffff';
     }
 }
