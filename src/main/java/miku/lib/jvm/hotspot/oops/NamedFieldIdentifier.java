@@ -21,7 +21,7 @@ public class NamedFieldIdentifier extends FieldIdentifier {
         if (obj == null) {
             return false;
         } else {
-            return !(obj instanceof sun.jvm.hotspot.oops.NamedFieldIdentifier) ? false : ((sun.jvm.hotspot.oops.NamedFieldIdentifier) obj).getName().equals(this.name);
+            return obj instanceof NamedFieldIdentifier && ((NamedFieldIdentifier) obj).getName().equals(this.name);
         }
     }
 

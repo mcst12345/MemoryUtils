@@ -30,11 +30,11 @@ public class X86Frame extends Frame {
     }
 
     public long local(int index) {
-        return jvm.getAddress(at(slot_interp_locals) - index * wordSize);
+        return JVM.getAddress(at(slot_interp_locals) - (long) index * wordSize);
     }
 
     public long localAddress(int index) {
-        return at(slot_interp_locals) - index * wordSize;
+        return at(slot_interp_locals) - (long) index * wordSize;
     }
 
     public int bci() {
@@ -51,9 +51,9 @@ public class X86Frame extends Frame {
         }
 
         if (cb != 0) {
-            String name = jvm.getStringRef(cb + _name);
+            String name = JVM.getStringRef(cb + _name);
             if (name.endsWith("nmethod")) {
-                return jvm.getAddress(cb + _method);
+                return JVM.getAddress(cb + _method);
             }
         }
 
@@ -64,7 +64,7 @@ public class X86Frame extends Frame {
         if (!isCompiled) {
             Map<Integer, Long> newRegisters = new HashMap<>(registers);
             newRegisters.put(RBP, fp);
-            return Frame.getFrame(fp + slot_sender_sp * wordSize, at(slot_interp_sender_sp), at(slot_link), at(slot_return_addr), newRegisters);
+            return Frame.getFrame(fp + (long) slot_sender_sp * wordSize, at(slot_interp_sender_sp), at(slot_link), at(slot_return_addr), newRegisters);
         }
 
         if (cb != 0) {
@@ -77,11 +77,11 @@ public class X86Frame extends Frame {
     }
 
     protected Frame getNextRealFrame(long cb, Map<Integer, Long> newRegisters) {
-        long senderSP = unextendedSP + jvm.getInt(cb + _frame_size) * wordSize;
+        long senderSP = unextendedSP + (long) JVM.getInt(cb + _frame_size) * wordSize;
         if (senderSP != sp) {
-            long senderPC = jvm.getAddress(senderSP - slot_return_addr * wordSize);
-            long savedFP = jvm.getAddress(senderSP - slot_sender_sp * wordSize);
-            newRegisters.put(RBP, senderSP - slot_sender_sp * wordSize);
+            long senderPC = JVM.getAddress(senderSP - slot_return_addr * wordSize);
+            long savedFP = JVM.getAddress(senderSP - (long) slot_sender_sp * wordSize);
+            newRegisters.put(RBP, senderSP - (long) slot_sender_sp * wordSize);
             return Frame.getFrame(senderSP, savedFP, senderPC, newRegisters);
         }
         return null;

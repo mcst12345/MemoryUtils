@@ -1,10 +1,10 @@
 package one.helfy;
 
-import miku.lib.InternalUtils;
+import miku.lib.utils.InternalUtils;
 
 public class MethodEntry {
     static final JVM jvm = JVM.getInstance();
-    static final int oopSize = jvm.intConstant("oopSize");
+    static final int oopSize = JVM.intConstant("oopSize");
 
     private static long benchmark() {
         long sum = 0;
@@ -39,31 +39,31 @@ public class MethodEntry {
     private static native long rdtsc();
 
     static class InstanceKlass {
-        static final long _klass_offset = jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"));
-        static final long _methods = jvm.type("InstanceKlass").offset("_methods");
-        static final long _methods_data = jvm.type("Array<Method*>").offset("_data");
+        static final long _klass_offset = JVM.getInt(JVM.type("java_lang_Class").global("_klass_offset"));
+        static final long _methods = JVM.type("InstanceKlass").offset("_methods");
+        static final long _methods_data = JVM.type("Array<Method*>").offset("_data");
 
         static long fromJavaClass(Class cls) {
             return InternalUtils.getUnsafe().getLong(cls, _klass_offset);
         }
 
         static long methodAt(long klass, int slot) {
-            long methods = jvm.getAddress(klass + _methods);
-            int length = jvm.getInt(methods);
+            long methods = JVM.getAddress(klass + _methods);
+            int length = JVM.getInt(methods);
             if (slot < 0 || slot >= length) {
                 throw new IndexOutOfBoundsException("Invalid method slot: " + slot);
             }
-            return jvm.getAddress(methods + _methods_data + slot * oopSize);
+            return JVM.getAddress(methods + _methods_data + (long) slot * oopSize);
         }
     }
 
     static class Method {
-        static final long _i2i_entry = jvm.type("Method").offset("_i2i_entry");
-        static final long _from_compiled_entry = jvm.type("Method").offset("_from_compiled_entry");
-        static final long _from_interpreted_entry = jvm.type("Method").offset("_from_interpreted_entry");
-        static final long _native_entry = jvm.type("Method").size;
-        static final long _code = jvm.type("Method").offset("_code");
-        static final long _verified_entry_point = jvm.type("nmethod").offset("_verified_entry_point");
+        static final long _i2i_entry = JVM.type("Method").offset("_i2i_entry");
+        static final long _from_compiled_entry = JVM.type("Method").offset("_from_compiled_entry");
+        static final long _from_interpreted_entry = JVM.type("Method").offset("_from_interpreted_entry");
+        static final long _native_entry = JVM.type("Method").size;
+        static final long _code = JVM.type("Method").offset("_code");
+        static final long _verified_entry_point = JVM.type("nmethod").offset("_verified_entry_point");
 
         static long fromJavaMethod(Class<?> cls, String name, Class<?>... parameterTypes) throws ReflectiveOperationException {
             return fromJavaMethod(cls.getDeclaredMethod(name, parameterTypes));
@@ -78,12 +78,12 @@ public class MethodEntry {
         }
 
         static void optimizeEntry(long method, String asm) {
-            long code = jvm.getAddress(method + _code);
-            long entry = jvm.getAddress(code + _verified_entry_point);
+            long code = JVM.getAddress(method + _code);
+            long entry = JVM.getAddress(code + _verified_entry_point);
 
-            jvm.putAddress(method + _i2i_entry, entry);
-            jvm.putAddress(method + _from_compiled_entry, entry);
-            jvm.putAddress(method + _from_interpreted_entry, entry);
+            JVM.putAddress(method + _i2i_entry, entry);
+            JVM.putAddress(method + _from_compiled_entry, entry);
+            JVM.putAddress(method + _from_interpreted_entry, entry);
 
             int length = asm.length();
             for (int i = 0; i < length; i += 2) {

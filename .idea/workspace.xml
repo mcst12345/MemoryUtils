@@ -5,41 +5,86 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e919c91c-a251-4b69-9445-f1ec07c31c1a" name="更改" comment=".">
-      <change afterPath="$PROJECT_DIR$/hs_err_pid564875.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hs_err_pid567365.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hs_err_pid568208.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hs_err_pid568961.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libs/!!!!!!!NPOP-Plus-2.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/14514.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/众神遗忘之地-0.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/寂灭-1.7.10最新版.jar" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/libs/寂灭之刃-1.0 - 2023.9.22 .jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Test1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/HSDB/HSDB.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/HSDB/SaJDI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/NumberTransformer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/Universe.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Array.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstantPoolCacheEntry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/ClassConstants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/vmSymbols.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/ConstantTag.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/U1Array.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/CompressedReadStream.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/CompressedStream.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/interpreter/Bytecodes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/SymbolTable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/BreakpointInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/CompressedLineNumberReadStream.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ExceptionTableElement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Instance.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/LineNumberTableElement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/LocalVariableTableElement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/OopField.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/Bytes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/tools/jcore/ByteCodeRewriter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/tools/jcore/ClassWriter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/KlassArray.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/MethodArray.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/utils/NoPrivateOrProtected.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Test1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Test1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/xdark/shell/JVMUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/xdark/shell/JVMUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/xdark/shell/ShellcodeRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/xdark/shell/ShellcodeRunner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/HSDB/HSDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/HSDB/HSDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/HSDB/SaJDI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/HSDB/SaJDI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/InternalUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/utils/InternalUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/ObjectUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/utils/ObjectUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/SystemDictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/SystemDictionary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/AccessFlags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/AccessFlags.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstMethod.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstantPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstantPool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstantPoolCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstantPoolCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstantPoolCacheEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstantPoolCacheEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Field.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Field.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/IndexableFieldIdentifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/IndexableFieldIdentifier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/InstanceKlass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/InstanceKlass.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Klass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Klass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Metadata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Metadata.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Mark.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Mark.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Method.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Method.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/NamedFieldIdentifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/NamedFieldIdentifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ObjectHeap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ObjectHeap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Oop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Oop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Symbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Symbol.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VMObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VMObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VMObjectFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VMObjectFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/BasicHashtableEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/BasicHashtableEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/GenericArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/GenericArray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/TwoOopHashtable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/TwoOopHashtable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/U2Array.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/U2Array.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/reflection/ReflectionHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/reflection/ReflectionHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/ChangeVmFlag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/ChangeVmFlag.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/DisableStructs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/DisableStructs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/FieldInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/FieldInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/GetBytecode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/GetBytecode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/GetMemoryUsage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/GetMemoryUsage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/HeapInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/HeapInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/JVM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/JVM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/MethodEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/MethodEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/ObjectAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/ObjectAddress.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/ThreadList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/ThreadList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/VMThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/VMThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/CodeCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/CodeCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/CompressedReadStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/CompressedReadStream.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/ConstantPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/ConstantPool.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Frame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Interpreter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/JavaThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/JavaThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Klass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Klass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Method.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Method.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/NMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/NMethod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/OopMapSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/OopMapSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/OopMapValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/OopMapValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/StubRoutines.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/StubRoutines.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Symbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/Symbol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/VFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/VFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/VMRegImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/VMRegImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/X86Frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/X86Frame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/scope/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/scope/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/scope/PCDesc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/vmstruct/scope/PCDesc.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,23 +155,30 @@
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Gradle.MemoryUtils [:BasicHashtable.main()].executor": "Run",
     "Gradle.MemoryUtils [:BasicHashtableEntry.main()].executor": "Run",
+    "Gradle.MemoryUtils [:BinarySearch.main()].executor": "Run",
     "Gradle.MemoryUtils [:ConstantPoolCacheEntry.main()].executor": "Run",
+    "Gradle.MemoryUtils [:DisableStructs.main()].executor": "Run",
     "Gradle.MemoryUtils [:GetBytecode.main()].executor": "Run",
+    "Gradle.MemoryUtils [:GetMemoryUsage.main()].executor": "Run",
     "Gradle.MemoryUtils [:HSDB.main()].executor": "Run",
     "Gradle.MemoryUtils [:HashtableBucket.main()].executor": "Run",
+    "Gradle.MemoryUtils [:HeapInfo.main()].executor": "Run",
     "Gradle.MemoryUtils [:JVM.main()].executor": "Run",
     "Gradle.MemoryUtils [:LinuxDebugger.main()].executor": "Run",
+    "Gradle.MemoryUtils [:MethodEntry.main()].executor": "Run",
     "Gradle.MemoryUtils [:ObjectSynchronizer.main()].executor": "Run",
     "Gradle.MemoryUtils [:ObjectUtils.main()].executor": "Run",
     "Gradle.MemoryUtils [:Oop.main()].executor": "Run",
     "Gradle.MemoryUtils [:ParseSO.main()].executor": "Run",
     "Gradle.MemoryUtils [:Queens.main()].executor": "Run",
+    "Gradle.MemoryUtils [:StackTrace.main()].executor": "Run",
     "Gradle.MemoryUtils [:Symbol.main()].executor": "Run",
     "Gradle.MemoryUtils [:Symbols.main()].executor": "Run",
     "Gradle.MemoryUtils [:SystemDictionary.main()].executor": "Run",
     "Gradle.MemoryUtils [:SystemDictionaryHelper.main()].executor": "Run",
     "Gradle.MemoryUtils [:Test.main()].executor": "Run",
     "Gradle.MemoryUtils [:Test1.main()].executor": "Run",
+    "Gradle.MemoryUtils [:ThreadList.main()].executor": "Run",
     "Gradle.MemoryUtils [buildDependents].executor": "Run",
     "Gradle.MemoryUtils [build].executor": "Run",
     "Gradle.MemoryUtils [clean].executor": "Run",
@@ -135,7 +187,7 @@
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/root/IdeaProjects/MemoryUtils/libs",
+    "last_opened_file_path": "/root/IdeaProjects/MemoryUtils/libs/sa-jdi.jar!/sun/jvm/hotspot/debugger",
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -145,10 +197,12 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/debugger" />
       <recent name="$PROJECT_DIR$/libs" />
       <recent name="$PROJECT_DIR$/src/main/java" />
     </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="me.xdark.shell.JVMUtil" />
       <recent name="miku.lib.HSDB.SaJDI" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -158,13 +212,13 @@
       <recent name="miku.lib.memory" />
     </key>
   </component>
-  <component name="RunManager" selected="应用程序.Test1">
-    <configuration name="HSDB" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="miku.lib.HSDB.HSDB" />
+  <component name="RunManager" selected="应用程序.Test">
+    <configuration name="DisableStructs" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="one.helfy.DisableStructs" />
       <module name="MemoryUtils.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="miku.lib.HSDB.*" />
+          <option name="PATTERN" value="one.helfy.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -172,86 +226,59 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Test1" />
+    <configuration name="GetMemoryUsage" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="one.helfy.GetMemoryUsage" />
+      <module name="MemoryUtils.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="one.helfy.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HeapInfo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="one.helfy.HeapInfo" />
+      <module name="MemoryUtils.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="one.helfy.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MethodEntry" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="one.helfy.MethodEntry" />
+      <module name="MemoryUtils.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="one.helfy.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Test" />
       <module name="MemoryUtils.main" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MemoryUtils [buildDependents]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="buildDependents" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="MemoryUtils [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="MemoryUtils [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="clean" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.MemoryUtils [build]" />
-        <item itemvalue="Gradle.MemoryUtils [clean]" />
-        <item itemvalue="Gradle.MemoryUtils [buildDependents]" />
-        <item itemvalue="应用程序.HSDB" />
-        <item itemvalue="应用程序.Test1" />
+        <item itemvalue="应用程序.DisableStructs" />
+        <item itemvalue="应用程序.GetMemoryUsage" />
+        <item itemvalue="应用程序.HeapInfo" />
+        <item itemvalue="应用程序.MethodEntry" />
+        <item itemvalue="应用程序.Test" />
       </list>
     </recent_temporary>
   </component>
@@ -280,7 +307,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717804343000</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary=".">
+      <option name="closed" value="true" />
+      <created>1719302861146</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1719302861146</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -300,15 +335,6 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/oops/Oop.class</url>
-          <line>106</line>
-          <properties class="sun.jvm.hotspot.oops.Oop" method="identityHash">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/types/basic/BasicVtblAccess.class</url>
@@ -436,6 +462,33 @@
           </properties>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/oops/InstanceKlass.class</url>
+          <line>296</line>
+          <properties class="sun.jvm.hotspot.oops.InstanceKlass" method="getLocalInterfaces">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/oops/ConstMethod.class</url>
+          <line>368</line>
+          <properties class="sun.jvm.hotspot.oops.ConstMethod" method="offsetOfLastU2Element">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/oops/ConstMethod.class</url>
+          <line>114</line>
+          <properties class="sun.jvm.hotspot.oops.ConstMethod" method="getGenericSignatureIndex">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/ui/Inspector.class</url>
           <line>73</line>
@@ -476,11 +529,22 @@
           <line>94</line>
           <option name="timeStamp" value="45" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/tools/jcore/ClassWriter.class</url>
+          <line>273</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-field">
           <url>file://$PROJECT_DIR$/src/main/java/one/helfy/JVM.java</url>
           <line>389</line>
           <properties field="WhatIsIt" class="one.helfy.JVM" />
           <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>jar:///usr/lib/jvm/java-8-jdk/src.zip!/java/lang/Thread.java</url>
+          <line>201</line>
+          <properties field="nativeParkEventPointer" class="java.lang.Thread" />
+          <option name="timeStamp" value="46" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

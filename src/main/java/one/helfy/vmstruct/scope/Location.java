@@ -13,27 +13,27 @@ import static one.helfy.vmstruct.scope.Location.Where.ON_STACK;
  * @date 26.04.2018
  */
 public class Location {
-    private static JVM jvm = JVM.getInstance();
-    private static final int INT_SIZE = jvm.type("jint").size;
-    private static final long _narrow_oop_base = jvm.getAddress(jvm.type("Universe").global("_narrow_oop._base"));
-    private static final int _narrow_oop_shift = jvm.getInt(jvm.type("Universe").global("_narrow_oop._shift"));
-    private static int OFFSET_MASK = jvm.intConstant("Location::OFFSET_MASK");
-    private static int OFFSET_SHIFT = jvm.intConstant("Location::OFFSET_SHIFT");
-    private static int TYPE_MASK = jvm.intConstant("Location::TYPE_MASK");
-    private static int TYPE_SHIFT = jvm.intConstant("Location::TYPE_SHIFT");
-    private static int WHERE_MASK = jvm.intConstant("Location::WHERE_MASK");
-    private static int WHERE_SHIFT = jvm.intConstant("Location::WHERE_SHIFT");
-    private static int TYPE_NORMAL = jvm.intConstant("Location::normal");
-    private static int TYPE_OOP = jvm.intConstant("Location::oop");
-    private static int TYPE_NARROWOOP = jvm.intConstant("Location::narrowoop");
-    private static int TYPE_INT_IN_LONG = jvm.intConstant("Location::int_in_long");
-    private static int TYPE_LNG = jvm.intConstant("Location::lng");
-    private static int TYPE_FLOAT_IN_DBL = jvm.intConstant("Location::float_in_dbl");
-    private static int TYPE_DBL = jvm.intConstant("Location::dbl");
-    private static int TYPE_ADDR = jvm.intConstant("Location::addr");
-    private static int TYPE_INVALID = jvm.intConstant("Location::invalid");
-    private static int WHERE_ON_STACK = jvm.intConstant("Location::on_stack");
-    private static int WHERE_IN_REGISTER = jvm.intConstant("Location::in_register");
+    private static final JVM jvm = JVM.getInstance();
+    private static final int INT_SIZE = JVM.type("jint").size;
+    private static final long _narrow_oop_base = JVM.getAddress(JVM.type("Universe").global("_narrow_oop._base"));
+    private static final int _narrow_oop_shift = JVM.getInt(JVM.type("Universe").global("_narrow_oop._shift"));
+    private static final int OFFSET_MASK = JVM.intConstant("Location::OFFSET_MASK");
+    private static final int OFFSET_SHIFT = JVM.intConstant("Location::OFFSET_SHIFT");
+    private static final int TYPE_MASK = JVM.intConstant("Location::TYPE_MASK");
+    private static final int TYPE_SHIFT = JVM.intConstant("Location::TYPE_SHIFT");
+    private static final int WHERE_MASK = JVM.intConstant("Location::WHERE_MASK");
+    private static final int WHERE_SHIFT = JVM.intConstant("Location::WHERE_SHIFT");
+    private static final int TYPE_NORMAL = JVM.intConstant("Location::normal");
+    private static final int TYPE_OOP = JVM.intConstant("Location::oop");
+    private static final int TYPE_NARROWOOP = JVM.intConstant("Location::narrowoop");
+    private static final int TYPE_INT_IN_LONG = JVM.intConstant("Location::int_in_long");
+    private static final int TYPE_LNG = JVM.intConstant("Location::lng");
+    private static final int TYPE_FLOAT_IN_DBL = JVM.intConstant("Location::float_in_dbl");
+    private static final int TYPE_DBL = JVM.intConstant("Location::dbl");
+    private static final int TYPE_ADDR = JVM.intConstant("Location::addr");
+    private static final int TYPE_INVALID = JVM.intConstant("Location::invalid");
+    private static final int WHERE_ON_STACK = JVM.intConstant("Location::on_stack");
+    private static final int WHERE_IN_REGISTER = JVM.intConstant("Location::in_register");
     private final int value;
 
     Location(int value) {
@@ -92,7 +92,7 @@ public class Location {
         Where where = getWhere();
 
         if (where == Where.ON_STACK) {
-            long locationAddress = unextendedSP + INT_SIZE * getOffset();
+            long locationAddress = unextendedSP + (long) INT_SIZE * getOffset();
             Object normalVal = getObjectInternal(type, locationAddress);
             if (normalVal != null) {
                 return normalVal;
@@ -116,13 +116,13 @@ public class Location {
             return JVM.Ptr2Obj.getFromPtr2NarrowPtr(locationAddress);
         } else if (type == TYPE_NORMAL) {
             // in 32-bit JVM normal also means half of double or half of long
-            int normalVal = jvm.getInt(locationAddress);
+            int normalVal = JVM.getInt(locationAddress);
             return normalVal;
         } else if (type == TYPE_DBL || type == TYPE_FLOAT_IN_DBL) {
-            long dblBits = jvm.getLong(locationAddress);
+            long dblBits = JVM.getLong(locationAddress);
             return Double.longBitsToDouble(dblBits);
         } else if (type == TYPE_LNG || type == TYPE_INT_IN_LONG) {
-            return jvm.getLong(locationAddress);
+            return JVM.getLong(locationAddress);
         }
         return null;
     }
@@ -143,7 +143,7 @@ public class Location {
         public static final Type DBL = new Type("dbl");
         public static final Type ADDR = new Type("addr");
         public static final Type INVALID = new Type("invalid");
-        private String value;
+        private final String value;
 
         private Type(String value) {
             this.value = value;
@@ -181,7 +181,7 @@ public class Location {
     public static class Where {
         public static final Where ON_STACK = new Where("on_stack");
         public static final Where IN_REGISTER = new Where("in_register");
-        private String value;
+        private final String value;
 
         private Where(String value) {
             this.value = value;

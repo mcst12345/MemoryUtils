@@ -1,6 +1,6 @@
 package miku.lib.HSDB;
 
-import miku.lib.InternalUtils;
+import miku.lib.utils.InternalUtils;
 import one.helfy.Type;
 import sun.jvm.hotspot.debugger.MachineDescriptionAMD64;
 import sun.jvm.hotspot.debugger.linux.LinuxDebuggerLocal;
@@ -19,14 +19,8 @@ public class HSDB {
 
     private static Process attach;
 
-    public static Process getAttachProcess(){
-        return attach;
-    }
-
-    public static final Object lock = new Object();
-
-
     public static long getSymbol(String s){
+        System.out.println("target:"+s);
         final boolean win = System.getProperty("os.name").startsWith("Windows");
         String jar = HSDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("!/miku/lib/HSDB/HDSB.class", "").replace("file:", "");
         if (win) {
@@ -75,6 +69,7 @@ public class HSDB {
         while(true) {
             try {
                 String tmp = reader.readLine();
+                System.out.println("[attach]"+tmp);
                 if(tmp == null){
                     break;
                 }
@@ -84,7 +79,7 @@ public class HSDB {
             }
         }
         System.out.println(line);
-        return Long.parseLong(line);
+        return line == null ? 0 : Long.parseLong(line);
     }
 
     public static long getSymbol(Type type){
@@ -145,7 +140,13 @@ public class HSDB {
                 throw new RuntimeException(e);
             }
         }
-        return Long.parseLong(line);
+        try {
+            return Long.parseLong(line);
+        } catch (Throwable t){
+            System.out.println(line);
+            t.printStackTrace();
+            throw new RuntimeException(t);
+        }
     }
 
     private static final Unsafe unsafe = InternalUtils.getUnsafe();

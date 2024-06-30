@@ -24,10 +24,10 @@ public class IndexableFieldIdentifier extends FieldIdentifier {
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
-        } else if (!(obj instanceof sun.jvm.hotspot.oops.IndexableFieldIdentifier)) {
+        } else if (!(obj instanceof IndexableFieldIdentifier)) {
             return false;
         } else {
-            return ((sun.jvm.hotspot.oops.IndexableFieldIdentifier) obj).getIndex() == this.index;
+            return ((IndexableFieldIdentifier) obj).getIndex() == this.index;
         }
     }
 

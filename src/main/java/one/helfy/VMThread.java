@@ -1,5 +1,6 @@
 package one.helfy;
 
+import miku.lib.utils.ObjectUtils;
 import miku.lib.reflection.ReflectionHelper;
 
 public class VMThread {
@@ -15,11 +16,7 @@ public class VMThread {
     }
 
     public static long of(Thread javaThread) {
-        try {
-            return eetop.getLong(javaThread);
-        } catch (IllegalAccessException e) {
-            throw new JVMException(e);
-        }
+        return (long) ObjectUtils.getField(eetop,javaThread);
     }
 
     public static long current() {

@@ -1,12 +1,10 @@
 package miku.lib.jvm.hotspot.runtime;
 
-import sun.jvm.hotspot.runtime.ConstructionException;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 public class VMObjectFactory {
-    public static VMObject newObject(Class<? extends VMObject> clazz, long addr) throws ConstructionException {
+    public static VMObject newObject(Class<? extends VMObject> clazz, long addr)  {
         try {
             if (addr == 0L) {
                 return null;
@@ -18,10 +16,10 @@ public class VMObjectFactory {
             if (var3.getTargetException() instanceof RuntimeException) {
                 throw (RuntimeException) var3.getTargetException();
             } else {
-                throw new ConstructionException(var3);
+                throw new RuntimeException(var3);
             }
         } catch (Exception var4) {
-            throw new ConstructionException(var4);
+            throw new RuntimeException(var4);
         }
     }
 }

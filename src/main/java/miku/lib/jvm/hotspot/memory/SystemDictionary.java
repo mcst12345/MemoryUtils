@@ -1,6 +1,6 @@
 package miku.lib.jvm.hotspot.memory;
 
-import miku.lib.InternalUtils;
+import miku.lib.utils.InternalUtils;
 import miku.lib.jvm.hotspot.oops.Klass;
 import miku.lib.jvm.hotspot.oops.Oop;
 import one.helfy.JVM;

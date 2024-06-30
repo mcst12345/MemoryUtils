@@ -1,4 +1,4 @@
-package miku.lib;
+package miku.lib.utils;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;

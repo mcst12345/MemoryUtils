@@ -1,5 +1,6 @@
 package miku.lib.reflection;
 
+import miku.lib.utils.NoPrivateOrProtected;
 import sun.reflect.NativeMethodAccessorImpl;
 
 import java.lang.reflect.*;
@@ -10,7 +11,12 @@ import java.util.List;
 public class ReflectionHelper {
 
     static {
-
+        try {
+            NoPrivateOrProtected.FuckAccess(Class.class);
+            NoPrivateOrProtected.FuckAccess(Class.forName("sun.reflect.NativeMethodAccessorImpl"));
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static Field[] getFields(Class<?> clazz) {

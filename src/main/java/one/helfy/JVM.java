@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import me.xdark.shell.JVMUtil;
 import me.xdark.shell.NativeLibrary;
 import miku.lib.HSDB.HSDB;
-import miku.lib.InternalUtils;
+import miku.lib.utils.InternalUtils;
 import miku.lib.jvm.hotspot.debugger.windbg.DLL;
 import net.fornwall.jelf.ElfFile;
 import net.fornwall.jelf.ElfSymbol;
@@ -293,7 +293,7 @@ public final class JVM {
             }
         } else {
             long offset = SymbolOffset("??_7InstanceKlass@@6B@");
-            long vtbl = unsafe.getAddress(jvm.intConstant("oopSize") == 8 ? unsafe.getLong(Object.class, (long) jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(Object.class, jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL);
+            long vtbl = unsafe.getAddress(intConstant("oopSize") == 8 ? unsafe.getLong(Object.class, (long) getInt(type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(Object.class, getInt(type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL);
             libBase = vtbl - offset;
             return libBase;
         }

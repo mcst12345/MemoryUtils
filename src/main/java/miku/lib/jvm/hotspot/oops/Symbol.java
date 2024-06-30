@@ -1,6 +1,7 @@
 package miku.lib.jvm.hotspot.oops;
 
 import miku.lib.jvm.hotspot.runtime.VMObject;
+import one.helfy.JVM;
 import one.helfy.Type;
 
 import java.io.ByteArrayInputStream;
@@ -10,24 +11,34 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class Symbol extends VMObject {
+
+    private static final long _length_offset;
+    private static final long _body_offset;
+    private static final long _identity_hash_offset;
+
+    static {
+        Type type = JVM.type("Symbol");
+        _length_offset = type.offset("_length");
+        _body_offset = type.offset("_body");
+        _identity_hash_offset = type.offset("_identity_hash");
+    }
+
     private final int _length;
     private int _identity_hash;
     private long _body;
 
     public Symbol(long address) {
         super(address);
-        Type type = jvm.type("Symbol");
-        _identity_hash = unsafe.getInt(address + type.offset("_identity_hash"));
-        _length = unsafe.getShort(address + type.offset("_length")) & 0xffff;
-        _body = address + type.offset("_body");
+        _identity_hash = unsafe.getInt(address + _identity_hash_offset);
+        _length = unsafe.getShort(address + _length_offset) & 0xffff;
+        _body = address + _body_offset;
     }
 
     public Symbol(String jstring) {
         super(unsafe.allocateMemory(jstring.getBytes(StandardCharsets.UTF_8).length + jvm.type("Symbol").offset("_body")));
-        Type type = jvm.type("Symbol");
         byte[] data = jstring.getBytes(StandardCharsets.UTF_8);
         _length = (short) data.length;
-        _body = unsafe.getInt(getAddress() + type.offset("_body"));
+        _body = unsafe.getInt(getAddress() + _body_offset);
         unsafe.putShort(getAddress(), (short) _length);
         for (int i = 0; i < _length; i++) {
             unsafe.putByte(_body + i, data[i]);
@@ -44,12 +55,6 @@ public class Symbol extends VMObject {
         return dis.readUTF();
     }
 
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(jvm.type("oopDesc").fields));
-        System.out.println(Arrays.toString(jvm.type("instanceOopDesc").fields));
-        System.out.println(Arrays.toString(jvm.type("oop").fields));
-    }
-
     public byte getByteAt(long index) {
         return unsafe.getByte(_body + index);
     }
@@ -63,7 +68,7 @@ public class Symbol extends VMObject {
         byte[] result = new byte[length];
 
         for (int index = 0; index < length; ++index) {
-            result[index] = this.getByteAt((long) index);
+            result[index] = this.getByteAt(index);
         }
 
         return result;
@@ -84,5 +89,9 @@ public class Symbol extends VMObject {
 
     public int length() {
         return _length;
+    }
+
+    public boolean equals(byte[] data){
+        return Arrays.equals(data,asByteArray());
     }
 }

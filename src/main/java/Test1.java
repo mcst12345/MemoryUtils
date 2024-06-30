@@ -1,8 +1,8 @@
-import miku.lib.InternalUtils;
+import miku.lib.utils.InternalUtils;
+import miku.lib.utils.ObjectUtils;
 import miku.lib.jvm.hotspot.oops.InstanceKlass;
 import miku.lib.jvm.hotspot.oops.Klass;
 import one.helfy.JVM;
-import one.helfy.Type;
 import sun.misc.Unsafe;
 
 import java.lang.management.ManagementFactory;
@@ -11,10 +11,21 @@ import static one.helfy.JVM.*;
 
 public class Test1 {
     public static void main(String[] args){
-        Type type = one.helfy.JVM.type("jshort");
-
         InstanceKlass klass = (InstanceKlass) Klass.getKlass(CLASS.class);
-        System.out.println(klass.getSourceFileName().toString());
+        System.out.println(klass.getNonstaticFieldSize());
+        System.out.println(klass);
+        for(int i = 0;  i < klass.getNonstaticFieldSize(); i++){
+            System.out.println(klass.getFieldName(i));
+            System.out.println(klass.getFieldOffset(i));
+            System.out.println("------------------------");
+        }
+        CLASS test = new CLASS();
+        System.out.println(test.f4);
+        unsafe.putIntVolatile(test,klass.getFieldOffset(3),114514);
+        System.out.println(test.f4);
+        long address = ObjectUtils.location(test);
+        unsafe.putInt(address + klass.getFieldOffset(3),191919);
+        System.out.println(test.f4);
     }
 
     public static class CLASS {

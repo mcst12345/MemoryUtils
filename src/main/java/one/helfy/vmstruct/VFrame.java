@@ -1,5 +1,6 @@
 package one.helfy.vmstruct;
 
+import one.helfy.JVM;
 import one.helfy.JVMException;
 import one.helfy.Utils;
 import one.helfy.vmstruct.scope.Location;
@@ -16,7 +17,7 @@ import java.util.Map;
  * @date 26.04.2018
  */
 public class VFrame extends X86Frame {
-    private static int InvocationEntryBci = jvm.intConstant("InvocationEntryBci");
+    private static final int InvocationEntryBci = JVM.intConstant("InvocationEntryBci");
     private final ScopeDesc scopeDesc;
 
     public VFrame(long sp, long unextendedSp, long fp, long pc, Map<Integer, Long> registers, ScopeDesc scopeDesc) {
@@ -135,7 +136,7 @@ public class VFrame extends X86Frame {
                     return String.valueOf(Double.longBitsToDouble(bits));
                 }
             } else if (localVar.type.equals("char")) {
-                return obj + " '" + Character.toString((char) ((Integer) obj).intValue()) + "'";
+                return obj + " '" + (char) ((Integer) obj).intValue() + "'";
             } else {
                 return String.valueOf(obj);
             }

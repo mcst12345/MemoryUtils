@@ -1,12 +1,14 @@
 package miku.lib.jvm.hotspot.oops;
 
+import miku.lib.jvm.hotspot.runtime.ClassConstants;
 import miku.lib.jvm.hotspot.runtime.VM;
 import miku.lib.jvm.hotspot.utilities.ConstantTag;
 import miku.lib.jvm.hotspot.utilities.U1Array;
 import miku.lib.jvm.hotspot.utilities.U2Array;
+import one.helfy.JVM;
 import one.helfy.Type;
 
-public class ConstantPool extends Metadata{
+public class ConstantPool extends Metadata implements ClassConstants {
     private static final long tags_offset;
     private static final long operands_offset;
     private static final long cache_offset;
@@ -22,7 +24,7 @@ public class ConstantPool extends Metadata{
     private static final int INDY_ARGV_OFFSET;
 
     static {
-        Type type = jvm.type("ConstantPool");
+        Type type = JVM.type("ConstantPool");
         headerSize = type.size;
         tags_offset = type.offset("_tags");
         operands_offset = type.offset("_operands");
@@ -33,9 +35,9 @@ public class ConstantPool extends Metadata{
         _reference_map_offset = type.offset("_reference_map");
         elementSize = VM.oopSize;
 
-        INDY_BSM_OFFSET = jvm.intConstant("ConstantPool::_indy_bsm_offset");
-        INDY_ARGC_OFFSET = jvm.intConstant("ConstantPool::_indy_argc_offset");
-        INDY_ARGV_OFFSET = jvm.intConstant("ConstantPool::_indy_argv_offset");
+        INDY_BSM_OFFSET = JVM.intConstant("ConstantPool::_indy_bsm_offset");
+        INDY_ARGC_OFFSET = JVM.intConstant("ConstantPool::_indy_argc_offset");
+        INDY_ARGV_OFFSET = JVM.intConstant("ConstantPool::_indy_argv_offset");
     }
 
     public ConstantPool(long address) {

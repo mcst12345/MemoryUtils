@@ -21,27 +21,27 @@ public class ChangeVmFlag {
 
         JVM jvm = JVM.getInstance();
 
-        Type flagType = jvm.type("Flag");
+        Type flagType = JVM.type("Flag");
         int flagSize = flagType.size;
 
         Field flagsField = flagType.field("flags");
-        long flagsFieldAddress = jvm.getAddress(flagsField.offset);
+        long flagsFieldAddress = JVM.getAddress(flagsField.offset);
 
         Field numFlagsField = flagType.field("numFlags");
-        int numFlagsValue = jvm.getInt(numFlagsField.offset);
+        int numFlagsValue = JVM.getInt(numFlagsField.offset);
 
         Field _nameField = flagType.field("_name");
         Field _addrField = flagType.field("_addr");
 
         // iterate until `numFlagsValue - 1` because last flag contains null values
         for (int i = 0; i < numFlagsValue - 1; i++) {
-            long flagAddress = flagsFieldAddress + (i * flagSize);
-            long flagValueAddress = jvm.getAddress(flagAddress + _addrField.offset);
-            long flagNameAddress = jvm.getAddress(flagAddress + _nameField.offset);
-            String flagName = jvm.getString(flagNameAddress);
-            System.err.println(flagName + " = " + jvm.getByte(flagValueAddress));
+            long flagAddress = flagsFieldAddress + ((long) i * flagSize);
+            long flagValueAddress = JVM.getAddress(flagAddress + _addrField.offset);
+            long flagNameAddress = JVM.getAddress(flagAddress + _nameField.offset);
+            String flagName = JVM.getString(flagNameAddress);
+            System.err.println(flagName + " = " + JVM.getByte(flagValueAddress));
             if ("UnlockDiagnosticVMOptions".equals(flagName)) {
-                if (jvm.getByte(flagValueAddress) == 0) {
+                if (JVM.getByte(flagValueAddress) == 0) {
                     jvm.putByte(flagValueAddress, (byte) 1);
                     System.out.println(flagName + " has been enabled");
                 } else {

@@ -8,17 +8,17 @@ import one.helfy.JVM;
  */
 public class VMRegImpl {
     private static final JVM jvm = JVM.getInstance();
-    private static final int wordSize = jvm.intConstant("oopSize");
-    private static long stack0 = jvm.type("VMRegImpl").global("stack0");
-    private static long regName = jvm.type("VMRegImpl").global("regName[0]");
+    private static final int wordSize = JVM.intConstant("oopSize");
+    private static final long stack0 = JVM.type("VMRegImpl").global("stack0");
+    private static final long regName = JVM.type("VMRegImpl").global("regName[0]");
 
 
     public static int getStack0() {
-        return (int) jvm.getAddress(stack0);
+        return (int) JVM.getAddress(stack0);
     }
 
     public static String getRegisterName(int index) {
-        return jvm.getStringRef(regName + index * wordSize);
+        return JVM.getStringRef(regName + (long) index * wordSize);
     }
 
 }

@@ -1,6 +1,6 @@
 package miku.lib.jvm.hotspot.runtime;
 
-import miku.lib.InternalUtils;
+import miku.lib.utils.InternalUtils;
 import one.helfy.JVM;
 import sun.misc.Unsafe;
 

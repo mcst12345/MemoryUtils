@@ -1,6 +1,8 @@
 
 package one.helfy.vmstruct;
 
+import one.helfy.JVM;
+
 public class CompressedReadStream extends CompressedStream {
     public CompressedReadStream(long buffer) {
         this(buffer, 0);
@@ -44,12 +46,12 @@ public class CompressedReadStream extends CompressedStream {
         int rl = this.readInt();
         int h = this.reverseInt(rh);
         int l = this.reverseInt(rl);
-        return Double.longBitsToDouble((long) (h << 32) | (long) l & 4294967295L);
+        return Double.longBitsToDouble((long) ((long) h << 32) | (long) l & 4294967295L);
     }
 
     public long readLong() {
         long low = (long) this.readSignedInt() & 4294967295L;
-        long high = (long) this.readSignedInt();
+        long high = this.readSignedInt();
         return high << 32 | low;
     }
 
@@ -73,11 +75,11 @@ public class CompressedReadStream extends CompressedStream {
     }
 
     private short read(int index) {
-        return (short) (jvm.getByte(buffer + index) & 0xff);
+        return (short) (JVM.getByte(buffer + index) & 0xff);
     }
 
     private short read() {
-        short retval = (short) (jvm.getByte(buffer + position) & 0xff);
+        short retval = (short) (JVM.getByte(buffer + position) & 0xff);
         ++this.position;
         return retval;
     }

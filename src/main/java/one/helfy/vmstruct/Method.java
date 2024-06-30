@@ -5,39 +5,39 @@ import one.helfy.Utils;
 
 public class Method {
     private static final JVM jvm = JVM.getInstance();
-    private static final int wordSize = jvm.intConstant("oopSize");
-    private static final long _constMethod = jvm.type("Method").offset("_constMethod");
-    private static final long _constMethod_size = jvm.type("ConstMethod").size;
-    private static final long _constants = jvm.type("ConstMethod").offset("_constants");
-    private static final long _size = jvm.type("ConstMethod").offset("_constMethod_size");
-    private static final long _name_index = jvm.type("ConstMethod").offset("_name_index");
-    private static final long _max_locals = jvm.type("ConstMethod").offset("_max_locals");
-    private static final long _flags = jvm.type("ConstMethod").offset("_flags");
-    private static final int HAS_LOCALVARIABLE_TABLE = jvm.intConstant("ConstMethod::_has_localvariable_table");
-    private static final int HAS_CHECKED_EXCEPTIONS = jvm.intConstant("ConstMethod::_has_checked_exceptions");
-    private static final int HAS_EXCEPTION_TABLE = jvm.intConstant("ConstMethod::_has_exception_table");
-    private static final int HAS_GENERIC_SIGNATURE = jvm.intConstant("ConstMethod::_has_generic_signature");
-    private static final int HAS_METHOD_ANNOTATIONS = jvm.intConstant("ConstMethod::_has_method_annotations");
-    private static final int HAS_PARAMETER_ANNOTATIONS = jvm.intConstant("ConstMethod::_has_parameter_annotations");
-    private static final int HAS_METHOD_PARAMETERS = jvm.intConstant("ConstMethod::_has_method_parameters");
-    private static final int HAS_DEFAULT_ANNOTATIONS = jvm.intConstant("ConstMethod::_has_default_annotations");
-    private static final int HAS_TYPE_ANNOTATIONS = jvm.intConstant("ConstMethod::_has_type_annotations");
-    private static final int exceptionTableElementSize = jvm.type("ExceptionTableElement").size;
-    private static final int methodParametersElementSize = jvm.type("MethodParametersElement").size;
-    private static final int checkedExceptionElementSize = jvm.type("CheckedExceptionElement").size;
-    private static final int localVariableTableElementSize = jvm.type("LocalVariableTableElement").size;
-    private static final long localVarNameOffset = jvm.type("LocalVariableTableElement").field("name_cp_index").offset;
-    private static final long localVarBCIOffset = jvm.type("LocalVariableTableElement").field("start_bci").offset;
-    private static final long localVarLength = jvm.type("LocalVariableTableElement").field("length").offset;
-    private static final long localVarDescriptorOffset = jvm.type("LocalVariableTableElement").field("descriptor_cp_index").offset;
-    private static final long localVarSlotOffset = jvm.type("LocalVariableTableElement").field("slot").offset;
+    private static final int wordSize = JVM.intConstant("oopSize");
+    private static final long _constMethod = JVM.type("Method").offset("_constMethod");
+    private static final long _constMethod_size = JVM.type("ConstMethod").size;
+    private static final long _constants = JVM.type("ConstMethod").offset("_constants");
+    private static final long _size = JVM.type("ConstMethod").offset("_constMethod_size");
+    private static final long _name_index = JVM.type("ConstMethod").offset("_name_index");
+    private static final long _max_locals = JVM.type("ConstMethod").offset("_max_locals");
+    private static final long _flags = JVM.type("ConstMethod").offset("_flags");
+    private static final int HAS_LOCALVARIABLE_TABLE = JVM.intConstant("ConstMethod::_has_localvariable_table");
+    private static final int HAS_CHECKED_EXCEPTIONS = JVM.intConstant("ConstMethod::_has_checked_exceptions");
+    private static final int HAS_EXCEPTION_TABLE = JVM.intConstant("ConstMethod::_has_exception_table");
+    private static final int HAS_GENERIC_SIGNATURE = JVM.intConstant("ConstMethod::_has_generic_signature");
+    private static final int HAS_METHOD_ANNOTATIONS = JVM.intConstant("ConstMethod::_has_method_annotations");
+    private static final int HAS_PARAMETER_ANNOTATIONS = JVM.intConstant("ConstMethod::_has_parameter_annotations");
+    private static final int HAS_METHOD_PARAMETERS = JVM.intConstant("ConstMethod::_has_method_parameters");
+    private static final int HAS_DEFAULT_ANNOTATIONS = JVM.intConstant("ConstMethod::_has_default_annotations");
+    private static final int HAS_TYPE_ANNOTATIONS = JVM.intConstant("ConstMethod::_has_type_annotations");
+    private static final int exceptionTableElementSize = JVM.type("ExceptionTableElement").size;
+    private static final int methodParametersElementSize = JVM.type("MethodParametersElement").size;
+    private static final int checkedExceptionElementSize = JVM.type("CheckedExceptionElement").size;
+    private static final int localVariableTableElementSize = JVM.type("LocalVariableTableElement").size;
+    private static final long localVarNameOffset = JVM.type("LocalVariableTableElement").field("name_cp_index").offset;
+    private static final long localVarBCIOffset = JVM.type("LocalVariableTableElement").field("start_bci").offset;
+    private static final long localVarLength = JVM.type("LocalVariableTableElement").field("length").offset;
+    private static final long localVarDescriptorOffset = JVM.type("LocalVariableTableElement").field("descriptor_cp_index").offset;
+    private static final long localVarSlotOffset = JVM.type("LocalVariableTableElement").field("slot").offset;
 
     public static String name(long method) {
         if (method == 0) {
             return "unknown";
         }
-        long constMethod = jvm.getAddress(method + _constMethod);
-        long cpool = jvm.getAddress(constMethod + _constants);
+        long constMethod = JVM.getAddress(method + _constMethod);
+        long cpool = JVM.getAddress(constMethod + _constants);
         int index = jvm.getShort(constMethod + _name_index) & 0xffff;
 
         String klassName = Klass.name(ConstantPool.holder(cpool));
@@ -46,7 +46,7 @@ public class Method {
     }
 
     public static int maxLocals(long method) {
-        long constMethod = jvm.getAddress(method + _constMethod);
+        long constMethod = JVM.getAddress(method + _constMethod);
         return jvm.getShort(constMethod + _max_locals) & 0xffff;
     }
 
@@ -103,8 +103,8 @@ public class Method {
         if (hasDefaultAnnotations(flags)) {
             ++offset;
         }
-        int constMethodSize = jvm.getInt(constMethod + _size);
-        return constMethodSize * wordSize - (long) offset * wordSize - 2L;
+        int constMethodSize = JVM.getInt(constMethod + _size);
+        return (long) constMethodSize * wordSize - (long) offset * wordSize - 2L;
     }
 
     private static long offsetOfMethodParameters(long constMethod, long flags) {
@@ -113,7 +113,7 @@ public class Method {
         }
         long offset = hasGenericSignature(flags) ? offsetOfLastU2Element(constMethod, flags) - 2L : offsetOfLastU2Element(constMethod, flags);
         int length = jvm.getShort(constMethod + offset) & 0xffff;
-        offset -= length * methodParametersElementSize;
+        offset -= (long) length * methodParametersElementSize;
         return offset;
     }
 
@@ -125,7 +125,7 @@ public class Method {
             offset = hasGenericSignature(flags) ? offsetOfLastU2Element(constMethod, flags) - 2L : offsetOfLastU2Element(constMethod, flags);
         }
         int length = jvm.getShort(constMethod + offset) & 0xffff;
-        offset -= length * checkedExceptionElementSize;
+        offset -= (long) length * checkedExceptionElementSize;
         return offset;
     }
 
@@ -139,12 +139,12 @@ public class Method {
             offset = hasGenericSignature(flags) ? offsetOfLastU2Element(constMethod, flags) - 2L : offsetOfLastU2Element(constMethod, flags);
         }
         int length = jvm.getShort(constMethod + offset) & 0xffff;
-        offset -= length * exceptionTableElementSize;
+        offset -= (long) length * exceptionTableElementSize;
         return offset;
     }
 
     public static LocalVar[] getLocalVars(long method, int frameBCI) {
-        long constMethod = jvm.getAddress(method + _constMethod);
+        long constMethod = JVM.getAddress(method + _constMethod);
         long flags = jvm.getShort(constMethod + _flags) & 0xffff;
         if (!hasLocalVariableTable(flags)) {
             return new LocalVar[0];
@@ -164,16 +164,16 @@ public class Method {
         if (length == 0) {
             return new LocalVar[0];
         }
-        offset -= length * localVariableTableElementSize;
+        offset -= (long) length * localVariableTableElementSize;
         LocalVar[] result = new LocalVar[length];
 
-        long cpool = jvm.getAddress(constMethod + _constants);
+        long cpool = JVM.getAddress(constMethod + _constants);
         for (int j = 0; j < length; j++) {
-            int typeOffset = jvm.getShort(constMethod + offset + j * localVariableTableElementSize + localVarDescriptorOffset) & 0xffff;
-            int nameOffset = jvm.getShort(constMethod + offset + j * localVariableTableElementSize + localVarNameOffset) & 0xffff;
-            int bciStart = jvm.getShort(constMethod + offset + j * localVariableTableElementSize + localVarBCIOffset) & 0xffff;
-            int bciEnd = bciStart + jvm.getShort(constMethod + offset + j * localVariableTableElementSize + localVarLength) & 0xffff;
-            int slot = jvm.getShort(constMethod + offset + j * localVariableTableElementSize + localVarSlotOffset) & 0xffff;
+            int typeOffset = jvm.getShort(constMethod + offset + (long) j * localVariableTableElementSize + localVarDescriptorOffset) & 0xffff;
+            int nameOffset = jvm.getShort(constMethod + offset + (long) j * localVariableTableElementSize + localVarNameOffset) & 0xffff;
+            int bciStart = jvm.getShort(constMethod + offset + (long) j * localVariableTableElementSize + localVarBCIOffset) & 0xffff;
+            int bciEnd = bciStart + jvm.getShort(constMethod + offset + (long) j * localVariableTableElementSize + localVarLength) & 0xffff;
+            int slot = jvm.getShort(constMethod + offset + (long) j * localVariableTableElementSize + localVarSlotOffset) & 0xffff;
             if (frameBCI < bciStart || frameBCI >= bciEnd) {
                 // though it's possible to get value of variable that has BCI not within the frame BCI, but in some cases
                 // it can cause the crash due to var value handling based on var type
@@ -247,7 +247,7 @@ public class Method {
     }
 
     public static int bcpToBci(long method, long bcp) {
-        long constMethod = jvm.getAddress(method + _constMethod);
+        long constMethod = JVM.getAddress(method + _constMethod);
         return (int) (bcp - constMethod - _constMethod_size);
     }
 

@@ -1,7 +1,8 @@
 package miku.lib.jvm.hotspot.runtime;
 
 import it.unimi.dsi.fastutil.objects.Object2ByteOpenHashMap;
-import miku.lib.InternalUtils;
+import miku.lib.jvm.hotspot.memory.SymbolTable;
+import miku.lib.utils.InternalUtils;
 import one.helfy.Field;
 import one.helfy.JVM;
 import one.helfy.Type;
@@ -9,8 +10,12 @@ import sun.misc.Unsafe;
 
 public class VM {
 
+    public static SymbolTable getSymbolTable(){
+        return SymbolTable.getTheTable();
+    }
+
     private static final JVM jvm = JVM.getInstance();
-    public static final int JIntSize = jvm.type("jint").size;
+    public static final int JIntSize = JVM.type("jint").size;
     public static final int objectAlignmentInBytes;
     public static final int minObjAlignmentInBytes;
     public static final long stackBias;

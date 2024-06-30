@@ -1,7 +1,7 @@
 package one.helfy;
 
 
-import miku.lib.InternalUtils;
+import miku.lib.utils.InternalUtils;
 import sun.misc.Unsafe;
 
 public class ObjectAddress {
@@ -13,9 +13,9 @@ public class ObjectAddress {
 
     static {
         JVM jvm = JVM.getInstance();
-        Type universe = jvm.type("Universe");
-        narrowOopBase = jvm.getAddress(universe.global("_narrow_oop._base"));
-        narrowOopShift = jvm.getInt(universe.global("_narrow_oop._shift"));
+        Type universe = JVM.type("Universe");
+        narrowOopBase = JVM.getAddress(universe.global("_narrow_oop._base"));
+        narrowOopShift = JVM.getInt(universe.global("_narrow_oop._shift"));
     }
 
     public static long oopAddress(Object o) {

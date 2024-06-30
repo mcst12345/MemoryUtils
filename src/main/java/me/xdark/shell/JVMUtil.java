@@ -4,13 +4,14 @@
 
 package me.xdark.shell;
 
-import miku.lib.InternalUtils;
-import miku.lib.ObjectUtils;
+import miku.lib.utils.InternalUtils;
+import miku.lib.utils.ObjectUtils;
 import sun.misc.Unsafe;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -168,6 +169,21 @@ public final class JVMUtil {
             }
         }
         throw new NoSuchMethodError(name);
+    }
+
+    public static String getProcessId() {
+        // Note: may fail in some JVM implementations
+        // therefore fallback has to be provided
+
+        // something like '<pid>@<hostname>', at least in SUN / Oracle JVMs
+        final String jvmName = ManagementFactory.getRuntimeMXBean().getName();
+        final int index = jvmName.indexOf('@');
+
+        try {
+            return Long.toString(Long.parseLong(jvmName.substring(0, index)));
+        } catch (NumberFormatException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static abstract class NativeLibraryLoader {

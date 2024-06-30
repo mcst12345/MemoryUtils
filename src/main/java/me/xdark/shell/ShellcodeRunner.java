@@ -1,6 +1,6 @@
 package me.xdark.shell;
 
-import miku.lib.InternalUtils;
+import miku.lib.utils.InternalUtils;
 import one.helfy.JVM;
 import one.helfy.Type;
 import sun.misc.Unsafe;

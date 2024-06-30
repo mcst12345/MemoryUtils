@@ -14,11 +14,6 @@ public class SaJDI {
 
     static {
         Path jvmDir = Paths.get(System.getProperty("java.home"));
-        /*Path maybeJre = jvmDir.resolve("jre");
-        if (Files.isDirectory(maybeJre)) {
-            jvmDir = maybeJre;
-        }
-         */
         if(jvmDir.endsWith("jre")){
             jvmDir = jvmDir.getParent();
         }

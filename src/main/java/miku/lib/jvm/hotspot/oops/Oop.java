@@ -1,15 +1,27 @@
 package miku.lib.jvm.hotspot.oops;
 
-import miku.lib.ObjectUtils;
+import miku.lib.utils.ObjectUtils;
 import miku.lib.jvm.hotspot.runtime.ObjectSynchronizer;
 import miku.lib.jvm.hotspot.runtime.VM;
 import miku.lib.jvm.hotspot.runtime.VMObject;
 import one.helfy.JVM;
+import one.helfy.Type;
 
 public class Oop extends VMObject {
 
     private final Object object;
     private Klass klass;
+
+    private static final int headerSize;
+
+    static {
+        Type type = JVM.type("oopDesc");
+        headerSize = type.size;
+    }
+
+    public static int getHeaderSize() {
+        return headerSize;
+    }
 
     public Oop(long address) {
         super(address);
@@ -56,5 +68,33 @@ public class Oop extends VMObject {
 
     public static long alignObjectSize(long size) {
         return VM.alignUp(size, VM.minObjAlignmentInBytes);
+    }
+
+    public static long alignObjectOffset(long offset) {
+        return VM.alignUp(offset, VM.bytesPerLong);
+    }
+
+    public boolean isInstance() {
+        return false;
+    }
+
+    public boolean isInstanceRef() {
+        return false;
+    }
+
+    public boolean isArray() {
+        return false;
+    }
+
+    public boolean isObjArray() {
+        return false;
+    }
+
+    public boolean isTypeArray() {
+        return false;
+    }
+
+    public boolean isThread() {
+        return false;
     }
 }

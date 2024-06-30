@@ -2,7 +2,7 @@ package miku.lib.jvm.hotspot.oops;
 
 import miku.lib.jvm.hotspot.runtime.ObjectMonitor;
 import miku.lib.jvm.hotspot.runtime.VMObject;
-import sun.jvm.hotspot.utilities.Bits;
+import miku.lib.jvm.hotspot.utilities.Bits;
 
 public class Mark extends VMObject {
     private static final long ageBits;

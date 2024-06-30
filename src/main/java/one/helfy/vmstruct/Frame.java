@@ -15,11 +15,11 @@ import java.util.Map;
  */
 public abstract class Frame {
     protected static final JVM jvm = JVM.getInstance();
-    protected static final int wordSize = jvm.intConstant("oopSize");
+    protected static final int wordSize = JVM.intConstant("oopSize");
     protected static final String addressFormat = "0000000000000000".substring(0, wordSize * 2);
-    protected static final long _name = jvm.type("CodeBlob").offset("_name");
-    protected static final long _frame_size = jvm.type("CodeBlob").offset("_frame_size");
-    protected static final long _method = jvm.type("nmethod").offset("_method");
+    protected static final long _name = JVM.type("CodeBlob").offset("_name");
+    protected static final long _frame_size = JVM.type("CodeBlob").offset("_frame_size");
+    protected static final long _method = JVM.type("nmethod").offset("_method");
     public final long fp;
     protected final long sp;
     protected final long unextendedSP;
@@ -49,14 +49,10 @@ public abstract class Frame {
     }
 
     public static Frame getFrame(long sp, long unextendedSP, long fp, long pc, Map<Integer, Long> registers) {
-        String arch = System.getenv("PROCESSOR_ARCHITECTURE").toLowerCase();
-        if (arch.contains("sparc") || arch.contains("arm")) {
-            throw new JVMException("Unsupported architecture.");
-        }
         if (!Interpreter.contains(pc)) {
             long cb = CodeCache.findBlob(pc);
             if (cb != 0) {
-                String name = jvm.getStringRef(cb + _name);
+                String name = JVM.getStringRef(cb + _name);
                 if (name.endsWith("nmethod")) {
                     ScopeDesc scopeDesc = PCDesc.getPCDescAt(pc, cb);
                     if (scopeDesc != null) {
@@ -81,7 +77,7 @@ public abstract class Frame {
     public abstract long method();
 
     public long at(int slot) {
-        return jvm.getAddress(fp + slot * wordSize);
+        return JVM.getAddress(fp + (long) slot * wordSize);
     }
 
     private String valueAsText(long value) {
@@ -134,7 +130,7 @@ public abstract class Frame {
                     }
                     skipNext = true;
                 } else if (localVar.type.equals("char")) {
-                    valAsText = String.valueOf((int) localVarVal) + " '" + Character.toString((char) localVarVal) + "'";
+                    valAsText = (int) localVarVal + " '" + (char) localVarVal + "'";
                 } else if (localVar.type.equals("float")) {
                     valAsText = String.valueOf(Float.intBitsToFloat((int) localVarVal));
                 } else {
@@ -202,7 +198,7 @@ public abstract class Frame {
         if (!localVar.valueType || localVar.isArray) {
             return JVM.Ptr2Obj.getFromPtr2Ptr(localVarValPtr);
         }
-        long localVarVal = jvm.getAddress(localVarValPtr);
+        long localVarVal = JVM.getAddress(localVarValPtr);
         if (localVar.type.equals("long")) {
             // long values take 2 slots
             if (wordSize == 8) { // 64 bit

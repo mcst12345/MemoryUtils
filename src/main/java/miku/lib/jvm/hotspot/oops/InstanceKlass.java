@@ -3,8 +3,51 @@ package miku.lib.jvm.hotspot.oops;
 import miku.lib.jvm.hotspot.classfile.ClassLoaderData;
 import miku.lib.jvm.hotspot.runtime.VM;
 import miku.lib.jvm.hotspot.runtime.vmSymbols;
+import miku.lib.jvm.hotspot.utilities.KlassArray;
+import miku.lib.jvm.hotspot.utilities.MethodArray;
 import miku.lib.jvm.hotspot.utilities.U2Array;
+import one.helfy.JVM;
 import one.helfy.Type;
+
+import java.util.ArrayList;
+import java.util.List;
+
+//InstanceKlass extends Klass @ 440
+//  ClassLoaderData* _class_loader_data @ 144
+//  Annotations* _annotations @ 200
+//  Klass* _array_klasses @ 208
+//  ConstantPool* _constants @ 216
+//  Array<jushort>* _inner_classes @ 224
+//  char* _source_debug_extension @ 232
+//  int _nonstatic_field_size @ 248
+//  int _static_field_size @ 252
+//  u2 _generic_signature_index @ 256
+//  u2 _source_file_name_index @ 258
+//  u2 _static_oop_field_count @ 260
+//  u2 _java_fields_count @ 262
+//  int _nonstatic_oop_map_size @ 264
+//  bool _is_marked_dependent @ 268
+//  u2 _minor_version @ 274
+//  u2 _major_version @ 276
+//  Thread* _init_thread @ 280
+//  int _vtable_len @ 288
+//  int _itable_len @ 292
+//  OopMapCache* _oop_map_cache @ 296
+//  JNIid* _jni_ids @ 312
+//  jmethodID* _methods_jmethod_ids @ 320
+//  nmethodBucket* _dependencies @ 328
+//  nmethod* _osr_nmethods_head @ 336
+//  BreakpointInfo* _breakpoints @ 344
+//  u2 _idnum_allocated_count @ 368
+//  u1 _init_state @ 370
+//  u1 _reference_type @ 371
+//  Array<Method*>* _methods @ 384
+//  Array<Method*>* _default_methods @ 392
+//  Array<Klass*>* _local_interfaces @ 400
+//  Array<Klass*>* _transitive_interfaces @ 408
+//  Array<int>* _method_ordering @ 416
+//  Array<int>* _default_vtable_indices @ 424
+//  Array<u2>* _fields @ 432
 
 public class InstanceKlass extends Klass {
 
@@ -53,24 +96,24 @@ public class InstanceKlass extends Klass {
     private static final long headerSize;
 
     static {
-        ACCESS_FLAGS_OFFSET = jvm.intConstant("FieldInfo::access_flags_offset");
-        NAME_INDEX_OFFSET = jvm.intConstant("FieldInfo::name_index_offset");
-        SIGNATURE_INDEX_OFFSET = jvm.intConstant("FieldInfo::signature_index_offset");
-        INITVAL_INDEX_OFFSET = jvm.intConstant("FieldInfo::initval_index_offset");
-        LOW_OFFSET = jvm.intConstant("FieldInfo::low_packed_offset");
-        HIGH_OFFSET = jvm.intConstant("FieldInfo::high_packed_offset");
-        FIELD_SLOTS = jvm.intConstant("FieldInfo::field_slots");
-        FIELDINFO_TAG_SIZE = (short) jvm.intConstant("FIELDINFO_TAG_SIZE");
-        FIELDINFO_TAG_MASK = (short) jvm.intConstant("FIELDINFO_TAG_MASK");
-        FIELDINFO_TAG_OFFSET = (short) jvm.intConstant("FIELDINFO_TAG_OFFSET");
-        CLASS_STATE_ALLOCATED = jvm.intConstant("InstanceKlass::allocated");
-        CLASS_STATE_LOADED = jvm.intConstant("InstanceKlass::loaded");
-        CLASS_STATE_LINKED = jvm.intConstant("InstanceKlass::linked");
-        CLASS_STATE_BEING_INITIALIZED = jvm.intConstant("InstanceKlass::being_initialized");
-        CLASS_STATE_FULLY_INITIALIZED = jvm.intConstant("InstanceKlass::fully_initialized");
-        CLASS_STATE_INITIALIZATION_ERROR = jvm.intConstant("InstanceKlass::initialization_error");
+        ACCESS_FLAGS_OFFSET = JVM.intConstant("FieldInfo::access_flags_offset");
+        NAME_INDEX_OFFSET = JVM.intConstant("FieldInfo::name_index_offset");
+        SIGNATURE_INDEX_OFFSET = JVM.intConstant("FieldInfo::signature_index_offset");
+        INITVAL_INDEX_OFFSET = JVM.intConstant("FieldInfo::initval_index_offset");
+        LOW_OFFSET = JVM.intConstant("FieldInfo::low_packed_offset");
+        HIGH_OFFSET = JVM.intConstant("FieldInfo::high_packed_offset");
+        FIELD_SLOTS = JVM.intConstant("FieldInfo::field_slots");
+        FIELDINFO_TAG_SIZE = (short) JVM.intConstant("FIELDINFO_TAG_SIZE");
+        FIELDINFO_TAG_MASK = (short) JVM.intConstant("FIELDINFO_TAG_MASK");
+        FIELDINFO_TAG_OFFSET = (short) JVM.intConstant("FIELDINFO_TAG_OFFSET");
+        CLASS_STATE_ALLOCATED = JVM.intConstant("InstanceKlass::allocated");
+        CLASS_STATE_LOADED = JVM.intConstant("InstanceKlass::loaded");
+        CLASS_STATE_LINKED = JVM.intConstant("InstanceKlass::linked");
+        CLASS_STATE_BEING_INITIALIZED = JVM.intConstant("InstanceKlass::being_initialized");
+        CLASS_STATE_FULLY_INITIALIZED = JVM.intConstant("InstanceKlass::fully_initialized");
+        CLASS_STATE_INITIALIZATION_ERROR = JVM.intConstant("InstanceKlass::initialization_error");
 
-        Type type = jvm.type("InstanceKlass");
+        Type type = JVM.type("InstanceKlass");
         headerSize = Oop.alignObjectSize(type.size);
         _class_loader_data_offset = type.offset("_class_loader_data");
         _fields_offset = type.offset("_fields");
@@ -101,21 +144,21 @@ public class InstanceKlass extends Klass {
 
     private ClassLoaderData _class_loader_data;
     private U2Array _fields;
-    private int _java_fields_count;
+    private short _java_fields_count;
 
     public InstanceKlass(long address) {
         super(address);
-        Type type = jvm.type("InstanceKlass");
+        Type type = JVM.type("InstanceKlass");
         _class_loader_data = new ClassLoaderData(unsafe.getAddress(address + _class_loader_data_offset));
         _fields = new U2Array(unsafe.getAddress(address + _fields_offset));
-        _java_fields_count = unsafe.getInt(address + _java_fields_count_offset);
+        _java_fields_count = unsafe.getShort(address + _java_fields_count_offset);
     }
 
     public InstanceKlass(Class<?> clazz) {
-        this(jvm.intConstant("oopSize") == 8 ? unsafe.getLong(clazz, (long) jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(clazz, jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL);
+        this(JVM.intConstant("oopSize") == 8 ? unsafe.getLong(clazz, (long) JVM.getInt(JVM.type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(clazz, JVM.getInt(JVM.type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL);
     }
 
-    public int getJavaFieldsCount() {
+    public short getJavaFieldsCount() {
         return _java_fields_count;
     }
 
@@ -127,7 +170,11 @@ public class InstanceKlass extends Klass {
         return _fields;
     }
     public U2Array getInnerClasses(){
-        return new U2Array(getAddress() + _inner_classes_offset);
+        return new U2Array(unsafe.getAddress(getAddress() + _inner_classes_offset));
+    }
+
+    public int getNonstaticFieldSize(){
+        return unsafe.getInt(getAddress() + _nonstatic_field_size_offset);
     }
 
     public int getFieldOffset(int index) {
@@ -145,6 +192,10 @@ public class InstanceKlass extends Klass {
         return this.getFields().at(index * FIELD_SLOTS + ACCESS_FLAGS_OFFSET);
     }
 
+    public MethodArray getMethods(){
+        return new MethodArray(unsafe.getAddress(getAddress() + _methods_offset));
+    }
+
     public short getFieldNameIndex(int index) {
         if (index >= this.getJavaFieldsCount()) {
             throw new IndexOutOfBoundsException("not a Java field;");
@@ -153,13 +204,17 @@ public class InstanceKlass extends Klass {
         }
     }
 
+    public BreakpointInfo getBreakpoints(){
+        return new BreakpointInfo(unsafe.getAddress(getAddress() + _breakpoints_offset));
+    }
+
     public Symbol getFieldName(int index) {
         int nameIndex = this.getFields().at(index * FIELD_SLOTS + NAME_INDEX_OFFSET);
         return index < this.getJavaFieldsCount() ? this.getConstants().getSymbolAt(nameIndex) : vmSymbols.symbolAt(nameIndex);
     }
 
     public ConstantPool getConstants(){
-        return new ConstantPool(getAddress() + _constants_offset);
+        return new ConstantPool(unsafe.getAddress(getAddress() + _constants_offset));
     }
 
     public int getAllFieldsCount() {
@@ -229,7 +284,75 @@ public class InstanceKlass extends Klass {
         }
     }
 
-    public int getNonstaticFieldSize() {
-        return unsafe.getInt(getAddress() + _nonstatic_field_size_offset);
+    public short getStaticOopFieldCount(){
+        return unsafe.getShort(getAddress() + _static_oop_field_count_offset);
+    }
+
+    public int getNonstaticOopMapSize(){
+        return unsafe.getInt(getAddress() + _nonstatic_oop_map_size_offset);
+    }
+
+    public boolean getIsMarkedDependent(){
+        return unsafe.getByte(getAddress() + _is_marked_dependent_offset) != 0;
+    }
+
+    public int getVtableLen(){
+        return unsafe.getInt(getAddress() + _vtable_len_offset);
+    }
+
+    public int getItableLen(){
+        return unsafe.getInt(getAddress() + _itable_len_offset);
+    }
+
+    public short majorVersion(){
+        return unsafe.getShort(getAddress() + _major_version_offset);
+    }
+
+    public short minorVersion(){
+        return unsafe.getShort(getAddress() + _minor_version_offset);
+    }
+
+    public Symbol getGenericSignature() {
+        short index = unsafe.getShort(getAddress() + _generic_signature_index_offset);
+        return index != 0L ? this.getConstants().getSymbolAt(index) : null;
+    }
+
+    public long getSizeHelper() {
+        int lh = this.getLayoutHelper();
+        if(lh <= 0){
+            throw new RuntimeException("layout helper initialized for instance class");
+        }
+        return (long)lh / unsafe.addressSize();
+    }
+
+    public Field[] getStaticFields(){
+        U2Array fields = this.getFields();
+        int length = this.getJavaFieldsCount();
+        ArrayList<Field> result = new ArrayList<>();
+
+        for(int index = 0; index < length; ++index) {
+            Field f = this.newField(index);
+            if (f.isStatic()) {
+                result.add(f);
+            }
+        }
+
+        return result.toArray(new Field[0]);
+    }
+
+    private Field newField(int index){
+        FieldType type = new FieldType(getFieldSignature(index));
+        if(type.isOop()){
+            //return new
+        }
+        return null;
+    }
+
+    public KlassArray getLocalInterfaces(){
+        return new KlassArray(unsafe.getAddress(getAddress() + _local_interfaces_offset));
+    }
+
+    public KlassArray getTransitiveInterfaces(){
+        return new KlassArray(unsafe.getAddress(getAddress() + _transitive_interfaces_offset));
     }
 }

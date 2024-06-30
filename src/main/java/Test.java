@@ -1,18 +1,13 @@
-import miku.lib.HSDB.HSDB;
-import miku.lib.HSDB.SaJDI;
-import miku.lib.InternalUtils;
+import miku.lib.jvm.hotspot.oops.InstanceKlass;
+import miku.lib.jvm.hotspot.oops.Klass;
+import miku.lib.jvm.hotspot.tools.jcore.ClassWriter;
+import miku.lib.utils.InternalUtils;
 import one.helfy.JVM;
-import one.helfy.Type;
 import sun.misc.Unsafe;
 
-import javax.swing.*;
-import java.io.*;
-import java.lang.management.ManagementFactory;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Scanner;
+import java.io.FileOutputStream;
+import java.lang.reflect.*;
+import java.util.ArrayList;
 
 import static one.helfy.JVM.*;
 
@@ -30,34 +25,17 @@ public class Test {
 
     //The following method tries to extract the PID from java.lang.management.ManagementFactory:
 
-    private static String getProcessId(final String fallback) {
-        // Note: may fail in some JVM implementations
-        // therefore fallback has to be provided
-
-        // something like '<pid>@<hostname>', at least in SUN / Oracle JVMs
-        final String jvmName = ManagementFactory.getRuntimeMXBean().getName();
-        final int index = jvmName.indexOf('@');
-
-        if (index < 1) {
-            // part before '@' empty (index = 0) / '@' not found (index = -1)
-            return fallback;
-        }
-
-        try {
-            return Long.toString(Long.parseLong(jvmName.substring(0, index)));
-        } catch (NumberFormatException e) {
-            // ignore
-        }
-        return fallback;
-    }
-
     public static final Object lock = new Object();
 
+    private static class A {}
+
+
     public static void main(String[] args) throws Throwable{
-        Scanner scanner = new Scanner(System.in);
-        SaJDI.appendJar();
-        Type type = JVM.type(scanner.nextLine());
-        System.out.println(HSDB.getSymbol(type));
+        //System.out.println(JVM.type("ConstantPoolCacheEntry"));
+        try(FileOutputStream fos = new FileOutputStream("/mnt/Testtt")){
+            ClassWriter cw = new ClassWriter((InstanceKlass) Klass.getKlass(ArrayList.class),fos);
+            cw.write();
+        }
     }
 
     private static int getAt(int i,int k){

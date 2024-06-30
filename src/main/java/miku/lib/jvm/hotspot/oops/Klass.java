@@ -1,7 +1,7 @@
 package miku.lib.jvm.hotspot.oops;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import miku.lib.InternalUtils;
+import miku.lib.utils.InternalUtils;
 import one.helfy.JVM;
 import one.helfy.Type;
 import sun.misc.Unsafe;
@@ -15,15 +15,13 @@ public class Klass extends Metadata {
     private static final long _access_flags_offset;
     private static final long _modifier_flags_offset;
     private static final long _java_mirror_offset;
-    private int _layout_helper;
     private Symbol name;
     private AccessFlags _access_flags;
-    private int _modifier_flags;
     private Klass _super;
     private Oop _java_mirror;
 
     static {
-        Type type = jvm.type("Klass");
+        Type type = JVM.type("Klass");
         _layout_helper_offset = type.offset("_layout_helper");
         _name_offset = type.offset("_name");
         _access_flags_offset = type.offset("_access_flags");
@@ -33,15 +31,21 @@ public class Klass extends Metadata {
 
     public Klass(long address) {
         super(address);
-        _layout_helper = unsafe.getInt(address + _layout_helper_offset);
         name = new Symbol(unsafe.getAddress(address + _name_offset));
         _access_flags = new AccessFlags(address + _access_flags_offset);
-        _modifier_flags = unsafe.getInt(address + _modifier_flags_offset);
         _java_mirror = new Oop(unsafe.getAddress(address + _java_mirror_offset));
     }
 
     Klass(Class<?> clazz) {
-        this(jvm.intConstant("oopSize") == 8 ? unsafe.getLong(clazz, (long) jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(clazz, jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL);
+        this(JVM.intConstant("oopSize") == 8 ? unsafe.getLong(clazz, (long) JVM.getInt(JVM.type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(clazz, JVM.getInt(JVM.type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL);
+    }
+
+    public int getModifierFlags(){
+        return unsafe.getInt(getAddress() + _modifier_flags_offset);
+    }
+
+    public int getLayoutHelper(){
+        return unsafe.getInt(getAddress() + _layout_helper_offset);
     }
 
     public static Klass getKlass(long address) {
@@ -55,9 +59,7 @@ public class Klass extends Metadata {
     }
 
     public static Klass getKlass(Class<?> clazz) {
-        long addr = JVM.intConstant("oopSize") == 8 ? unsafe.getLong(clazz, (long) jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(clazz, jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL;
-        System.out.println("Klass address:"+addr);
-        System.out.println(unsafe.getAddress(addr));
+        long addr = JVM.intConstant("oopSize") == 8 ? unsafe.getLong(clazz, (long) unsafe.getInt(JVM.type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(clazz, JVM.getInt(JVM.type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL;
         return getKlass(addr);
     }
 
@@ -67,14 +69,14 @@ public class Klass extends Metadata {
 
     public Klass getSuper() {
         if (_super == null) {
-            _super = new Klass(unsafe.getAddress(getAddress() + jvm.type("Klass").offset("_super")));
+            _super = new Klass(unsafe.getAddress(getAddress() + JVM.type("Klass").offset("_super")));
         }
         return _super;
     }
 
     public void setSuper(Klass klass) {
         this._super = klass;
-        unsafe.putAddress(getAddress() + jvm.type("Klass").offset("_super"), klass.getAddress());
+        unsafe.putAddress(getAddress() + JVM.type("Klass").offset("_super"), klass.getAddress());
     }
 
     public void setSuper(Class<?> clazz) {
@@ -86,10 +88,12 @@ public class Klass extends Metadata {
     }
 
     public void setAccessFlags(int flags) {
-        long _modifier_flags_offset = jvm.type("Klass").offset("_modifier_flags");
+        long _modifier_flags_offset = JVM.type("Klass").offset("_modifier_flags");
         unsafe.putInt(getAddress() + _modifier_flags_offset, flags);
         _access_flags.setFlags(flags);
     }
+
+
 
     public String getName() {
         return name.toString();

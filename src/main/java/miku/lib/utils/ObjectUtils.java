@@ -1,7 +1,6 @@
-package miku.lib;
+package miku.lib.utils;
 
 import miku.lib.reflection.ReflectionHelper;
-import one.helfy.JVM;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Array;
@@ -15,56 +14,6 @@ public class ObjectUtils {
     static final Map<Field, Long> offsetCache = new ConcurrentHashMap<>();
     static final Map<Field, Object> baseCache = new ConcurrentHashMap<>();
     private static final Unsafe unsafe = InternalUtils.getUnsafe();
-    /*public static boolean FromModClass(Object obj) {
-        String name = ReflectionHelper.getName(obj.getClass());
-        return ModClass(name);
-    }
-
-    static boolean win = System.getProperty("os.name").startsWith("Windows");
-
-    public static boolean ModClass(String name) {
-
-        if(name.startsWith("openeye.") || name.startsWith("miku.sekai") || name.startsWith("one.helfy") || name.startsWith("me.xdark")){
-            return false;
-        }
-        String original_name = FMLDeobfuscatingRemapper.INSTANCE.unmap(name.replace('.', '/')).replace('/','.');
-        if(!name.equals(original_name)){
-            return false;
-        }
-        final URL res = Launch.classLoader.findResource(original_name.replace('.', '/').concat(".class"));
-        if (res != null) {
-            String path = res.getPath();
-            try {
-                path = URLDecoder.decode(path, StandardCharsets.UTF_8.name());
-            } catch (UnsupportedEncodingException ignored) {
-            }
-
-            if (path.contains("!")) {
-                path = path.substring(0, path.lastIndexOf("!"));
-            }
-            if (path.contains("file:/")) {
-                path = path.replace("file:/", "");
-            }
-            if (win) {
-                if (path.startsWith("/")) {
-                    path = path.substring(1);
-                }
-            }
-            return path.contains("/mods/") || path.contains("\\mods\\");
-        }
-        return false;
-    }
-
-     */
-    private static final TransformHelper helper = new TransformHelper();
-    private static long narrow_klass_base;
-    private static long narrow_oop_base;
-    private static long narrow_oop_shift;
-
-    static {
-        calculateCompressingField();
-    }
-
     public static Object clone(Object o) {
         if (o == null) {
             return null;
@@ -235,82 +184,6 @@ public class ObjectUtils {
             }
         }
     }
-
-    /*public static void resetStatic(){
-        ModMain.LOGGER.info("resetStatic method entered.");
-        ThreadUtils.killThreads();
-        Vector<Class<?>> targets = new Vector<>(Launch.classLoader.classes);
-        targets.removeIf(c -> !ModClass(ReflectionHelper.getName(c)));
-        for(Class<?> clazz : targets){
-            ModMain.LOGGER.info("Class:{}", ReflectionHelper.getName(clazz));
-            for(Field field : ReflectionHelper.getFields(clazz)){
-                if(Modifier.isStatic(field.getModifiers())){
-                    Object obj = getStatic(field);
-                    if(obj instanceof List){
-                        ModMain.LOGGER.info("Clear:{}", field.getName());
-                        try {
-                            ((List<?>) obj).clear();
-                        } catch (Throwable ignored){}
-                    } else if(obj instanceof Map){
-                        ModMain.LOGGER.info("Clear:{}", field.getName());
-                        try {
-                            ((Map<?, ?>) obj).clear();
-                        } catch (Throwable ignored){}
-                    } else if(obj instanceof Set){
-                        ModMain.LOGGER.info("Clear:{}", field.getName());
-                        try {
-                            ((Set<?>) obj).clear();
-                        } catch (Throwable ignored){}
-                    } else if(obj instanceof Entity || obj instanceof NBTTagCompound){
-                        ModMain.LOGGER.info("Null:{}", field.getName());
-                        putStatic(field,null);
-                    } else if(field.getType() == boolean.class){
-                        ModMain.LOGGER.info("False:{}", field.getName());
-                        ObjectUtils.putStatic(field,false);
-                    }
-                }
-            }
-        }
-        MinecraftForge.EVENT_BUS.listenerOwners.forEach((k,v) -> {
-            if(v.getModId() != null && !v.getModId().equals("forge") && !v.getModId().equals("sekai") && !v.getModId().equals("openeye") && !v.getModId().equals("jei")){
-                ModMain.LOGGER.info("{}:{}", v.getModId(), k.getClass().getName());
-                resetObjectFields(k);
-                resetObjectFields(v);
-            }
-        });
-    }
-
-    private static void resetObjectFields(Object target){
-        Class<?> clazz = target.getClass();
-        for(Field field : ReflectionHelper.getFields(clazz)){
-            if(!Modifier.isStatic(field.getModifiers())){
-                if(field.getType() == boolean.class){
-                    ModMain.LOGGER.info("False:{}", field.getName());
-                    putField(field,target,false);
-                } else {
-                    Object obj = getField(field,target);
-                    if(obj instanceof List){
-                        ModMain.LOGGER.info("Clear:{}", field.getName());
-                        try {
-                            ((List<?>) obj).clear();
-                        } catch (Throwable ignored){}
-                    } else if(obj instanceof Map){
-                        ModMain.LOGGER.info("Clear:{}", field.getName());
-                        try {
-                            ((Map<?, ?>) obj).clear();
-                        } catch (Throwable ignored){}
-                    } else if(obj instanceof Set){
-                        ModMain.LOGGER.info("Clear:{}", field.getName());
-                        try {
-                            ((Set<?>) obj).clear();
-                        } catch (Throwable ignored){}
-                    }
-                }
-            }
-        }
-    }
-
-     */
 
     public static Object getStatic(Field field) {
         Object base;
@@ -625,71 +498,6 @@ public class ObjectUtils {
         }
     }
 
-    static int encodeKlass(long klass) {
-        if (unsafe.pageSize() == 8)
-            return (int) klass;
-        return (int) (klass - narrow_klass_base >> 3);
-    }
-
-    public static void setObjectClass(Object target, Class<?> clazz) {
-        JVM jvm = JVM.getInstance();
-        int oopSize = jvm.intConstant("oopSize");
-        long klassOffset = jvm.getInt(jvm.type("java_lang_Class").global("_klass_offset"));
-        long klass = oopSize == 8 ? unsafe.getLong(clazz, klassOffset) : unsafe.getInt(clazz, klassOffset) & 0xffffffffL;
-        unsafe.putLongVolatile(target, 8L, encodeKlass(klass));
-    }
-
-    static int log2(long n) {
-        return (int) (Math.log(n) / Math.log(2));
-    }
-
-    /**
-     * Calculates pointer compressing bases/shifts if we are in a 64-bit JVM.
-     */
-    static void calculateCompressingField() {
-        if (unsafe.pageSize() == 8) {
-            int encoded = unsafe.getInt(new Object(), 8L);
-            long decoded = unsafe.getLong(Object.class, 72L);
-            narrow_klass_base = decoded - ((long) encoded << 3);
-
-            int encoded1 = addressNarrow(Object.class);
-            long decoded1 = unsafe.getLong(
-                    unsafe.getLong(Object.class, 72L) // C++ vtbl ptr
-                            + Unsafe.ADDRESS_SIZE // _layout_helper
-                            + 4 // _super_check_offset
-                            + 4 // _name
-                            + Unsafe.ADDRESS_SIZE // _secondary_super_cache
-                            + Unsafe.ADDRESS_SIZE // _secondary_supers
-                            + Unsafe.ADDRESS_SIZE // primary_supers
-                            + Unsafe.ADDRESS_SIZE * 8L // _java_mirror
-            );
-            int encoded2 = addressNarrow(TransformHelper.class);
-            long decoded2 = unsafe.getLong(
-                    unsafe.getLong(TransformHelper.class, 72L) // C++ vtbl ptr
-                            + Unsafe.ADDRESS_SIZE // _layout_helper
-                            + 4 // _super_check_offset
-                            + 4 // _name
-                            + Unsafe.ADDRESS_SIZE // _secondary_super_cache
-                            + Unsafe.ADDRESS_SIZE // _secondary_supers
-                            + Unsafe.ADDRESS_SIZE // primary_supers
-                            + Unsafe.ADDRESS_SIZE * 8L // _java_mirror
-            );
-            narrow_oop_shift = log2((decoded2 - decoded1) / (encoded2 - encoded1));
-            narrow_oop_base = decoded1 - ((long) encoded1 << narrow_oop_shift);
-        }
-    }
-
-    static int addressNarrow(Object obj) {
-        helper.changeContent(obj);
-        return unsafe.getIntVolatile(helper, 12L);
-    }
-
-    static long decodeOop(int narrowOop) {
-        if (!(unsafe.pageSize() == 8))
-            return narrowOop;
-        return narrow_oop_base + ((long) narrowOop << narrow_oop_shift);
-    }
-
     public static long location(Object object) {
 
         Object[] array = new Object[]{object};
@@ -723,38 +531,5 @@ public class ObjectUtils {
 
         return (location) * 8L;
 
-    }
-
-    private static Object object(int narrow_oop) {
-        helper.changeContent(narrow_oop);
-        return helper.content;
-    }
-
-    public static void main(String[] args) {
-        Object o = new Object();
-        int addr = addressNarrow(o);
-        System.out.println(narrow_oop_base);
-        System.out.println(narrow_oop_shift);
-        System.out.println(narrow_klass_base);
-        System.out.println(object(addr));
-    }
-
-    static class TransformHelper {
-        volatile Object content;
-
-        TransformHelper() {
-        }
-
-        TransformHelper(Object c) {
-            content = c;
-        }
-
-        synchronized void changeContent(Object c) {
-            unsafe.putObjectVolatile(this, 12L, c);
-        }
-
-        synchronized void changeContent(int c) {
-            unsafe.putIntVolatile(this, 12L, c);
-        }
     }
 }

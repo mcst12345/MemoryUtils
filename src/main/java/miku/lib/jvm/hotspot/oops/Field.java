@@ -21,4 +21,44 @@ public class Field {
         this.holder = holder;
         this.fieldIndex = fieldIndex;
     }
+
+    public boolean isPublic() {
+        return this.accessFlags.isPublic();
+    }
+
+    public boolean isPrivate() {
+        return this.accessFlags.isPrivate();
+    }
+
+    public boolean isProtected() {
+        return this.accessFlags.isProtected();
+    }
+
+    public boolean isPackagePrivate() {
+        return !this.isPublic() && !this.isPrivate() && !this.isProtected();
+    }
+
+    public boolean isStatic() {
+        return this.accessFlags.isStatic();
+    }
+
+    public boolean isFinal() {
+        return this.accessFlags.isFinal();
+    }
+
+    public boolean isVolatile() {
+        return this.accessFlags.isVolatile();
+    }
+
+    public boolean isTransient() {
+        return this.accessFlags.isTransient();
+    }
+
+    public boolean isSynthetic() {
+        return this.accessFlags.isSynthetic();
+    }
+
+    public boolean isEnumConstant() {
+        return this.accessFlags.isEnum();
+    }
 }

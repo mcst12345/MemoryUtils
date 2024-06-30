@@ -1,13 +1,17 @@
 package miku.lib.jvm.hotspot.oops;
 
 import me.xdark.shell.JVMUtil;
-import miku.lib.InternalUtils;
+import miku.lib.utils.InternalUtils;
 import miku.lib.NumberTransformer;
-import miku.lib.jvm.hotspot.runtime.VM;
 import one.helfy.JVM;
 import one.helfy.Type;
-import sun.jvm.hotspot.utilities.Assert;
 import sun.misc.Unsafe;
+
+//ConstantPoolCacheEntry @ 32
+//  intx _indices @ 0
+//  volatile Metadata* _f1 @ 8
+//  intx _f2 @ 16
+//  intx _flags @ 24
 
 public class ConstantPoolCacheEntry {
     private static long size;
@@ -23,17 +27,17 @@ public class ConstantPoolCacheEntry {
 
     static {
         JVM jvm = JVM.getInstance();
-        Type type = jvm.type("ConstantPoolCacheEntry");
+        Type type = JVM.type("ConstantPoolCacheEntry");
         size = type.size;
-        f1_offset = type.offset("f1");
-        f2_offset = type.offset("f2");
+        f1_offset = type.offset("_f1");
+        f2_offset = type.offset("_f2");
         flags_offset = type.offset("_flags");
-        Type t = jvm.type(type.field("_indices").typeName);
+        Type t = JVM.type(type.field("_indices").typeName);
         indices_offset = type.offset("_indices");
         indices_size = t.size;
         indices_unsigned = t.isUnsigned;
 
-        type = jvm.type("ConstantPoolCache");
+        type = JVM.type("ConstantPoolCache");
         baseOffset = type.size;
     }
     ConstantPoolCacheEntry(ConstantPoolCache cp, int index) {

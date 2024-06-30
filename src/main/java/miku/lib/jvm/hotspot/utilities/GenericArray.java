@@ -24,13 +24,9 @@ public abstract class GenericArray extends VMObject {
     protected int getIntegerAt(int index) {
         if (index >= 0 && index < this.length()) {
             Type elemType = this.getElemType();
-            if (!this.getElemType().name.equals("int")) {
-                throw new RuntimeException("elemType must be of CInteger type");
-            } else {
-                long data = this.getAddress() + this.dataFieldOffset;
-                long elemSize = elemType.size;
-                return unsafe.getInt(data + (long) index * elemSize);
-            }
+            long data = this.getAddress() + this.dataFieldOffset;
+            long elemSize = elemType.size;
+            return unsafe.getInt(data + (long) index * elemSize);
         } else {
             throw new ArrayIndexOutOfBoundsException(index + " " + this.length());
         }
