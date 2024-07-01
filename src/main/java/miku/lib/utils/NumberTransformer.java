@@ -1,4 +1,4 @@
-package miku.lib;
+package miku.lib.utils;
 
 public class NumberTransformer {
     public static long dataToCInteger(byte[] data, boolean isUnsigned) {

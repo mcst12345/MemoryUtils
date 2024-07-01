@@ -1,7 +1,7 @@
 package miku.lib.jvm.hotspot.oops;
 
 import me.xdark.shell.JVMUtil;
-import miku.lib.NumberTransformer;
+import miku.lib.utils.NumberTransformer;
 import miku.lib.jvm.hotspot.memory.Universe;
 import miku.lib.jvm.hotspot.runtime.BasicType;
 import miku.lib.jvm.hotspot.runtime.VM;

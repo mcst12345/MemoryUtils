@@ -154,6 +154,10 @@ public class Method extends Metadata{
         return this.getConstMethod().getCheckedExceptions();
     }
 
+    public Symbol getName(){
+        return getConstants().getSymbolAt(getNameIndex());
+    }
+
     public boolean isNative() {
         return this.getAccessFlags().isNative();
     }

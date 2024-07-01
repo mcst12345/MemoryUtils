@@ -1,7 +1,7 @@
 package miku.lib.jvm.hotspot.code;
 
 import me.xdark.shell.JVMUtil;
-import miku.lib.NumberTransformer;
+import miku.lib.utils.NumberTransformer;
 
 public class CompressedReadStream extends CompressedStream{
     public CompressedReadStream(long buffer) {

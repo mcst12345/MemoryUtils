@@ -54,7 +54,8 @@ public class ConstantPool extends Metadata implements ClassConstants {
     }
 
     public ConstantPoolCache getCache(){
-        return new ConstantPoolCache(unsafe.getAddress(getAddress() + cache_offset));
+        long address = unsafe.getAddress(getAddress() + cache_offset);
+        return address != 0 ? new ConstantPoolCache(address) : null;
     }
 
     public InstanceKlass getPoolHolder(){

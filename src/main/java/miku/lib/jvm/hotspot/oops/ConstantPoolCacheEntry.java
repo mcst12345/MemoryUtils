@@ -2,7 +2,7 @@ package miku.lib.jvm.hotspot.oops;
 
 import me.xdark.shell.JVMUtil;
 import miku.lib.utils.InternalUtils;
-import miku.lib.NumberTransformer;
+import miku.lib.utils.NumberTransformer;
 import one.helfy.JVM;
 import one.helfy.Type;
 import sun.misc.Unsafe;

@@ -1,7 +1,7 @@
 package miku.lib.jvm.hotspot.utilities;
 
 import me.xdark.shell.JVMUtil;
-import miku.lib.NumberTransformer;
+import miku.lib.utils.NumberTransformer;
 import miku.lib.jvm.hotspot.runtime.VM;
 import miku.lib.jvm.hotspot.runtime.VMObject;
 import one.helfy.JVM;
