@@ -50,12 +50,58 @@ public class ConstantPool extends Metadata implements ClassConstants {
     }
 
     public U2Array getOperands(){
-        return new U2Array(unsafe.getAddress(getAddress() + operands_offset));
+        long address = unsafe.getAddress(getAddress() + operands_offset);
+        return address != 0 ? new U2Array(address) : null;
     }
 
     public ConstantPoolCache getCache(){
         long address = unsafe.getAddress(getAddress() + cache_offset);
         return address != 0 ? new ConstantPoolCache(address) : null;
+    }
+
+    public short[] getBootstrapSpecifierAt(int i) {
+        if(!(getTagAt(i).isInvokeDynamic() || getTagAt(i).isDynamicConstant())){
+            throw new RuntimeException("Corrupted constant pool");
+        }
+        int bsmSpec = extractLowShortFromInt(this.getIntAt(i));
+        return getBootstrapMethodAt(bsmSpec);
+    }
+
+    public short[] getBootstrapMethodAt(int bsmIndex){
+        U2Array operands = getOperands();
+        if (operands == null)  return null;  // safety first
+        int basePos = getOperandOffsetAt(operands, bsmIndex);
+        int argv = basePos + INDY_ARGV_OFFSET;
+        int argc = operands.at(basePos + INDY_ARGC_OFFSET);
+        int endPos = argv + argc;
+        short[] values = new short[endPos - basePos];
+        for (int j = 0; j < values.length; j++) {
+            values[j] = operands.at(basePos+j);
+        }
+        return values;
+    }
+
+    public int getBootstrapMethodArgsCount(int bsmIndex){
+        U2Array operands = getOperands();
+        if(operands == null){
+            throw new RuntimeException("Operands is not present");
+        }
+        int bsmOffset = getOperandOffsetAt(operands, bsmIndex);
+        return operands.at(bsmOffset + INDY_ARGC_OFFSET);
+    }
+
+    public int getBootstrapMethodsCount() {
+        U2Array operands = getOperands();
+        int count = 0;
+        if (operands != null) {
+            count = getOperandOffsetAt(operands, 0) / 2;
+        }
+        return count;
+    }
+
+    private int getOperandOffsetAt(U2Array operands, int bsmIndex) {
+        return VM.buildIntFromShorts(operands.at(bsmIndex * 2),
+                operands.at(bsmIndex * 2 + 1));
     }
 
     public InstanceKlass getPoolHolder(){

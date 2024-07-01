@@ -1,6 +1,7 @@
 package miku.lib.jvm.hotspot.oops;
 
 import me.xdark.shell.JVMUtil;
+import miku.lib.jvm.hotspot.utilities.U1Array;
 import miku.lib.utils.NumberTransformer;
 import miku.lib.jvm.hotspot.runtime.VM;
 import miku.lib.jvm.hotspot.runtime.VMObject;
@@ -132,6 +133,21 @@ public class ConstMethod extends VMObject {
 
         int wordSize = VM.oopSize;
         return (long) this.getSize() * wordSize - (long) offset * wordSize - 2;
+    }
+
+    public short getNativeShortArg(int bci) {
+        int hi = getBytecodeOrBPAt(bci);
+        int lo = getBytecodeOrBPAt(bci + 1);
+        return (short) ((lo << 8) | hi);
+    }
+
+    public int getNativeIntArg(int bci) {
+        int b4 = getBytecodeOrBPAt(bci);
+        int b3 = getBytecodeOrBPAt(bci + 1);
+        int b2 = getBytecodeOrBPAt(bci + 2);
+        int b1 = getBytecodeOrBPAt(bci + 3);
+
+        return (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
     }
 
     public int getSize(){
@@ -384,6 +400,15 @@ public class ConstMethod extends VMObject {
 
         offset -= length * methodParametersElementSize;
         return offset;
+    }
+
+    public boolean hasStackMapTable(){
+        return unsafe.getAddress(getAddress() + _stackmap_data_offset) != 0;
+    }
+
+    public U1Array getStackMapData(){
+        long address = unsafe.getAddress(getAddress() + _stackmap_data_offset);
+        return address != 0 ? new U1Array(address) : null;
     }
 
     public int getBytecodeOrBPAt(int bci) {

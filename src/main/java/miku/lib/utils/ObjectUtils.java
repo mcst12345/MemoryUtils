@@ -1,11 +1,28 @@
 package miku.lib.utils;
 
+import miku.annihilation.util.ThreadUtils;
 import miku.lib.reflection.ReflectionHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.launchwrapper.Launch;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLContainer;
+import net.minecraftforge.fml.common.FMLModContainer;
+import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
+import net.minecraftforge.fml.common.eventhandler.EventBus;
+import one.helfy.JVM;
+import one.helfy.Type;
 import sun.misc.Unsafe;
 
+import java.io.UnsupportedEncodingException;
+import java.lang.management.ManagementFactory;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -145,6 +162,17 @@ public class ObjectUtils {
         }
         return copy;
     }
+
+    public static String getProcessId() {
+        final String jvmName = ManagementFactory.getRuntimeMXBean().getName();
+        final int index = jvmName.indexOf('@');
+        try {
+            return Long.toString(Long.parseLong(jvmName.substring(0, index)));
+        } catch (NumberFormatException e) {
+            throw new UnsupportedOperationException();
+        }
+    }
+
 
     public static Object getField(Field field, Object base) {
         long offset;
@@ -531,5 +559,145 @@ public class ObjectUtils {
 
         return (location) * 8L;
 
+    }
+
+
+    public static void replaceAbyB(Object a,Object b){
+        Type type = JVM.type("instanceOopDesc");
+        long a1 = ObjectUtils.location(a);
+        long a2 = ObjectUtils.location(b);
+        for(int i = 0; i < type.size; i++){
+            unsafe.putByte(a1 + i,unsafe.getByte(a2 + i));
+        }
+        copyAFields2B(b,a,b.getClass());
+    }
+
+
+    public static boolean ModClass(String name) {
+
+        if(name.startsWith("openeye.") || name.startsWith("miku.sekai") || name.startsWith("one.helfy") || name.startsWith("me.xdark")){
+            return false;
+        }
+        String original_name = FMLDeobfuscatingRemapper.INSTANCE.unmap(name.replace('.', '/')).replace('/','.');
+        if(!name.equals(original_name)){
+            return false;
+        }
+        final URL res = Launch.classLoader.findResource(original_name.replace('.', '/').concat(".class"));
+        if (res != null) {
+            String path = res.getPath();
+            try {
+                path = URLDecoder.decode(path, StandardCharsets.UTF_8.name());
+            } catch (UnsupportedEncodingException ignored) {
+            }
+
+            if (path.contains("!")) {
+                path = path.substring(0, path.lastIndexOf("!"));
+            }
+            if (path.contains("file:/")) {
+                path = path.replace("file:/", "");
+            }
+            if (win) {
+                if (path.startsWith("/")) {
+                    path = path.substring(1);
+                }
+            }
+            return path.contains("/mods/") || path.contains("\\mods\\");
+        }
+        return false;
+    }
+
+    static boolean win = System.getProperty("os.name").startsWith("Windows");
+
+    public static boolean FromModClass(Object obj) {
+        String name = ReflectionHelper.getName(obj.getClass());
+        return ModClass(name);
+    }
+
+    public static void resetStatic(){
+        ThreadUtils.killThreads();
+        Vector<Class<?>> targets = new Vector<>(Launch.classLoader.classes);
+        targets.removeIf(c -> !ModClass(ReflectionHelper.getName(c)));
+        for(Class<?> clazz : targets){
+            for(Field field : ReflectionHelper.getFields(clazz)){
+                if(Modifier.isStatic(field.getModifiers()) || shouldIgnore(field)){
+                    Object obj = getStatic(field);
+                    if(obj instanceof List){
+                        try {
+                            ((List<?>) obj).clear();
+                        } catch (Throwable ignored){}
+                    } else if(obj instanceof Map){
+                        try {
+                            ((Map<?, ?>) obj).clear();
+                        } catch (Throwable ignored){}
+                    } else if(obj instanceof Set){
+                        try {
+                            ((Set<?>) obj).clear();
+                        } catch (Throwable ignored){}
+                    } else if(obj instanceof Entity || obj instanceof NBTTagCompound || obj instanceof World){
+                        putStatic(field,null);
+                    } else if(field.getType() == boolean.class){
+                        ObjectUtils.putStatic(field,false);
+                    }
+                }
+            }
+        }
+        EventBus eventBus = MinecraftForge.EVENT_BUS;
+        eventBus.listenerOwners.forEach((k,v) -> {
+            if(v.getModId() != null && !v.getModId().equals("forge") && !v.getModId().equals("sekai") && !v.getModId().equals("openeye") && !v.getModId().equals("jei") && !(v instanceof FMLContainer)){
+                resetObjectFields(k);
+                resetObjectFields(v);
+            }
+        });
+    }
+
+    private static boolean shouldIgnore(Field field){
+        if(field.getName().equals("descriptor") && ReflectionHelper.getName(field.getDeclaringClass()).equals("net.minecraftforge.fml.common.FMLModContainer")){
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean shouldIgnore(Object object){
+        return object.getClass() == FMLModContainer.class;
+    }
+
+    private static void resetObjectFields(Object target){
+        if(shouldIgnore(target)){
+            return;
+        }
+        Class<?> clazz = target.getClass();
+        for(Field field : ReflectionHelper.getFields(clazz)){
+            if((!Modifier.isStatic(field.getModifiers())) || shouldIgnore(field)){
+                if(field.getType() == boolean.class){
+                    putField(field,target,false);
+                } else {
+                    Object obj = getField(field,target);
+                    if(obj instanceof List){
+                        try {
+                            ((List<?>) obj).clear();
+                        } catch (Throwable ignored){}
+                    } else if(obj instanceof Map){
+                        try {
+                            ((Map<?, ?>) obj).clear();
+                        } catch (Throwable ignored){}
+                    } else if(obj instanceof Set){
+                        try {
+                            ((Set<?>) obj).clear();
+                        } catch (Throwable ignored){}
+                    } else if(obj instanceof Entity || obj instanceof NBTTagCompound || obj instanceof World){
+                        putField(field,obj,null);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void copyAFields2B(Object a,Object b,Class<?> c){
+        for(Field f : ReflectionHelper.getAllFields(c)){
+            if(!Modifier.isStatic(f.getModifiers())){
+                Object o = getField(f,a);
+                putField(f,b,o);
+            }
+        }
     }
 }

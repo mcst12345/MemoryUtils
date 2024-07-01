@@ -37,15 +37,16 @@ public class VM {
     public static final boolean compressedOopsEnabled;
     public static final Object2ByteOpenHashMap<String> Flags = new Object2ByteOpenHashMap<>();
 
+
     private static void readCommandLineFlags() {
-        Type flagType = jvm.type("Flag");
+        Type flagType = JVM.type("Flag");
         int flagSize = flagType.size;
 
         Field flagsField = flagType.field("flags");
-        long flagsFieldAddress = jvm.getAddress(flagsField.offset);
+        long flagsFieldAddress = JVM.getAddress(flagsField.offset);
 
         Field numFlagsField = flagType.field("numFlags");
-        int numFlagsValue = jvm.getInt(numFlagsField.offset);
+        int numFlagsValue = JVM.getInt(numFlagsField.offset);
 
         Field _nameField = flagType.field("_name");
         Field _addrField = flagType.field("_addr");
@@ -53,9 +54,9 @@ public class VM {
         // iterate until `numFlagsValue - 1` because last flag contains null values
         for (int i = 0; i < numFlagsValue - 1; i++) {
             long flagAddress = flagsFieldAddress + ((long) i * flagSize);
-            long flagValueAddress = jvm.getAddress(flagAddress + _addrField.offset);
-            long flagNameAddress = jvm.getAddress(flagAddress + _nameField.offset);
-            String flagName = jvm.getString(flagNameAddress);
+            long flagValueAddress = JVM.getAddress(flagAddress + _addrField.offset);
+            long flagNameAddress = JVM.getAddress(flagAddress + _nameField.offset);
+            String flagName = JVM.getString(flagNameAddress);
             /*if ("UnlockDiagnosticVMOptions".equals(flagName)) {
                 if (jvm.getByte(flagValueAddress) == 0) {
                     jvm.putByte(flagValueAddress, (byte) 1);
@@ -75,13 +76,13 @@ public class VM {
     static {
 
         readCommandLineFlags();
-        stackBias = jvm.intConstant("STACK_BIAS");
-        invocationEntryBCI = jvm.intConstant("InvocationEntryBci");
-        invalidOSREntryBCI = jvm.intConstant("InvalidOSREntryBci");
-        bytesPerWord = jvm.intConstant("BytesPerWord");
-        oopSize = jvm.intConstant("oopSize");
-        heapWordSize = jvm.intConstant("HeapWordSize");
-        bytesPerLong = jvm.intConstant("BytesPerLong");
+        stackBias = JVM.intConstant("STACK_BIAS");
+        invocationEntryBCI = JVM.intConstant("InvocationEntryBci");
+        invalidOSREntryBCI = JVM.intConstant("InvalidOSREntryBci");
+        bytesPerWord = JVM.intConstant("BytesPerWord");
+        oopSize = JVM.intConstant("oopSize");
+        heapWordSize = JVM.intConstant("HeapWordSize");
+        bytesPerLong = JVM.intConstant("BytesPerLong");
 
         compressedOopsEnabled = Flags.getByte("UseCompressedOops") == 1;
         compressedKlassPointersEnabled = Flags.getByte("UseCompressedClassPointers") == 1;

@@ -3,6 +3,7 @@ package miku.lib.jvm.hotspot.oops;
 import me.xdark.shell.JVMUtil;
 import miku.lib.utils.NumberTransformer;
 import miku.lib.jvm.hotspot.runtime.VM;
+import one.helfy.JVM;
 import one.helfy.Type;
 
 public class ConstantPoolCache extends Metadata{
@@ -17,11 +18,11 @@ public class ConstantPoolCache extends Metadata{
     private static long elementSize;
 
     static {
-        Type type = jvm.type("ConstantPoolCache");
+        Type type = JVM.type("ConstantPoolCache");
         baseOffset = type.size;
         length_offset = type.offset("_length");
         constants_offset = type.offset("_constant_pool");
-        Type elType = jvm.type("ConstantPoolCacheEntry");
+        Type elType = JVM.type("ConstantPoolCacheEntry");
         elementSize = elType.size;
     }
 

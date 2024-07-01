@@ -22,7 +22,7 @@ public class SystemDictionary {
     private static Dictionary dictionary;
 
     static {
-        Type type = JVM.getInstance().type("SystemDictionary");
+        Type type = JVM.type("SystemDictionary");
         dictionaryField = type.global("_dictionary");
         sharedDictionaryField = type.global("_shared_dictionary");
         placeholdersField = type.global("_placeholders");

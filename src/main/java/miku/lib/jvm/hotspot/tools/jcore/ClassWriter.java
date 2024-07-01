@@ -27,13 +27,11 @@ public class ClassWriter implements ClassConstants {
     protected short _constantValueIndex;
     protected short _codeIndex;
     protected short _exceptionsIndex;
+    protected short  _stackMapTableIndex;
     protected short _lineNumberTableIndex;
     protected short _localVariableTableIndex;
     protected short _signatureIndex;
-
-    protected void debugMessage(String message) {
-        System.out.println(message);
-    }
+    protected short _bootstrapMethodsIndex;
 
     protected static int extractHighShortFromInt(int val) {
         return val >> 16 & '\uffff';
@@ -65,7 +63,7 @@ public class ClassWriter implements ClassConstants {
     protected void writeConstantPool() throws IOException {
         U1Array tags = this.cpool.getTags();
         long len = tags.length();
-        this.dos.writeShort((short)((int)len));
+        this.dos.writeShort((short)len);
         int ci;
         for(ci = 1; (long)ci < len; ++ci) {
             int cpConstType = tags.at(ci);
@@ -81,6 +79,8 @@ public class ClassWriter implements ClassConstants {
         this._sourceFileIndex = sourceFileIndex != null ? sourceFileIndex : 0;
         Short innerClassesIndex = this.utf8ToIndex.get("InnerClasses");
         this._innerClassesIndex = innerClassesIndex != null ? innerClassesIndex : 0;
+        Short bootstrapMethodsIndex = utf8ToIndex.get("BootstrapMethods");
+        _bootstrapMethodsIndex = (bootstrapMethodsIndex != null) ? bootstrapMethodsIndex : 0;
         Short constantValueIndex = this.utf8ToIndex.get("ConstantValue");
         this._constantValueIndex = constantValueIndex != null ? constantValueIndex : 0;
         Short syntheticIndex = this.utf8ToIndex.get("Synthetic");
@@ -91,6 +91,8 @@ public class ClassWriter implements ClassConstants {
         this._codeIndex = codeIndex != null ? codeIndex : 0;
         Short exceptionsIndex = this.utf8ToIndex.get("Exceptions");
         this._exceptionsIndex = exceptionsIndex != null ? exceptionsIndex : 0;
+        Short stackMapTableIndex = utf8ToIndex.get("StackMapTable");
+        _stackMapTableIndex = (stackMapTableIndex != null) ? stackMapTableIndex : 0;
         Short lineNumberTableIndex = this.utf8ToIndex.get("LineNumberTable");
         this._lineNumberTableIndex = lineNumberTableIndex != null ? lineNumberTableIndex : 0;
         Short localVariableTableIndex = this.utf8ToIndex.get("LocalVariableTable");
@@ -263,7 +265,7 @@ public class ClassWriter implements ClassConstants {
 
     protected void writeMethod(Method m) throws IOException {
         int accessFlags = m.getAccessFlags().getFlags();
-        this.dos.writeShort((short) (accessFlags & 7679));
+        this.dos.writeShort((short)(accessFlags & 7679));
         this.dos.writeShort(m.getNameIndex());
         this.dos.writeShort(m.getSignatureIndex());
         boolean isNative = (accessFlags & 256) != 0;
@@ -309,6 +311,22 @@ public class ClassWriter implements ClassConstants {
                 codeSize += exceptionTableLen * 8;
             }
 
+            boolean hasStackMapTable = m.hasStackMapTable();
+            U1Array stackMapData = null;
+            int stackMapAttrLen = 0;
+
+            if (hasStackMapTable) {
+                stackMapData = m.getStackMapData();
+
+                stackMapAttrLen = stackMapData.length();
+
+                codeSize += 2 /* stack map table attr index */ +
+                        4 /* stack map table attr length */ +
+                        stackMapAttrLen;
+
+                codeAttrCount++;
+            }
+
             boolean hasLineNumberTable = m.hasLineNumberTable();
             LineNumberTableElement[] lineNumberTable = null;
             int lineNumberAttrLen = 0;
@@ -346,8 +364,19 @@ public class ClassWriter implements ClassConstants {
                     this.dos.writeShort((short)exceptionTable[l].getCatchTypeIndex());
                 }
             }
-
             this.dos.writeShort(codeAttrCount);
+
+            if (hasStackMapTable) {
+                writeIndex(_stackMapTableIndex);
+                dos.writeInt(stackMapAttrLen);
+                // We write bytes directly as stackMapData is
+                // raw data (#entries + entries)
+                for (int i = 0; i < stackMapData.length(); i++) {
+                    dos.writeByte(stackMapData.at(i));
+                }
+            }
+
+
             if (hasLineNumberTable) {
                 this.writeIndex(this._lineNumberTableIndex);
                 this.dos.writeInt(lineNumberAttrLen);
@@ -433,56 +462,90 @@ public class ClassWriter implements ClassConstants {
     }
 
     protected void writeClassAttributes() throws IOException {
-        int flags = this.klass.getAccessFlags().getFlags();
-        boolean hasSyn = this.hasSyntheticAttribute((short) flags);
+
+        final int flags = klass.getAccessFlags().getFlags();
+        final boolean hasSyn = hasSyntheticAttribute((short) flags);
+
+        // check for source file
         short classAttributeCount = 0;
-        if (hasSyn) {
-            ++classAttributeCount;
-        }
 
-        Symbol sourceFileName = this.klass.getSourceFileName();
-        if (sourceFileName != null) {
-            ++classAttributeCount;
-        }
+        if (hasSyn)
+            classAttributeCount++;
 
-        Symbol genericSignature = this.klass.getGenericSignature();
-        if (genericSignature != null) {
-            ++classAttributeCount;
-        }
+        Symbol sourceFileName = klass.getSourceFileName();
+        if (sourceFileName != null)
+            classAttributeCount++;
 
-        U2Array innerClasses = this.klass.getInnerClasses();
-        int numInnerClasses = innerClasses.length() / 4;
+        Symbol genericSignature = klass.getGenericSignature();
+        if (genericSignature != null)
+            classAttributeCount++;
+
+        U2Array innerClasses = klass.getInnerClasses();
+        final int numInnerClasses = innerClasses.length() / 4;
         if (numInnerClasses != 0) {
-            ++classAttributeCount;
+            classAttributeCount++;
         }
 
-        this.dos.writeShort(classAttributeCount);
-        if (hasSyn) {
-            this.writeSynthetic();
+        int bsmCount = klass.getConstants().getBootstrapMethodsCount();
+        if (bsmCount != 0) {
+            classAttributeCount++;
         }
 
+        dos.writeShort(classAttributeCount);
+
+        if (hasSyn)
+            writeSynthetic();
+
+        // write SourceFile, if any
         if (sourceFileName != null) {
-            this.writeIndex(this._sourceFileIndex);
-            this.dos.writeInt(2);
-            Short index = this.utf8ToIndex.get(sourceFileName.toString());
-            this.dos.writeShort(index);
+            writeIndex(_sourceFileIndex);
+            dos.writeInt(2);
+            Short index = utf8ToIndex.get(sourceFileName.toString());
+            dos.writeShort(index);
         }
 
+        // write Signature, if any
         if (genericSignature != null) {
-            this.writeGenericSignature(genericSignature.toString());
+            writeGenericSignature(genericSignature.toString());
         }
 
+        // write inner classes, if any
         if (numInnerClasses != 0) {
-            this.writeIndex(this._innerClassesIndex);
-            int innerAttrLen = 2 + numInnerClasses * 8;
-            this.dos.writeInt(innerAttrLen);
-            this.dos.writeShort(numInnerClasses);
+            writeIndex(_innerClassesIndex);
+            final int innerAttrLen = 2 /* number_of_inner_classes */ +
+                    numInnerClasses * (
+                            2 /* inner_class_info_index */ +
+                                    2 /* outer_class_info_index */ +
+                                    2 /* inner_class_name_index */ +
+                                    2 /* inner_class_access_flags */);
+            dos.writeInt(innerAttrLen);
 
-            for(int index = 0; index < numInnerClasses * 4; ++index) {
-                this.dos.writeShort(innerClasses.at(index));
+            dos.writeShort(numInnerClasses);
+
+            for (int index = 0; index < numInnerClasses * 4; index++) {
+                dos.writeShort(innerClasses.at(index));
             }
         }
 
+        if (bsmCount != 0) {
+            ConstantPool cpool = klass.getConstants();
+            writeIndex(_bootstrapMethodsIndex);
+            int attrLen = 2; // num_bootstrap_methods
+            for (int index = 0; index < bsmCount; index++) {
+                int bsmArgsCount = cpool.getBootstrapMethodArgsCount(index);
+                attrLen += 2 // bootstrap_method_ref
+                        + 2 // num_bootstrap_arguments
+                        + bsmArgsCount * 2;
+            }
+            dos.writeInt(attrLen);
+            dos.writeShort(bsmCount);
+            for (int index = 0; index < bsmCount; index++) {
+                short[] value = cpool.getBootstrapMethodAt(index);
+                for (short item : value) {
+                    dos.writeShort(item);
+                }
+            }
+        }
     }
 
     public void write() throws IOException {

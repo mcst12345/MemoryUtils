@@ -80,53 +80,65 @@ public class ByteCodeRewriter {
         int bytecode;
         int hotspotcode;
         int len;
-        for(int bci = 0; bci < this.code.length; bci += len) {
-            hotspotcode = Bytecodes.codeAt(this.method, bci);
-            bytecode = Bytecodes.javaCode(hotspotcode);
-            int code_from_buffer = 255 & this.code[bci];
 
-            if(!(code_from_buffer == hotspotcode || code_from_buffer == 202)){
+        for (int bci = 0; bci < code.length;) {
+            hotspotcode = Bytecodes.codeAt(method, bci);
+            bytecode = Bytecodes.javaCode(hotspotcode);
+
+            int code_from_buffer = 0xFF & code[bci];
+            if(!(code_from_buffer == hotspotcode
+                    || code_from_buffer == Bytecodes._breakpoint)){
                 throw new IllegalStateException("Unexpected bytecode found in method bytecode buffer!");
             }
 
-            this.code[bci] = (byte)(255 & bytecode);
-            short cpoolIndex;
+            // update the code buffer hotspot specific bytecode with the jvm bytecode
+            code[bci] = (byte) (0xFF & bytecode);
+
+            short cpoolIndex = 0;
             switch (bytecode) {
-                case 18:
+                // bytecodes with ConstantPoolCache index
+                case Bytecodes._getstatic:
+                case Bytecodes._putstatic:
+                case Bytecodes._getfield:
+                case Bytecodes._putfield:
+                case Bytecodes._invokevirtual:
+                case Bytecodes._invokespecial:
+                case Bytecodes._invokestatic:
+                case Bytecodes._invokeinterface: {
+                    cpoolIndex = getConstantPoolIndex(hotspotcode, bci + 1);
+                    writeShort(code, bci + 1, cpoolIndex);
+                    break;
+                }
+
+                case Bytecodes._invokedynamic:
+                    cpoolIndex = getConstantPoolIndex(hotspotcode, bci + 1);
+                    writeShort(code, bci + 1, cpoolIndex);
+                    writeShort(code, bci + 3, (short)0);  // clear out trailing bytes
+                    break;
+
+                case Bytecodes._ldc_w:
                     if (hotspotcode != bytecode) {
-                        cpoolIndex = this.getConstantPoolIndexFromRefMap(hotspotcode, bci + 1);
-                        this.code[bci + 1] = (byte)cpoolIndex;
+                        // fast_aldc_w puts constant in reference map
+                        cpoolIndex = getConstantPoolIndexFromRefMap(hotspotcode, bci + 1);
+                        writeShort(code, bci + 1, cpoolIndex);
                     }
                     break;
-                case 19:
+                case Bytecodes._ldc:
                     if (hotspotcode != bytecode) {
-                        cpoolIndex = this.getConstantPoolIndexFromRefMap(hotspotcode, bci + 1);
-                        writeShort(this.code, bci + 1, cpoolIndex);
+                        // fast_aldc puts constant in reference map
+                        cpoolIndex = getConstantPoolIndexFromRefMap(hotspotcode, bci + 1);
+                        code[bci + 1] = (byte)(cpoolIndex);
                     }
                     break;
-                case 178:
-                case 179:
-                case 180:
-                case 181:
-                case 182:
-                case 183:
-                case 184:
-                case 185:
-                    cpoolIndex = this.getConstantPoolIndex(hotspotcode, bci + 1);
-                    writeShort(this.code, bci + 1, cpoolIndex);
-                    break;
-                case 186:
-                    cpoolIndex = this.getConstantPoolIndex(hotspotcode, bci + 1);
-                    writeShort(this.code, bci + 1, cpoolIndex);
-                    writeShort(this.code, bci + 3, (short)0);
             }
+
 
             len = Bytecodes.lengthFor(bytecode);
             if (len <= 0) {
-                len = Bytecodes.lengthAt(this.method, bci);
+                len = Bytecodes.lengthAt(method, bci);
             }
 
+            bci += len;
         }
-
     }
 }

@@ -1,6 +1,7 @@
 package miku.lib.jvm.hotspot.oops;
 
 import miku.lib.jvm.hotspot.runtime.VM;
+import miku.lib.jvm.hotspot.utilities.U1Array;
 import one.helfy.JVM;
 import one.helfy.Type;
 
@@ -61,6 +62,17 @@ public class Method extends Metadata{
         super(address);
     }
 
+    public Symbol getName(){
+        return getConstants().getSymbolAt(getNameIndex());
+    }
+
+    public boolean hasStackMapTable()              {
+        return getConstMethod().hasStackMapTable();
+    }
+    public U1Array getStackMapData()               {
+        return getConstMethod().getStackMapData();
+    }
+
     private static Symbol objectInitializerName(){
         return objectInitializerName;
     }
@@ -72,6 +84,11 @@ public class Method extends Metadata{
     public ConstMethod getConstMethod(){
         return new ConstMethod(unsafe.getAddress(getAddress() + _constMethod_offset));
     }
+
+    public int getNativeIntArg(int bci) {
+        return getConstMethod().getNativeIntArg(bci);
+    }
+
 
     public short getNameIndex(){
         return getConstMethod().getNameIndex();
@@ -96,6 +113,10 @@ public class Method extends Metadata{
     public Symbol getGenericSignature(){
         long index = getGenericSignatureIndex();
         return index != 0L ? this.getConstants().getSymbolAt(index) : null;
+    }
+
+    public short getNativeShortArg(int bci) {
+        return getConstMethod().getNativeShortArg(bci);
     }
 
     public byte[] getByteCode(){
@@ -152,10 +173,6 @@ public class Method extends Metadata{
 
     public CheckedExceptionElement[] getCheckedExceptions() {
         return this.getConstMethod().getCheckedExceptions();
-    }
-
-    public Symbol getName(){
-        return getConstants().getSymbolAt(getNameIndex());
     }
 
     public boolean isNative() {

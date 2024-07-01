@@ -1,16 +1,27 @@
 package miku.lib.jvm.hotspot.utilities;
 
 import miku.lib.jvm.hotspot.runtime.VMObject;
+import one.helfy.JVM;
 import one.helfy.Type;
 
 public abstract class GenericArray extends VMObject {
+
+    private static final long _length_offset;
+    private static final long _data_offset;
+
+    static {
+        Type type = JVM.type("Array<int>");
+        _length_offset = type.offset("_length");
+        _data_offset = type.offset("_data");
+    }
+
     private static long sizeOfArray;
     private int length;
     private long dataFieldOffset;
 
     protected GenericArray(long address, long dataFieldOffset) {
         super(address);
-        Type type = jvm.type("Array<int>");
+        Type type = JVM.type("Array<int>");
         length = unsafe.getInt(address + type.offset("_length"));
         this.dataFieldOffset = dataFieldOffset;
     }

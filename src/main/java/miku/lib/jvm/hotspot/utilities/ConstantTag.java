@@ -17,6 +17,7 @@ public class ConstantTag {
     private static final int JVM_CONSTANT_NameAndType = 12;
     private static final int JVM_CONSTANT_MethodHandle = 15;
     private static final int JVM_CONSTANT_MethodType = 16;
+    private static final int JVM_CONSTANT_Dynamic = 17;
     private static final int JVM_CONSTANT_InvokeDynamic = 18;
     private static final int JVM_CONSTANT_Invalid = 0;
     private static final int JVM_CONSTANT_UnresolvedClass = 100;
@@ -131,6 +132,9 @@ public class ConstantTag {
     public boolean isSymbol() {
         return this.isUtf8();
     }
+
+    public boolean isDynamicConstant()  { return tag == JVM_CONSTANT_Dynamic; }
+
 
     public BasicType basicType() {
         switch (this.tag) {

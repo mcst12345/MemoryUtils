@@ -15,9 +15,9 @@ public class Klass extends Metadata {
     private static final long _access_flags_offset;
     private static final long _modifier_flags_offset;
     private static final long _java_mirror_offset;
+    private static final long _super_offset;
     private Symbol name;
     private AccessFlags _access_flags;
-    private Klass _super;
     private Oop _java_mirror;
 
     static {
@@ -27,6 +27,7 @@ public class Klass extends Metadata {
         _access_flags_offset = type.offset("_access_flags");
         _modifier_flags_offset = type.offset("_modifier_flags");
         _java_mirror_offset = type.offset("_java_mirror");
+        _super_offset = type.offset("_super");
     }
 
     public Klass(long address) {
@@ -68,15 +69,12 @@ public class Klass extends Metadata {
     }
 
     public Klass getSuper() {
-        if (_super == null) {
-            _super = new Klass(unsafe.getAddress(getAddress() + JVM.type("Klass").offset("_super")));
-        }
-        return _super;
+        long address = unsafe.getAddress(getAddress() + _super_offset);
+        return address == 0 ? null : getKlass(address);
     }
 
     public void setSuper(Klass klass) {
-        this._super = klass;
-        unsafe.putAddress(getAddress() + JVM.type("Klass").offset("_super"), klass.getAddress());
+        unsafe.putAddress(getAddress() + _super_offset, klass.getAddress());
     }
 
     public void setSuper(Class<?> clazz) {
