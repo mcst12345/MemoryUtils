@@ -31,11 +31,8 @@ public class Test {
 
 
     public static void main(String[] args) throws Throwable{
-        //System.out.println(JVM.type("ConstantPoolCacheEntry"));
-        try(FileOutputStream fos = new FileOutputStream("/mnt/Testtt")){
-            ClassWriter cw = new ClassWriter((InstanceKlass) Klass.getKlass(ArrayList.class),fos);
-            cw.write();
-        }
+        one.helfy.Type type = JVM.type("size_t");
+        System.out.println(type);
     }
 
     private static int getAt(int i,int k){

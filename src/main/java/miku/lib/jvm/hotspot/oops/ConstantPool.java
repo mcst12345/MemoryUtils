@@ -99,6 +99,10 @@ public class ConstantPool extends Metadata implements ClassConstants {
         return count;
     }
 
+    public int getNameAndTypeRefIndexAt(int index) {
+        return this.implNameAndTypeRefIndexAt(index, false);
+    }
+
     private int getOperandOffsetAt(U2Array operands, int bsmIndex) {
         return VM.buildIntFromShorts(operands.at(bsmIndex * 2),
                 operands.at(bsmIndex * 2 + 1));
@@ -312,8 +316,30 @@ public class ConstantPool extends Metadata implements ClassConstants {
 
     public int getSignatureRefIndexAt(int index) {
         int[] refIndex = this.getNameAndTypeAt(index);
-        int i = refIndex[1];
-        return i;
+        return refIndex[1];
+    }
+
+    public int getMethodHandleRefKindAt(int i) {
+        return extractLowShortFromInt(this.getIntAt((long)i));
+    }
+
+    public int getMethodTypeIndexAt(int i) {
+        return this.getIntAt(i);
+    }
+
+    public int getMethodHandleIndexAt(int i) {
+        return extractHighShortFromInt(this.getIntAt((long)i));
+    }
+
+    public Field getFieldRefAt(int which) {
+        InstanceKlass klass = this.getFieldOrMethodKlassRefAt(which);
+        if (klass == null) {
+            return null;
+        } else {
+            Symbol name = this.getNameRefAt(which);
+            Symbol sig = this.getSignatureRefAt(which);
+            return klass.findField(name, sig);
+        }
     }
 
     public InstanceKlass getFieldOrMethodKlassRefAt(int which) {
@@ -322,7 +348,7 @@ public class ConstantPool extends Metadata implements ClassConstants {
         return (InstanceKlass)this.getKlassAt(klassIndex);
     }
 
-    /*public Method getMethodRefAt(int which) {
+    public Method getMethodRefAt(int which) {
         InstanceKlass klass = this.getFieldOrMethodKlassRefAt(which);
         if (klass == null) {
             return null;
@@ -331,7 +357,7 @@ public class ConstantPool extends Metadata implements ClassConstants {
             Symbol sig = this.getSignatureRefAt(which);
             return klass.findMethod(name, sig);
         }
-    }*/
+    }
 
 
     public static class CPSlot {

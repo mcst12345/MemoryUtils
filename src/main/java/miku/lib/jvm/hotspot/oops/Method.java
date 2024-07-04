@@ -58,6 +58,10 @@ public class Method extends Metadata{
         classInitializerName = VM.getSymbolTable().probe("<clinit>");
     }
 
+    public short getCodeSize() {
+        return this.getConstMethod().getCodeSize();
+    }
+
     public Method(long address) {
         super(address);
     }
@@ -108,6 +112,18 @@ public class Method extends Metadata{
 
     public ConstantPool getConstants(){
         return getConstMethod().getConstants();
+    }
+
+    public Symbol getSignature() {
+        return this.getConstants().getSymbolAt(this.getSignatureIndex());
+    }
+
+    public boolean isStatic() {
+        return this.getAccessFlags().isStatic();
+    }
+
+    public short getSizeOfParameters() {
+        return this.getConstMethod().getSizeOfParameters();
     }
 
     public Symbol getGenericSignature(){

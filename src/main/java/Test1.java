@@ -6,26 +6,19 @@ import one.helfy.JVM;
 import sun.misc.Unsafe;
 
 import java.lang.management.ManagementFactory;
+import java.util.Arrays;
 
 import static one.helfy.JVM.*;
 
 public class Test1 {
     public static void main(String[] args){
-        InstanceKlass klass = (InstanceKlass) Klass.getKlass(CLASS.class);
-        System.out.println(klass.getNonstaticFieldSize());
-        System.out.println(klass);
-        for(int i = 0;  i < klass.getNonstaticFieldSize(); i++){
-            System.out.println(klass.getFieldName(i));
-            System.out.println(klass.getFieldOffset(i));
-            System.out.println("------------------------");
+        int[] list = new int[177*2];
+        int i = 0;
+        for(;i < 177;i++){
+            list[i] = i;
+            list[177*2-1-i] = i;
         }
-        CLASS test = new CLASS();
-        System.out.println(test.f4);
-        unsafe.putIntVolatile(test,klass.getFieldOffset(3),114514);
-        System.out.println(test.f4);
-        long address = ObjectUtils.location(test);
-        unsafe.putInt(address + klass.getFieldOffset(3),191919);
-        System.out.println(test.f4);
+        System.out.println(Arrays.toString(list));
     }
 
     public static class CLASS {

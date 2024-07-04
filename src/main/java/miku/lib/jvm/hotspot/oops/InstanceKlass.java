@@ -8,6 +8,8 @@ import miku.lib.jvm.hotspot.utilities.MethodArray;
 import miku.lib.jvm.hotspot.utilities.U2Array;
 import one.helfy.JVM;
 import one.helfy.Type;
+import sun.jvm.hotspot.debugger.DebuggerException;
+import sun.jvm.hotspot.utilities.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -211,6 +213,113 @@ public class InstanceKlass extends Klass {
     public Symbol getFieldName(int index) {
         int nameIndex = this.getFields().at(index * FIELD_SLOTS + NAME_INDEX_OFFSET);
         return index < this.getJavaFieldsCount() ? this.getConstants().getSymbolAt(nameIndex) : vmSymbols.symbolAt(nameIndex);
+    }
+
+    public Method findMethod(Symbol name, Symbol sig) {
+        return findMethod(this.getMethods(), name, sig);
+    }
+
+    private static Method findMethod(MethodArray methods, Symbol name,Symbol signature) {
+        int len = methods.length();
+        int l = 0;
+        int h = len - 1;
+
+        int mid;
+        while(l <= h) {
+            mid = l + h >> 1;
+            Method m = methods.at(mid);
+            int res = m.getName().fastCompare(name);
+            if (res == 0) {
+                if (m.getSignature().equals(signature)) {
+                    return m;
+                }
+
+                int i;
+                Method m1;
+                for(i = mid - 1; i >= l; --i) {
+                    m1 = methods.at(i);
+                    if (!m1.getName().equals(name)) {
+                        break;
+                    }
+
+                    if (m1.getSignature().equals(signature)) {
+                        return m1;
+                    }
+                }
+
+                for(i = mid + 1; i <= h; ++i) {
+                    m1 = methods.at(i);
+                    if (!m1.getName().equals(name)) {
+                        break;
+                    }
+
+                    if (m1.getSignature().equals(signature)) {
+                        return m1;
+                    }
+                }
+
+                return null;
+            }
+
+            if (res < 0) {
+                l = mid + 1;
+            } else {
+                h = mid - 1;
+            }
+        }
+
+        return null;
+    }
+
+    public Field findInterfaceField(Symbol name, Symbol sig) {
+        KlassArray interfaces = this.getLocalInterfaces();
+        int n = interfaces.length();
+
+        for(int i = 0; i < n; ++i) {
+            InstanceKlass intf1 = (InstanceKlass)interfaces.getAt(i);
+
+            Field f = intf1.findLocalField(name, sig);
+            if (f != null) {
+
+                return f;
+            }
+
+            f = intf1.findInterfaceField(name, sig);
+            if (f != null) {
+                return f;
+            }
+        }
+
+        return null;
+    }
+
+    public Field findLocalField(Symbol name, Symbol sig) {
+        int length = this.getJavaFieldsCount();
+
+        for(int i = 0; i < length; ++i) {
+            Symbol f_name = this.getFieldName(i);
+            Symbol f_sig = this.getFieldSignature(i);
+            if (name.equals(f_name) && sig.equals(f_sig)) {
+                return this.newField(i);
+            }
+        }
+
+        return null;
+    }
+
+    public Field findField(Symbol name, Symbol sig) {
+        Field f = this.findLocalField(name, sig);
+        if (f != null) {
+            return f;
+        } else {
+            f = this.findInterfaceField(name, sig);
+            if (f != null) {
+                return f;
+            } else {
+                InstanceKlass supr = (InstanceKlass)this.getSuper();
+                return supr != null ? supr.findField(name, sig) : null;
+            }
+        }
     }
 
     public ConstantPool getConstants(){

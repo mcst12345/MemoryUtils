@@ -45,6 +45,11 @@ public class Symbol extends VMObject {
         }
     }
 
+    public int fastCompare(Symbol other) {
+        //return (int)this.addr.minus(other.addr);
+        return (int) (other.getAddress() == 0 ? this.getAddress() : this.getAddress() - other.getAddress());
+    }
+
     private static String readModifiedUTF8(byte[] buf) throws IOException {
         int len = buf.length;
         byte[] tmp = new byte[len + 2];

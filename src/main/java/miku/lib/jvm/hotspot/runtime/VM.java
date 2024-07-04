@@ -24,6 +24,7 @@ public class VM {
     public static final int bytesPerWord;
     public static final int heapWordSize;
     public static final int oopSize;
+    public static final boolean isLP64 = InternalUtils.getUnsafe().addressSize() == 8;
 
     private static final Unsafe unsafe = InternalUtils.getUnsafe();
 
