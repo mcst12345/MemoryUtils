@@ -5,15 +5,8 @@ import me.xdark.shell.JVMUtil;
 import me.xdark.shell.NativeLibrary;
 import miku.lib.HSDB.HSDB;
 import miku.lib.utils.InternalUtils;
-import miku.lib.jvm.hotspot.debugger.windbg.DLL;
-import net.fornwall.jelf.ElfFile;
-import net.fornwall.jelf.ElfSymbol;
 import sun.misc.Unsafe;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 
 public final class JVM {
@@ -36,12 +29,19 @@ public final class JVM {
     private static final Map<String, Number> constants = new LinkedHashMap<>();
     private static String vt;
 
-    private static final boolean useGCC32ABI = (HSDB.getSymbol("__vt_10JavaThread") == 0L);
+    private static final boolean useGCC32ABI;
+
+    public static final boolean WINDOWS = System.getProperty("os.name").startsWith("Windows");
 
     static {
         readVmTypes(readVmStructs());
         readVmIntConstants();
         readVmLongConstants();
+        if(!WINDOWS){
+            useGCC32ABI = (HSDB.getSymbol("__vt_10JavaThread") == 0L);
+        } else {
+            useGCC32ABI = false;
+        }
     }
 
     private JVM() {
@@ -55,25 +55,6 @@ public final class JVM {
             jvm = new JVM();
         }
         return jvm;
-    }
-
-    public static long SymbolOffset(String name) {
-        File f = JVMUtil.LIBJVM.toFile();
-        if (linux) {
-            try {
-                ElfFile elf = ElfFile.from(f);
-                ElfSymbol s = elf.getELFSymbol(name);
-                if (s == null) {
-                    throw new NoSuchElementException();
-                }
-                return s.offset;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            return DLL.lookupSymbolOffset(name);
-        }
-
     }
 
     public static String vtblSymbolForType(Type type) {
@@ -93,7 +74,7 @@ public final class JVM {
             } else {
                 if(linux){
                     long raw = HSDB.getSymbol(type);
-                    return useGCC32ABI && vtblSymbolForType(type).startsWith("_ZTV") ? raw + 2L * unsafe.addressSize() : raw;
+                    return useGCC32ABI ? raw + 2L * unsafe.addressSize() : raw;
                 }
                 else {
                     String vtblSymbol = vtblSymbolForType(type);
@@ -131,7 +112,6 @@ public final class JVM {
             throw new InternalError(baseType + " does not appear to be polymorphic");
         } else {
             long loc1 = unsafe.getAddress(addr);
-
             long loc2 = 0;
             long loc3 = 0;
             long offset2 = baseType.size;
@@ -151,11 +131,8 @@ public final class JVM {
 
             while (iter.hasNext()) {
                 Type type = iter.next();
-
                 Type superClass;
-                for (superClass = type; !Objects.equals(superClass, baseType) && superClass != null; superClass = type(superClass.superName)) {
-                }
-
+                for (superClass = type; !Objects.equals(superClass, baseType) && superClass != null; superClass = type(superClass.superName)) {}
                 if (superClass != null) {
                     long vtblAddr = vtblForType(type);
                     if (vtblAddr != 0) {
@@ -269,37 +246,6 @@ public final class JVM {
         }
     }
 
-    private static long libBase = 0;
-
-    public static long getLibBase() {
-        if(libBase != 0){
-            return libBase;
-        }
-        if (linux) {
-            try {
-                FileReader fin = new FileReader("/proc/self/maps");
-                BufferedReader reader = new BufferedReader(fin);
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    String[] splits = line.trim().split(" ");
-                    if (line.endsWith("libjvm.so")) {
-                        String[] addr_range = splits[0].split("-");
-                        libBase = Long.parseLong(addr_range[0], 16);
-                        return libBase;
-                    }
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            long offset = SymbolOffset("??_7InstanceKlass@@6B@");
-            long vtbl = unsafe.getAddress(intConstant("oopSize") == 8 ? unsafe.getLong(Object.class, (long) getInt(type("java_lang_Class").global("_klass_offset"))) : unsafe.getInt(Object.class, getInt(type("java_lang_Class").global("_klass_offset"))) & 0xffffffffL);
-            libBase = vtbl - offset;
-            return libBase;
-        }
-        throw new JVMException("Cannot find libbase!");
-    }
-
     private static void readVmIntConstants() {
         long entry = getSymbol("gHotSpotVMIntConstants");
         long nameOffset = getSymbol("gHotSpotVMIntConstantEntryNameOffset");
@@ -392,7 +338,9 @@ public final class JVM {
     public static long getSymbol(String name) {
         long address = JVM.findEntry(name);
         if (address == 0) {
-            address = getLibBase() + SymbolOffset(name);
+            if(!WINDOWS){
+                address = HSDB.getSymbol(name);
+            }
             if (address == 0) {
                 throw new NoSuchElementException("No such symbol: " + name);
             }
@@ -405,9 +353,8 @@ public final class JVM {
     }
 
     public static Type type(String name) {
-        Type type = types.get(name);
         //throw new NoSuchElementException("No such type: " + name);
-        return type;
+        return types.get(name);
     }
 
     public static Number constant(String name) {
@@ -430,7 +377,6 @@ public final class JVM {
      * This class was tested under permanent System.gc calls and doesn't seem to crash JVM due to object relocations
      */
     public static class Ptr2Obj {
-        private static final JVM jvm = one.helfy.JVM.getInstance();
         private static final long _narrow_oop_base = getAddress(type("Universe").global("_narrow_oop._base"));
         private static final int _narrow_oop_shift = getInt(type("Universe").global("_narrow_oop._shift"));
         private static final long objFieldOffset;

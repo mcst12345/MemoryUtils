@@ -34,6 +34,8 @@ public class Method extends Metadata{
     private static final long _code_offset;
     private static final long _from_interpreted_entry_offset;
 
+    private static final long SIZE;
+
     static {
         Type type = JVM.type("Method");
         _constMethod_offset = type.offset("_constMethod");
@@ -48,6 +50,7 @@ public class Method extends Metadata{
         _from_compiled_entry_offset = type.offset("_from_compiled_entry");
         _code_offset = type.offset("_code");
         _from_interpreted_entry_offset = type.offset("_from_interpreted_entry");
+        SIZE = type.size;
     }
 
     private static final Symbol objectInitializerName;
@@ -219,5 +222,41 @@ public class Method extends Metadata{
         }
 
         throw new IllegalStateException("Should not reach here");
+    }
+
+    public long getI2IEntry(){
+        return unsafe.getAddress(getAddress() + _i2i_entry_offset);
+    }
+
+
+    public void setI2IEntry(long i2i){
+        unsafe.putAddress(getAddress() + _i2i_entry_offset,i2i);
+    }
+
+    public long getFromCompiledEntry(){
+        return unsafe.getAddress(getAddress() + _from_compiled_entry_offset);
+    }
+
+
+    public void setFromCompiledEntry(long compiled){
+        unsafe.putAddress(getAddress() + _from_compiled_entry_offset,compiled);
+    }
+
+    public long getFromInterpretedEntry(){
+        return unsafe.getAddress(getAddress() + _from_interpreted_entry_offset);
+    }
+
+
+    public void setFromInterpretedEntry(long interpreted){
+        unsafe.putAddress(getAddress() + _from_interpreted_entry_offset,interpreted);
+    }
+
+    public long getCode(){
+        return unsafe.getAddress(getAddress() + SIZE);
+    }
+
+
+    public void setCode(long neo){
+        unsafe.putAddress(getAddress() + SIZE,neo);
     }
 }

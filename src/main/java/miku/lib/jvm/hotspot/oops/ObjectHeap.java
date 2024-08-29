@@ -46,7 +46,7 @@ public class ObjectHeap {
         longArrayKlassAddress = universeType.global("_longArrayKlassObj");
         singleArrayKlassAddress = universeType.global("_singleArrayKlassObj");
         doubleArrayKlassAddress = universeType.global("_doubleArrayKlassObj");
-
-
     }
+
+    private class LiveRegionsCollector{}
 }

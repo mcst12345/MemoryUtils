@@ -4,6 +4,7 @@ import miku.lib.utils.AddressCalculator;
 import miku.lib.utils.InternalUtils;
 import one.helfy.JVM;
 import one.helfy.Type;
+import sun.misc.Unsafe;
 
 //MemRegion @ 16
 //  HeapWord* _start @ 0
@@ -23,6 +24,8 @@ public class MemRegion implements Cloneable{
     private long byteSize;
     private long start;
 
+    private static final Unsafe unsafe = InternalUtils.getUnsafe();
+
     public long start() {
         return this.start;
     }
@@ -35,21 +38,21 @@ public class MemRegion implements Cloneable{
     }
 
     public MemRegion(long memRegionAddr) {
-        this(InternalUtils.getUnsafe().getAddress(memRegionAddr + _start_offset), InternalUtils.getUnsafe().getInt(memRegionAddr + _word_size_offset));
+        this(InternalUtils.getUnsafe().getAddress(memRegionAddr + _start_offset), unsafe
+        .getLong(memRegionAddr + _word_size_offset),true);
     }
 
-    public MemRegion(long start, int wordSize) {
+    public MemRegion(long start, long arg2,boolean isWordSize) {
         this.setStart(start);
-        this.setWordSize(wordSize);
-    }
-
-    public MemRegion(long start, long limit) {
-        this.setStart(start);
-        this.byteSize = AddressCalculator.minus(limit,start);
+        if(!isWordSize){
+            this.byteSize = AddressCalculator.minus(arg2, start);
+        } else {
+            this.setWordSize(arg2);
+        }
     }
 
     public Object clone() {
-        return new MemRegion(this.start, this.byteSize);
+        return new MemRegion(this.start, this.byteSize,true);
     }
 
     public MemRegion copy() {

@@ -19,6 +19,11 @@ public class Oop extends VMObject {
         headerSize = type.size;
     }
 
+    public long getObjectSize(){
+        Klass k = getKlass();
+        return ((InstanceKlass)k).getObjectSize(this);
+    }
+
     public static int getHeaderSize() {
         return headerSize;
     }

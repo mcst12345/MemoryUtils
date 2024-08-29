@@ -464,4 +464,8 @@ public class InstanceKlass extends Klass {
     public KlassArray getTransitiveInterfaces(){
         return new KlassArray(unsafe.getAddress(getAddress() + _transitive_interfaces_offset));
     }
+
+    public long getObjectSize(Oop oop) {
+        return getSizeHelper() * unsafe.addressSize();
+    }
 }
