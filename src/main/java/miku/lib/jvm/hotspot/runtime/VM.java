@@ -8,6 +8,8 @@ import one.helfy.JVM;
 import one.helfy.Type;
 import sun.misc.Unsafe;
 
+import java.util.NoSuchElementException;
+
 public class VM {
 
     public static SymbolTable getSymbolTable(){
@@ -25,6 +27,8 @@ public class VM {
     public static final int heapWordSize;
     public static final int oopSize;
     public static final boolean isLP64 = InternalUtils.getUnsafe().addressSize() == 8;
+    public static final boolean usingServerCompiler;
+    public static final boolean usingClientCompiler;
 
     private static final Unsafe unsafe = InternalUtils.getUnsafe();
 
@@ -103,6 +107,26 @@ public class VM {
         objectAlignmentInBytes = Flags.getByte("ObjectAlignmentInBytes");
         minObjAlignmentInBytes = objectAlignmentInBytes;
 
+        boolean tmp1 = false;
+        boolean tmp2 = false;
+
+        Type type = JVM.type("Method");
+        try {
+            type.field("_from_compiled_entry");
+            if(JVM.type("Matcher") != null){
+                tmp1 = true;
+            } else {
+                tmp2 = true;
+            }
+        } catch (NoSuchElementException ignored){
+        }
+
+        usingServerCompiler = tmp1;
+        usingClientCompiler = tmp2;
+    }
+
+    public static boolean isCore(){
+        return !usingClientCompiler && !usingServerCompiler;
     }
 
     public static long alignUp(long size, long alignment) {

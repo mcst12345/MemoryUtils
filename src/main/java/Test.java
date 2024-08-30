@@ -3,7 +3,7 @@ import one.helfy.JVM;
 
 public class Test {
     public static void main(String[] args){
-        System.out.println(JVM.type("AdapterHandlerEntry"));
+        System.out.println(JVM.type("CodeBlob"));
     }
 
     public static void m1(){
