@@ -251,7 +251,7 @@ public class Method extends Metadata{
         unsafe.putAddress(getAddress() + _from_interpreted_entry_offset,interpreted);
     }
 
-    public long getCode(){
+    public long getCODE(){
         return unsafe.getAddress(getAddress() + SIZE);
     }
 
@@ -263,7 +263,27 @@ public class Method extends Metadata{
         unsafe.putAddress(getAddress()+_adapter_offset,address);
     }
 
-    public void setCode(long neo){
+    public void setCODE(long neo){
         unsafe.putAddress(getAddress() + SIZE,neo);
+    }
+
+    public void setCode(long neo){
+        unsafe.putAddress(getAddress() + _code_offset,neo);
+    }
+
+    public long getCode(){
+        return unsafe.getAddress(getAddress() + _code_offset);
+    }
+
+    public MethodData getMethodData(){
+        return new MethodData(unsafe.getAddress(getAddress() + _method_data_offset));
+    }
+
+    public void setMethodData(long address){
+        unsafe.putAddress(getAddress() + _method_data_offset,address);
+    }
+
+    public void setMethodCounters(long address){
+        unsafe.putAddress(getAddress() + _method_counters_offset,address);
     }
 }

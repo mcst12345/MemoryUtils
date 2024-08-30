@@ -112,6 +112,10 @@ public class ConstantPool extends Metadata implements ClassConstants {
         return (InstanceKlass) Klass.getKlass(unsafe.getAddress(getAddress() + poolHolder_offset));
     }
 
+    public void setPoolHolder(InstanceKlass holder){
+        unsafe.putAddress(getAddress() + poolHolder_offset,holder.getAddress());
+    }
+
     public int getLength(){
         return unsafe.getInt(getAddress() + length_offset);
     }
