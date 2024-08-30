@@ -5,15 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e919c91c-a251-4b69-9445-f1ec07c31c1a" name="更改" comment=".">
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/CodeBlob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/CompressedWriteStream.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/NMethod.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/compiler/OopMap.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/compiler/OopMapSet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/GenCollectedHeap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libs/!!!!!!!NPOP-Plus-2.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Oop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Oop.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -308,7 +303,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724981698868</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary=".">
+      <option name="closed" value="true" />
+      <created>1724984589996</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1724984589996</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

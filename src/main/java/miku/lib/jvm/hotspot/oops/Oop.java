@@ -62,9 +62,13 @@ public class Oop extends VMObject {
     }
 
     public void setKlass(Klass k) {
+        if(object == null){
+            return;
+        }
         klass = k;
-        //unsafe.ensureClassInitialized(k.getMirror());
+        unsafe.monitorEnter(object);
         unsafe.putIntVolatile(object, 8L, JVM.Ptr2Obj.narrowKlassAddress(k.getAddress()));
+        unsafe.monitorExit(object);
     }
 
     public Object getObject() {
