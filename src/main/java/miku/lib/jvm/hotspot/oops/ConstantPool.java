@@ -154,7 +154,8 @@ public class ConstantPool extends Metadata implements ClassConstants {
     }
 
     public Symbol getSymbolAt(long index) {
-        return new Symbol(this.getAddressAtRaw(index));
+        long address = this.getAddressAtRaw(index);
+        return address == 0 ? null : new Symbol(address);
     }
 
     public int getIntAt(long index) {

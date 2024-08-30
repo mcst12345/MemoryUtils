@@ -38,7 +38,7 @@ public class Symbol extends VMObject {
         super(unsafe.allocateMemory(jstring.getBytes(StandardCharsets.UTF_8).length + jvm.type("Symbol").offset("_body")));
         byte[] data = jstring.getBytes(StandardCharsets.UTF_8);
         _length = (short) data.length;
-        _body = unsafe.getInt(getAddress() + _body_offset);
+        _body = getAddress() + _body_offset;
         unsafe.putShort(getAddress(), (short) _length);
         for (int i = 0; i < _length; i++) {
             unsafe.putByte(_body + i, data[i]);

@@ -255,6 +255,13 @@ public class Method extends Metadata{
         return unsafe.getAddress(getAddress() + SIZE);
     }
 
+    public long getAdapterHandlerEntry(){
+        return unsafe.getAddress(getAddress()+_adapter_offset);
+    }
+
+    public void setAdapterHandlerEntry(long address){
+        unsafe.putAddress(getAddress()+_adapter_offset,address);
+    }
 
     public void setCode(long neo){
         unsafe.putAddress(getAddress() + SIZE,neo);

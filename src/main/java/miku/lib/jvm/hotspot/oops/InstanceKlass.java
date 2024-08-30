@@ -341,7 +341,6 @@ public class InstanceKlass extends Klass {
     }
 
     public Symbol getSourceFileName() {
-        System.out.println(unsafe.getInt(getAddress() + _source_file_name_index_offset));
         return this.getConstants().getSymbolAt(unsafe.getShort(getAddress() + _source_file_name_index_offset));
     }
 
