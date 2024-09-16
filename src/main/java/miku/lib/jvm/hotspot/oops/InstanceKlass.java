@@ -8,11 +8,16 @@ import miku.lib.jvm.hotspot.utilities.MethodArray;
 import miku.lib.jvm.hotspot.utilities.U2Array;
 import one.helfy.JVM;
 import one.helfy.Type;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Opcodes;
 import sun.jvm.hotspot.debugger.DebuggerException;
 import sun.jvm.hotspot.utilities.Assert;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.*;
 
 //InstanceKlass extends Klass @ 440
 //  ClassLoaderData* _class_loader_data @ 144
@@ -146,14 +151,11 @@ public class InstanceKlass extends Klass {
 
     private ClassLoaderData _class_loader_data;
     private U2Array _fields;
-    private short _java_fields_count;
 
     public InstanceKlass(long address) {
         super(address);
-        Type type = JVM.type("InstanceKlass");
         _class_loader_data = new ClassLoaderData(unsafe.getAddress(address + _class_loader_data_offset));
         _fields = new U2Array(unsafe.getAddress(address + _fields_offset));
-        _java_fields_count = unsafe.getShort(address + _java_fields_count_offset);
     }
 
     public InstanceKlass(Class<?> clazz) {
@@ -161,7 +163,11 @@ public class InstanceKlass extends Klass {
     }
 
     public short getJavaFieldsCount() {
-        return _java_fields_count;
+        return unsafe.getShort(getAddress() + _java_fields_count_offset);
+    }
+
+    public void  setJavaFieldsCount(short neo) {
+        unsafe.putShort(getAddress() + _java_fields_count_offset,neo);
     }
 
     public ClassLoaderData getClassLoaderData() {
@@ -171,6 +177,12 @@ public class InstanceKlass extends Klass {
     public U2Array getFields() {
         return _fields;
     }
+
+    public void setFields(U2Array neo){
+        this._fields = neo;
+        unsafe.putAddress(getAddress() + _fields_offset,neo.getAddress());
+    }
+
     public U2Array getInnerClasses(){
         return new U2Array(unsafe.getAddress(getAddress() + _inner_classes_offset));
     }
@@ -466,5 +478,111 @@ public class InstanceKlass extends Klass {
 
     public long getObjectSize(Oop oop) {
         return getSizeHelper() * unsafe.addressSize();
+    }
+
+    public void redefineClass(byte[] clazz_bytes){
+        ClassReader cr = new ClassReader(clazz_bytes);
+        final String[] name = new String[1];
+        ClassVisitor cv = new ClassVisitor(Opcodes.ASM5) {
+            @Override
+            public void visit(int i, int i1, String s, String s1, String s2, String[] strings) {
+                name[0] = s;
+                super.visit(i, i1, s, s1, s2, strings);
+            }
+        };
+        cr.accept(cv,0);
+        if(!name[0].equals(this.getName())){
+            throw new ClassFormatError("Class name not the same!");
+        }
+
+        ClassLoader cl = (ClassLoader) getClassLoaderData().getClassLoader().getObject();
+        ClassLoader new_cl = new ClassLoader() {
+            @Override
+            public Class<?> loadClass(String name) throws ClassNotFoundException {
+                return cl.loadClass(name);
+            }
+
+            @Override
+            public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+                return cl.loadClass(name, resolve);
+            }
+
+            @Override
+            public Class<?> findClass(String name) throws ClassNotFoundException {
+                return cl.findClass(name);
+            }
+
+            @Override
+            public Package[] getPackages() {
+                return cl.getPackages();
+            }
+
+            @Override
+            public Package getPackage(String name) {
+                return cl.getPackage(name);
+            }
+
+            @Override
+            public InputStream getResourceAsStream(String name) {
+                return cl.getResourceAsStream(name);
+            }
+
+            @Override
+            public Enumeration<URL> findResources(String name) throws IOException {
+                return cl.findResources(name);
+            }
+
+            @Override
+            public URL findResource(String name) {
+                return cl.findResource(name);
+            }
+
+            @Override
+            public Enumeration<URL> getResources(String name) throws IOException {
+                return cl.getResources(name);
+            }
+        };
+        Class<?> tmp = unsafe.defineClass(name[0].replace('/','.'),clazz_bytes,0,clazz_bytes.length,new_cl,((Class<?>)getMirror().getObject()).getProtectionDomain());
+        unsafe.ensureClassInitialized(tmp);
+        InstanceKlass neo = (InstanceKlass) Klass.getKlass(tmp);
+        Class<?> old = (Class<?>) getMirror().getObject();
+        Map<String,Long> pointers = new HashMap<>();
+        InstanceKlass oldK = (InstanceKlass) Klass.getKlass(old);
+        MethodArray methods = oldK.getMethods();
+        for(int i = 0 ; i < methods.length();i++){
+            miku.lib.jvm.hotspot.oops.Method method = methods.at(i);
+            if(method.getAccessFlags().isNative()){
+                pointers.put(method.getName().toString(),method.getCODE());
+            }
+        }
+        neo.setClassLoaderData(oldK.getClassLoaderData());
+        methods = neo.getMethods();
+        for(int i = 0; i < methods.length(); i++){
+            miku.lib.jvm.hotspot.oops.Method m = methods.at(i);
+            String m_name = m.getName().toString();
+            if(pointers.containsKey(m_name)){
+                m.setCODE(pointers.get(m_name));
+            }
+            m.getConstMethod().getConstants().setPoolHolder(oldK);
+        }
+        neo.getConstants().setPoolHolder(oldK);
+        oldK.setMethods(neo.getMethods());
+        oldK.setConstants(neo.getConstants());
+        oldK.setFields(neo.getFields());
+        oldK.setJavaFieldsCount(neo.getJavaFieldsCount());
+    }
+
+    public void setClassLoaderData(ClassLoaderData classLoaderData) {
+        this._class_loader_data = classLoaderData;
+        unsafe.putAddress(getAddress() + _class_loader_data_offset,classLoaderData.getAddress());
+    }
+
+    public void setConstants(ConstantPool cp){
+        unsafe.putAddress(getAddress() + _constants_offset,cp.getAddress());
+    }
+
+
+    public void setMethods(MethodArray methods){
+        unsafe.putAddress(getAddress() + _methods_offset,methods.getAddress());
     }
 }

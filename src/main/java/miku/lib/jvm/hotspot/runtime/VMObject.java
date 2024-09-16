@@ -1,13 +1,10 @@
 package miku.lib.jvm.hotspot.runtime;
 
 import miku.lib.utils.AddressCalculator;
-import miku.lib.utils.InternalUtils;
-import one.helfy.JVM;
-import sun.misc.Unsafe;
+import miku.lib.utils.memory.MemoryHelper;
 
 public abstract class VMObject {
-    public static final Unsafe unsafe = InternalUtils.getUnsafe();
-    public static final JVM jvm = JVM.getInstance();
+    public static final MemoryHelper unsafe = MemoryHelper.getInstance();
     private final long address;
 
     public VMObject(long address) {

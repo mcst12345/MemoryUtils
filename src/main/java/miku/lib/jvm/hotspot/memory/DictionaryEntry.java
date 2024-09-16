@@ -5,7 +5,7 @@ import miku.lib.jvm.hotspot.oops.Klass;
 import miku.lib.jvm.hotspot.oops.Metadata;
 import miku.lib.jvm.hotspot.oops.Oop;
 import miku.lib.jvm.hotspot.utilities.HashtableEntry;
-import one.helfy.Type;
+import one.helfy.JVM;
 
 public class DictionaryEntry extends HashtableEntry {
     public DictionaryEntry(long address) {
@@ -24,6 +24,6 @@ public class DictionaryEntry extends HashtableEntry {
     }
 
     public ClassLoaderData loaderData() {
-        return new ClassLoaderData(getAddress() + jvm.type("DictionaryEntry").offset("_loader_data"));
+        return new ClassLoaderData(getAddress() + JVM.type("DictionaryEntry").offset("_loader_data"));
     }
 }

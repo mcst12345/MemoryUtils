@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class VirtualBaseConstructor<T> {
     public static final VirtualBaseConstructor<?> INSTANCE = new VirtualBaseConstructor<>();
     private static final HashMap<String, Class<? extends VMObject>> map = new HashMap<>();
-    private static final Type baseType = JVM.getInstance().type("Metadata");
+    private static final Type baseType = JVM.type("Metadata");
 
     static {
         INSTANCE.addMapping("Metadata", Metadata.class);

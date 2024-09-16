@@ -26,7 +26,6 @@ public class ConstantPoolCacheEntry {
     private static long flags_offset;
 
     static {
-        JVM jvm = JVM.getInstance();
         Type type = JVM.type("ConstantPoolCacheEntry");
         size = type.size;
         f1_offset = type.offset("_f1");

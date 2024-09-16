@@ -35,7 +35,7 @@ public class Symbol extends VMObject {
     }
 
     public Symbol(String jstring) {
-        super(unsafe.allocateMemory(jstring.getBytes(StandardCharsets.UTF_8).length + jvm.type("Symbol").offset("_body")));
+        super(unsafe.allocateMemory(jstring.getBytes(StandardCharsets.UTF_8).length + JVM.type("Symbol").offset("_body")));
         byte[] data = jstring.getBytes(StandardCharsets.UTF_8);
         _length = (short) data.length;
         _body = getAddress() + _body_offset;

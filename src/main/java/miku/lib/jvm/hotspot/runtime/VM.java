@@ -16,7 +16,6 @@ public class VM {
         return SymbolTable.getTheTable();
     }
 
-    private static final JVM jvm = JVM.getInstance();
     public static final int JIntSize = JVM.type("jint").size;
     public static final int objectAlignmentInBytes;
     public static final int minObjAlignmentInBytes;

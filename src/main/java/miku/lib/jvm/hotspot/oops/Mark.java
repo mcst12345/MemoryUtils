@@ -3,6 +3,7 @@ package miku.lib.jvm.hotspot.oops;
 import miku.lib.jvm.hotspot.runtime.ObjectMonitor;
 import miku.lib.jvm.hotspot.runtime.VMObject;
 import miku.lib.jvm.hotspot.utilities.Bits;
+import one.helfy.JVM;
 
 public class Mark extends VMObject {
     private static final long ageBits;
@@ -38,37 +39,37 @@ public class Mark extends VMObject {
     private static final long sizeShift;
 
     static {
-        ageBits = jvm.longConstant("markOopDesc::age_bits");
-        lockBits = jvm.longConstant("markOopDesc::lock_bits");
-        biasedLockBits = jvm.longConstant("markOopDesc::biased_lock_bits");
-        maxHashBits = jvm.longConstant("markOopDesc::max_hash_bits");
-        hashBits = jvm.longConstant("markOopDesc::hash_bits");
-        lockShift = jvm.longConstant("markOopDesc::lock_shift");
-        biasedLockShift = jvm.longConstant("markOopDesc::biased_lock_shift");
-        ageShift = jvm.longConstant("markOopDesc::age_shift");
-        hashShift = jvm.longConstant("markOopDesc::hash_shift");
-        lockMask = jvm.longConstant("markOopDesc::lock_mask");
-        lockMaskInPlace = jvm.longConstant("markOopDesc::lock_mask_in_place");
-        biasedLockMask = jvm.longConstant("markOopDesc::biased_lock_mask");
-        biasedLockMaskInPlace = jvm.longConstant("markOopDesc::biased_lock_mask_in_place");
-        biasedLockBitInPlace = jvm.longConstant("markOopDesc::biased_lock_bit_in_place");
-        ageMask = jvm.longConstant("markOopDesc::age_mask");
-        ageMaskInPlace = jvm.longConstant("markOopDesc::age_mask_in_place");
-        hashMask = jvm.longConstant("markOopDesc::hash_mask");
-        hashMaskInPlace = jvm.longConstant("markOopDesc::hash_mask_in_place");
-        biasedLockAlignment = jvm.longConstant("markOopDesc::biased_lock_alignment");
-        lockedValue = jvm.longConstant("markOopDesc::locked_value");
-        unlockedValue = jvm.longConstant("markOopDesc::unlocked_value");
-        monitorValue = jvm.longConstant("markOopDesc::monitor_value");
-        markedValue = jvm.longConstant("markOopDesc::marked_value");
-        biasedLockPattern = jvm.longConstant("markOopDesc::biased_lock_pattern");
-        noHash = jvm.longConstant("markOopDesc::no_hash");
-        noHashInPlace = jvm.longConstant("markOopDesc::no_hash_in_place");
-        noLockInPlace = jvm.longConstant("markOopDesc::no_lock_in_place");
-        maxAge = jvm.longConstant("markOopDesc::max_age");
-        cmsShift = jvm.longConstant("markOopDesc::cms_shift");
-        cmsMask = jvm.longConstant("markOopDesc::cms_mask");
-        sizeShift = jvm.longConstant("markOopDesc::size_shift");
+        ageBits = JVM.longConstant("markOopDesc::age_bits");
+        lockBits = JVM.longConstant("markOopDesc::lock_bits");
+        biasedLockBits = JVM.longConstant("markOopDesc::biased_lock_bits");
+        maxHashBits = JVM.longConstant("markOopDesc::max_hash_bits");
+        hashBits = JVM.longConstant("markOopDesc::hash_bits");
+        lockShift = JVM.longConstant("markOopDesc::lock_shift");
+        biasedLockShift = JVM.longConstant("markOopDesc::biased_lock_shift");
+        ageShift = JVM.longConstant("markOopDesc::age_shift");
+        hashShift = JVM.longConstant("markOopDesc::hash_shift");
+        lockMask = JVM.longConstant("markOopDesc::lock_mask");
+        lockMaskInPlace = JVM.longConstant("markOopDesc::lock_mask_in_place");
+        biasedLockMask = JVM.longConstant("markOopDesc::biased_lock_mask");
+        biasedLockMaskInPlace = JVM.longConstant("markOopDesc::biased_lock_mask_in_place");
+        biasedLockBitInPlace = JVM.longConstant("markOopDesc::biased_lock_bit_in_place");
+        ageMask = JVM.longConstant("markOopDesc::age_mask");
+        ageMaskInPlace = JVM.longConstant("markOopDesc::age_mask_in_place");
+        hashMask = JVM.longConstant("markOopDesc::hash_mask");
+        hashMaskInPlace = JVM.longConstant("markOopDesc::hash_mask_in_place");
+        biasedLockAlignment = JVM.longConstant("markOopDesc::biased_lock_alignment");
+        lockedValue = JVM.longConstant("markOopDesc::locked_value");
+        unlockedValue = JVM.longConstant("markOopDesc::unlocked_value");
+        monitorValue = JVM.longConstant("markOopDesc::monitor_value");
+        markedValue = JVM.longConstant("markOopDesc::marked_value");
+        biasedLockPattern = JVM.longConstant("markOopDesc::biased_lock_pattern");
+        noHash = JVM.longConstant("markOopDesc::no_hash");
+        noHashInPlace = JVM.longConstant("markOopDesc::no_hash_in_place");
+        noLockInPlace = JVM.longConstant("markOopDesc::no_lock_in_place");
+        maxAge = JVM.longConstant("markOopDesc::max_age");
+        cmsShift = JVM.longConstant("markOopDesc::cms_shift");
+        cmsMask = JVM.longConstant("markOopDesc::cms_mask");
+        sizeShift = JVM.longConstant("markOopDesc::size_shift");
     }
 
     public Mark(long address) {
@@ -76,7 +77,7 @@ public class Mark extends VMObject {
     }
 
     public long value() {
-        return unsafe.getInt(getAddress() + jvm.type("oopDesc").offset("_mark"));
+        return unsafe.getInt(getAddress() + JVM.type("oopDesc").offset("_mark"));
     }
 
     public boolean isCmsFreeChunk() {

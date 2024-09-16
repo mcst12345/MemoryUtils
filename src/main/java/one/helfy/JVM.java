@@ -284,7 +284,7 @@ public final class JVM {
         unsafe.putByte(addr, val);
     }
 
-    public short getShort(long addr) {
+    public static short getShort(long addr) {
         return unsafe.getShort(addr);
     }
 

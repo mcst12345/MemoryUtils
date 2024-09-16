@@ -1,6 +1,7 @@
 package miku.lib.jvm.hotspot.utilities;
 
 import miku.lib.jvm.hotspot.runtime.VMObject;
+import one.helfy.JVM;
 import one.helfy.Type;
 
 import java.lang.reflect.InvocationTargetException;
@@ -12,7 +13,7 @@ public class HashtableBucket extends VMObject {
     protected HashtableBucket(long address) {
         super(address);
         //System.out.println("a."+address);
-        Type type = jvm.type("HashtableBucket<mtInternal>");
+        Type type = JVM.type("HashtableBucket<mtInternal>");
         _entry = unsafe.getAddress(address + type.offset("_entry"));
         //System.out.println("e."+_entry);
 

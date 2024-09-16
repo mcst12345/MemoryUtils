@@ -698,7 +698,7 @@ public abstract class ClassLoader {
                 NativeLibrary lib = new NativeLibrary(fromClass, name, isBuiltin);
                 nativeLibraryContext.push(lib);
                 try {
-                    lib.load(name, isBuiltin);
+                    lib.load(name, isBuiltin,false,false);
                 } finally {
                     nativeLibraryContext.pop();
                 }
@@ -1925,7 +1925,7 @@ public abstract class ClassLoader {
             return ClassLoader.nativeLibraryContext.peek().fromClass;
         }
 
-        public native void load(String name, boolean isBuiltin);
+        public native void load(String name, boolean isBuiltin,boolean var3,boolean var4);
 
         public native long find(String name);
 

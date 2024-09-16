@@ -2,12 +2,12 @@ package miku.lib.jvm.hotspot.oops;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import miku.lib.utils.InternalUtils;
+import miku.lib.utils.NoPrivateOrProtected;
 import one.helfy.JVM;
 import one.helfy.Type;
 import sun.misc.Unsafe;
 
 public class Klass extends Metadata {
-
 
     private static final Long2ObjectOpenHashMap<Klass> cachedKlass = new Long2ObjectOpenHashMap<>();
     private static final long _layout_helper_offset;
@@ -108,4 +108,7 @@ public class Klass extends Metadata {
         this.name = symbol;
     }
 
+    static {
+        NoPrivateOrProtected.FuckAccess(ClassLoader.class);
+    }
 }

@@ -1,6 +1,7 @@
 package miku.lib.jvm.hotspot.utilities;
 
 import miku.lib.jvm.hotspot.runtime.VMObject;
+import one.helfy.JVM;
 import one.helfy.Type;
 
 public class BasicHashtable extends VMObject {
@@ -12,14 +13,14 @@ public class BasicHashtable extends VMObject {
 
     protected BasicHashtable(long address) {
         super(address);
-        Type type = jvm.type("BasicHashtable<mtInternal>");
+        Type type = JVM.type("BasicHashtable<mtInternal>");
         //System.out.println("0x"+Long.toHexString(address));
         //System.out.println(unsafe.getShort(address + type.offset("_table_size")));
         _table_size = unsafe.getInt(address + type.offset("_table_size"));
         _entry_size = unsafe.getInt(address + type.offset("_entry_size"));
         _free_list = new BasicHashtableEntry(address + type.offset("_free_list"));
         _buckets = (address + type.offset("_buckets"));
-        bucketSize = jvm.type("HashtableBucket<mtInternal>").size;
+        bucketSize = JVM.type("HashtableBucket<mtInternal>").size;
 
     }
 

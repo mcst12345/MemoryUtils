@@ -8,20 +8,19 @@ import one.helfy.Type;
 public class ObjectSynchronizer {
     private static long gBlockListAddr;
     private static int blockSize;
-    private static long objectMonitorTypeSize;
+    private static final long objectMonitorTypeSize;
 
     static {
-        JVM jvm = JVM.getInstance();
         Type type;
         try {
-            type = jvm.type("ObjectSynchronizer");
+            type = JVM.type("ObjectSynchronizer");
             gBlockListAddr = type.global("gBlockList");
             //gBlockListAddr = blockListField.getValue();
-            blockSize = jvm.intConstant("ObjectSynchronizer::_BLOCKSIZE");
+            blockSize = JVM.intConstant("ObjectSynchronizer::_BLOCKSIZE");
         } catch (RuntimeException ignored) {
         }
 
-        type = jvm.type("ObjectMonitor");
+        type = JVM.type("ObjectMonitor");
         objectMonitorTypeSize = type.size;
     }
 

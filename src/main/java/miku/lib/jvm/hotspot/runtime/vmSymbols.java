@@ -10,11 +10,10 @@ public class vmSymbols {
     private static final int SID_LIMIT;
 
     static {
-        JVM jvm = JVM.getInstance();
-        Type type = jvm.type("vmSymbols");
+        Type type = JVM.type("vmSymbols");
         symbolsAddress = type.global("_symbols[0]");
-        FIRST_SID = jvm.intConstant("vmSymbols::FIRST_SID");
-        SID_LIMIT = jvm.intConstant("vmSymbols::SID_LIMIT");
+        FIRST_SID = JVM.intConstant("vmSymbols::FIRST_SID");
+        SID_LIMIT = JVM.intConstant("vmSymbols::SID_LIMIT");
     }
 
     public static Symbol symbolAt(int id) {

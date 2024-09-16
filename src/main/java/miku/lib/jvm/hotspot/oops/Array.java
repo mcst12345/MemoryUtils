@@ -5,6 +5,7 @@ import miku.lib.utils.NumberTransformer;
 import miku.lib.jvm.hotspot.memory.Universe;
 import miku.lib.jvm.hotspot.runtime.BasicType;
 import miku.lib.jvm.hotspot.runtime.VM;
+import one.helfy.JVM;
 import one.helfy.Type;
 
 public class Array extends Oop{
@@ -17,7 +18,7 @@ public class Array extends Oop{
     private static final long typeSize;
 
     static {
-        Type type = jvm.type("arrayOopDesc");
+        Type type = JVM.type("arrayOopDesc");
         typeSize = type.size;
         if(VM.compressedKlassPointersEnabled){
             headerSize = typeSize;

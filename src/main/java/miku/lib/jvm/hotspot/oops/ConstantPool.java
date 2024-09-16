@@ -305,7 +305,7 @@ public class ConstantPool extends Metadata implements ClassConstants {
     }
 
     public Symbol getKlassNameAt(int which) {
-        CPSlot entry = this.getSlotAt((long)which);
+        CPSlot entry = this.getSlotAt(which);
         return entry.isResolved() ? entry.getKlass().getSymbol() : entry.getSymbol();
     }
 

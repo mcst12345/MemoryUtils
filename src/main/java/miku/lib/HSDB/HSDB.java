@@ -16,11 +16,14 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
 public class HSDB {
+    private static final boolean DEBUG = System.getProperty("miku.lib.hsdb.debug") != null;
 
     private static Process attach;
 
     public static long getSymbol(String s){
-        System.out.println("target:"+s);
+        if(DEBUG){
+            System.out.println("target:" + s);
+        }
         final boolean win = System.getProperty("os.name").startsWith("Windows");
         String jar = HSDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("!/miku/lib/HSDB/HDSB.class", "").replace("file:", "");
         if (win) {
@@ -69,7 +72,9 @@ public class HSDB {
         while(true) {
             try {
                 String tmp = reader.readLine();
-                System.out.println("[attach]"+tmp);
+                if(DEBUG){
+                    System.out.println("[attach]" + tmp);
+                }
                 if(tmp == null){
                     break;
                 }
@@ -78,7 +83,6 @@ public class HSDB {
                 throw new RuntimeException(e);
             }
         }
-        System.out.println(line);
         return line == null ? 0 : Long.parseLong(line);
     }
 
