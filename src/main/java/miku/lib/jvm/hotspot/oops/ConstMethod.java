@@ -433,6 +433,10 @@ public class ConstMethod extends VMObject {
         return (short)(hi << 8 | lo);
     }
 
+    public long code_base(){
+        return getAddress() + 1;
+    }
+
     private long offsetOfMethodParametersLength() {
         if(!this.hasMethodParameters()){
             throw new IllegalStateException("should only be called if table is present");

@@ -31,8 +31,25 @@ package miku.lib.jvm.hotspot.code;
 //  long _stack_traversal_mark @ 232
 //  ExceptionCache* _exception_cache @ 248
 
+import one.helfy.JVM;
+import one.helfy.Type;
+
 public class NMethod extends CodeBlob {
+
+    private static final long _marked_for_deoptimization_offset;
+
+    static {
+        Type type = JVM.type("nmethod");
+        _marked_for_deoptimization_offset = type.offset("_marked_for_deoptimization");
+    }
+
     public NMethod(long address) {
         super(address);
+    }
+
+    public void setMarkedForDeoptimization(){
+        byte dump = unsafe.getByte(getAddress() + _marked_for_deoptimization_offset);
+        dump |= 1;
+        unsafe.putByte(getAddress() + _marked_for_deoptimization_offset,dump);
     }
 }

@@ -207,6 +207,14 @@ public class Method extends Metadata{
         return getConstants().getPoolHolder();
     }
 
+    public long bcp_from(int bci){
+        return code_base() + bci;
+    }
+
+    public MethodCounters getMethodCounters(){
+        return new MethodCounters(getAddress() + _method_counters_offset);
+    }
+
     public int getOrigBytecodeAt(int bci) {
         BreakpointInfo bp;
         for(bp = this.getMethodHolder().getBreakpoints(); bp != null; bp = bp.getNext()) {
@@ -223,6 +231,31 @@ public class Method extends Metadata{
         }
 
         throw new IllegalStateException("Should not reach here");
+    }
+
+    public void clear_all_breakpoints() {
+        if(getMethodHolder().getBreakpoints() == null){
+            return;
+        }
+        BreakpointInfo prev = null;
+        BreakpointInfo next;
+        for (BreakpointInfo bp = getMethodHolder().getBreakpoints();bp != null;bp = next){
+            next = bp.getNext();
+            if(bp.match(this)){
+                bp.clear(this);
+                if(prev != null){
+                    prev.setNext(next);
+                } else {
+                    getMethodHolder().setBreakpoints(next);
+                }
+            } else {
+                prev = bp;
+            }
+        }
+    }
+
+    public long code_base(){
+        return getConstMethod().code_base();
     }
 
     public long getI2IEntry(){
@@ -273,7 +306,8 @@ public class Method extends Metadata{
     }
 
     public NMethod getNativeMethod(){
-        return new NMethod(unsafe.getAddress(getAddress() + _code_offset));
+        long address = unsafe.getAddress(getAddress() + _code_offset);
+        return address == 0 ? null : new NMethod(address);
     }
 
     public MethodData getMethodData(){

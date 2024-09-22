@@ -7,31 +7,20 @@
     <list default="true" id="e919c91c-a251-4b69-9445-f1ec07c31c1a" name="更改" comment=".">
       <change afterPath="$PROJECT_DIR$/TempFile" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/TempFile1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/c1/Runtime1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/AdapterBlob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/BufferBlob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/CodeCache.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/CodeCacheVisitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/DeoptimizationBlob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/ExceptionBlob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/MethodHandlesAdapterBlob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/RuntimeStub.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/SafepointBlob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/SingletonBlob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/UncommonTrapBlob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/CodeHeap.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/HeapBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/utils/ProcessUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hs_err_pid158077.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hs_err_pid159009.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hs_err_pid159582.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hs_err_pid160236.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/java/lang/ClassLoaderFucked.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/MethodCounters.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/utils/FileUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Test.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Test1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Test1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/HSDB/HSDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/HSDB/HSDB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/NMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/NMethod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/BreakpointInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/BreakpointInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstMethod.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/InstanceKlass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/InstanceKlass.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Method.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Method.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VirtualBaseConstructor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VirtualBaseConstructor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/utils/memory/MemoryHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/utils/memory/MemoryHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/JVM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/JVM.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,8 +67,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="package-info" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -184,7 +173,7 @@
       <recent name="java.lang" />
     </key>
   </component>
-  <component name="RunManager" selected="应用程序.Test">
+  <component name="RunManager" selected="应用程序.Test1 (3)">
     <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Test" />
       <module name="MemoryUtils.main" />
@@ -363,7 +352,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726477171433</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary=".">
+      <option name="closed" value="true" />
+      <created>1726984517065</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1726984517065</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

@@ -3,7 +3,6 @@ package miku.lib.jvm.hotspot.oops;
 import miku.lib.jvm.hotspot.classfile.ClassLoaderData;
 import miku.lib.jvm.hotspot.runtime.VM;
 import miku.lib.jvm.hotspot.runtime.vmSymbols;
-import miku.lib.jvm.hotspot.tools.jcore.ClassWriter;
 import miku.lib.jvm.hotspot.utilities.KlassArray;
 import miku.lib.jvm.hotspot.utilities.MethodArray;
 import miku.lib.jvm.hotspot.utilities.U2Array;
@@ -12,14 +11,10 @@ import one.helfy.Type;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;
-import sun.jvm.hotspot.debugger.DebuggerException;
-import sun.jvm.hotspot.utilities.Assert;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.*;
 
 //InstanceKlass extends Klass @ 440
@@ -108,6 +103,7 @@ public class InstanceKlass extends Klass {
     private static final long _osr_nmethods_head_offset;
     private static final long _default_methods_offset;
     private static final long _methods_jmethod_ids_offset;
+    private static final long _annotations_offset;
 
     private static final long headerSize;
 
@@ -161,6 +157,7 @@ public class InstanceKlass extends Klass {
         _oop_map_cache_offset = type.offset("_oop_map_cache");
         _default_methods_offset = type.offset("_default_methods");
         _methods_jmethod_ids_offset = type.offset("_methods_jmethod_ids");
+        _annotations_offset = type.offset("_annotations");
     }
 
     private ClassLoaderData _class_loader_data;
@@ -241,7 +238,12 @@ public class InstanceKlass extends Klass {
     }
 
     public BreakpointInfo getBreakpoints(){
-        return new BreakpointInfo(unsafe.getAddress(getAddress() + _breakpoints_offset));
+        long address = unsafe.getAddress(getAddress() + _breakpoints_offset);
+        return address == 0 ? null : new BreakpointInfo(address);
+    }
+
+    public void setBreakpoints(BreakpointInfo bp){
+        unsafe.putAddress(getAddress() + _breakpoints_offset,bp.getAddress());
     }
 
     public Symbol getFieldName(int index) {
@@ -609,6 +611,10 @@ public class InstanceKlass extends Klass {
         MethodArray methods = oldK.getMethods();
         for(int i = 0 ; i < methods.length();i++){
             miku.lib.jvm.hotspot.oops.Method method = methods.at(i);
+            method.clear_all_breakpoints();
+            if(method.getNativeMethod() != null){
+                method.getNativeMethod().setMarkedForDeoptimization();
+            }
             if(method.getAccessFlags().isNative()){
                 pointers.put(method.getName().toString(),method.getCODE());
             }
@@ -647,15 +653,8 @@ public class InstanceKlass extends Klass {
         unsafe.putAddress(getAddress() + _method_ordering_offset, unsafe.getAddress(neo.getAddress() + _method_ordering_offset) );
         unsafe.putAddress(getAddress() + _default_methods_offset, unsafe.getAddress(neo.getAddress() + _default_methods_offset) );
         unsafe.putAddress(getAddress() + _source_debug_extension_offset, unsafe.getAddress(neo.getAddress() + _source_debug_extension_offset) );
-        /*ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try {
-            new ClassWriter(this,bos).write();
-            byte[] data = bos.toByteArray();
-            FileUtils.write(Paths.get("redefined/"+name[0]+".class"),data);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-         */
+        unsafe.putAddress(getAddress() + _annotations_offset, unsafe.getAddress(neo.getAddress() + _annotations_offset) );
+
     }
 
     public void setClassLoaderData(ClassLoaderData classLoaderData) {
