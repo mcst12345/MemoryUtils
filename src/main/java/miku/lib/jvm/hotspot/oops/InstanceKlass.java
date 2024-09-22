@@ -630,8 +630,12 @@ public class InstanceKlass extends Klass {
             m.getMethodData();
             m.getConstMethod().getConstants().setPoolHolder(oldK);
         }
+        ConstantPool old_const = oldK.getConstants();
         neo.getConstants().setPoolHolder(oldK);
+        neo.setConstants(old_const);
+        MethodArray old_methods = oldK.getMethods();
         oldK.setMethods(neo.getMethods());
+        neo.setMethods(old_methods);
         oldK.setConstants(neo.getConstants());
         oldK.setFields(neo.getFields());
         oldK.setJavaFieldsCount(neo.getJavaFieldsCount());
