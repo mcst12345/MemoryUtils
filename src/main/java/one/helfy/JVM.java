@@ -4,9 +4,12 @@ import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import me.xdark.shell.JVMUtil;
 import me.xdark.shell.NativeLibrary;
 import miku.lib.HSDB.HSDB;
+import miku.lib.HSDB.SaJDI;
 import miku.lib.utils.InternalUtils;
 import sun.misc.Unsafe;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.*;
 
 public final class JVM {
@@ -14,6 +17,48 @@ public final class JVM {
     private static final NativeLibrary JVM;
     private static final boolean linux = System.getProperty("os.name").trim().toLowerCase().contains("linux");
     private static JVM jvm;
+
+    public static void InitVtableCaches(){
+        if(!linux){
+            return;
+        }
+        SaJDI.appendJar();
+        String[] Targets = new String[]{"Unsafe_GetInt",
+                "Unsafe_SetInt","Unsafe_GetObject","Unsafe_SetObject","Unsafe_GetBoolean","Unsafe_SetBoolean","Unsafe_GetByte","Unsafe_SetByte","Unsafe_GetShort","Unsafe_SetShort","Unsafe_GetChar","Unsafe_SetChar","Unsafe_GetLong","Unsafe_SetLong",
+                "Unsafe_GetNativeLong","Unsafe_SetNativeLong","Unsafe_GetNativeInt","Unsafe_SetNativeInt","Unsafe_GetNativeFloat","Unsafe_SetNativeFloat","Unsafe_GetNativeDouble","Unsafe_SetNativeDouble","Unsafe_GetNativeByte","Unsafe_SetNativeByte","Unsafe_GetNativeShort",
+                "Unsafe_SetNativeShort","Unsafe_GetNativeChar","Unsafe_SetNativeChar","Unsafe_GetNativeAddress","Unsafe_SetNativeAddress","Unsafe_AllocateMemory","Unsafe_ReallocateMemory","Unsafe_SetMemory","Unsafe_CopyMemory","Unsafe_FreeMemory","Unsafe_StaticFieldOffset",
+                "Unsafe_StaticFieldBaseFromField","Unsafe_ObjectFieldOffset","Unsafe_ShouldBeInitialized","Unsafe_EnsureClassInitialized","Unsafe_ArrayBaseOffset","Unsafe_ArrayIndexScale","Unsafe_AddressSize","Unsafe_PageSize","Unsafe_DefineClass","Unsafe_DefineAnonymousClass",
+                "Unsafe_AllocateInstance","Unsafe_MonitorEnter","Unsafe_MonitorExit","Unsafe_TryMonitorEnter","Unsafe_ThrowException","Unsafe_CompareAndSwapObject","Unsafe_CompareAndSwapInt","Unsafe_CompareAndSwapLong","Unsafe_GetIntVolatile","Unsafe_SetIntVolatile",
+                "Unsafe_GetObjectVolatile","Unsafe_SetObjectVolatile","Unsafe_GetBooleanVolatile","Unsafe_SetBooleanVolatile","Unsafe_GetByteVolatile","Unsafe_SetByteVolatile","Unsafe_GetShortVolatile","Unsafe_SetShortVolatile","Unsafe_GetCharVolatile","Unsafe_SetCharVolatile",
+                "Unsafe_GetLongVolatile","Unsafe_SetLongVolatile","Unsafe_SetOrderedObject","Unsafe_SetOrderedInt","Unsafe_SetOrderedLong","Unsafe_Unpark","Unsafe_Park","Unsafe_LoadFence","Unsafe_Loadavg","Unsafe_StoreFence","Unsafe_FullFence"};
+        HSDB.getMultiplyRaw("TempFile1",Targets);
+        try(RandomAccessFile randomAccessFile = new RandomAccessFile("TempFile1","rw")){
+            for(String str : Targets){
+                long symbol = randomAccessFile.readLong();
+                System.out.println(symbol);
+                symbolMap.put(str,symbol);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            while (true){
+            }
+        }
+        Type[] targets = new Type[]{type("MethodData"),type("InstanceRefKlass"),type("InstanceMirrorKlass"),type("ConstantPool"),type("Method"),type("ObjArrayKlass"),type("ArrayKlass"),type("TypeArrayKlass"),type("Metadata"),type("InstanceKlass"),type("Klass"),type("InstanceClassLoaderKlass")};
+        HSDB.getMultiply("TempFile",targets);
+        try(RandomAccessFile randomAccessFile = new RandomAccessFile("TempFile","rw")){
+            for(Type type : targets){
+                long vtbl = randomAccessFile.readLong();
+                System.out.println(type.name);
+                System.out.println(vtbl);
+                vtbl = useGCC32ABI ? vtbl + 2L * unsafe.addressSize() : vtbl;
+                typeToVtbl.put(type,vtbl);
+                typeToVtblMap.put(type,vtbl);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            while (true) {}
+        }
+    }
 
     static {
         try {
@@ -23,6 +68,7 @@ public final class JVM {
         }
     }
 
+    private static final Map<String,Long> symbolMap = new Object2LongOpenHashMap<>();
     private static final Map<Type, Long> typeToVtblMap = new HashMap<>();
     private static final Object2LongOpenHashMap<Type> typeToVtbl = new Object2LongOpenHashMap<>();
     private static final Map<String, Type> types = new LinkedHashMap<>();
@@ -336,6 +382,9 @@ public final class JVM {
 
 
     public static long getSymbol(String name) {
+        if(symbolMap.containsKey(name)){
+            return symbolMap.get(name);
+        }
         long address = JVM.findEntry(name);
         if (address == 0) {
             if(!WINDOWS){
@@ -344,9 +393,11 @@ public final class JVM {
             if (address == 0) {
                 throw new NoSuchElementException("No such symbol: " + name);
             }
+            symbolMap.put(name,address);
             return address;
         }
         if(name.startsWith("??_7") && name.endsWith("@@6B@")){
+            symbolMap.put(name,address);
             return address;
         }
         return getLong(address);
@@ -431,5 +482,9 @@ public final class JVM {
             unsafe.compareAndSwapInt(ptr2Obj, objFieldOffset, 0, (int) address);
             return ptr2Obj.obj;
         }
+    }
+
+    static {
+        InitVtableCaches();
     }
 }

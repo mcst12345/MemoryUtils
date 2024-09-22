@@ -1,5 +1,6 @@
 package miku.lib.jvm.hotspot.oops;
 
+import miku.lib.jvm.hotspot.code.NMethod;
 import miku.lib.jvm.hotspot.runtime.VM;
 import miku.lib.jvm.hotspot.utilities.U1Array;
 import one.helfy.JVM;
@@ -271,8 +272,8 @@ public class Method extends Metadata{
         unsafe.putAddress(getAddress() + _code_offset,neo);
     }
 
-    public long getCode(){
-        return unsafe.getAddress(getAddress() + _code_offset);
+    public NMethod getNativeMethod(){
+        return new NMethod(unsafe.getAddress(getAddress() + _code_offset));
     }
 
     public MethodData getMethodData(){

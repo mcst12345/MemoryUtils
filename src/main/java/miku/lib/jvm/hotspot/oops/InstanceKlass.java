@@ -3,6 +3,7 @@ package miku.lib.jvm.hotspot.oops;
 import miku.lib.jvm.hotspot.classfile.ClassLoaderData;
 import miku.lib.jvm.hotspot.runtime.VM;
 import miku.lib.jvm.hotspot.runtime.vmSymbols;
+import miku.lib.jvm.hotspot.tools.jcore.ClassWriter;
 import miku.lib.jvm.hotspot.utilities.KlassArray;
 import miku.lib.jvm.hotspot.utilities.MethodArray;
 import miku.lib.jvm.hotspot.utilities.U2Array;
@@ -14,9 +15,11 @@ import org.objectweb.asm.Opcodes;
 import sun.jvm.hotspot.debugger.DebuggerException;
 import sun.jvm.hotspot.utilities.Assert;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.*;
 
 //InstanceKlass extends Klass @ 440
@@ -75,6 +78,7 @@ public class InstanceKlass extends Klass {
     private static final int CLASS_STATE_FULLY_INITIALIZED;
     private static final int CLASS_STATE_INITIALIZATION_ERROR;
 
+    private static final long _dependencies_offset;
     private static final long _class_loader_data_offset;
     private static final long _fields_offset;
     private static final long _java_fields_count_offset;
@@ -99,6 +103,11 @@ public class InstanceKlass extends Klass {
     private static final long _generic_signature_index_offset;
     private static final long _major_version_offset;
     private static final long _minor_version_offset;
+    private static final long _oop_map_cache_offset;
+    private static final long _default_vtable_indices_offset;
+    private static final long _osr_nmethods_head_offset;
+    private static final long _default_methods_offset;
+    private static final long _methods_jmethod_ids_offset;
 
     private static final long headerSize;
 
@@ -122,6 +131,9 @@ public class InstanceKlass extends Klass {
 
         Type type = JVM.type("InstanceKlass");
         headerSize = Oop.alignObjectSize(type.size);
+        _osr_nmethods_head_offset = type.offset("_osr_nmethods_head");
+        _dependencies_offset = type.offset("_dependencies");
+        _default_vtable_indices_offset = type.offset("_default_vtable_indices");
         _class_loader_data_offset = type.offset("_class_loader_data");
         _fields_offset = type.offset("_fields");
         _java_fields_count_offset = type.offset("_java_fields_count");
@@ -146,7 +158,9 @@ public class InstanceKlass extends Klass {
         _generic_signature_index_offset = type.offset("_generic_signature_index");
         _major_version_offset = type.offset("_major_version");
         _minor_version_offset = type.offset("_minor_version");
-
+        _oop_map_cache_offset = type.offset("_oop_map_cache");
+        _default_methods_offset = type.offset("_default_methods");
+        _methods_jmethod_ids_offset = type.offset("_methods_jmethod_ids");
     }
 
     private ClassLoaderData _class_loader_data;
@@ -187,8 +201,16 @@ public class InstanceKlass extends Klass {
         return new U2Array(unsafe.getAddress(getAddress() + _inner_classes_offset));
     }
 
+    public void setInnerClasses(U2Array neo){
+        unsafe.putAddress(getAddress() + _inner_classes_offset,neo.getAddress());
+    }
+
     public int getNonstaticFieldSize(){
         return unsafe.getInt(getAddress() + _nonstatic_field_size_offset);
+    }
+
+    public void setNonstaticFieldSize(int neo){
+        unsafe.putInt(getAddress() + _nonstatic_field_size_offset,neo);
     }
 
     public int getFieldOffset(int index) {
@@ -352,8 +374,16 @@ public class InstanceKlass extends Klass {
         return allFieldsCount;
     }
 
+    public short getSourceFileNameIndex(){
+        return unsafe.getShort(getAddress() + _source_file_name_index_offset);
+    }
+
+    public void setSourceFileNameIndex(short neo){
+        unsafe.putShort(getAddress() + _source_file_name_index_offset,neo);
+    }
+
     public Symbol getSourceFileName() {
-        return this.getConstants().getSymbolAt(unsafe.getShort(getAddress() + _source_file_name_index_offset));
+        return this.getConstants().getSymbolAt(getSourceFileNameIndex());
     }
 
     public short getFieldSignatureIndex(int index) {
@@ -412,12 +442,23 @@ public class InstanceKlass extends Klass {
         return unsafe.getInt(getAddress() + _nonstatic_oop_map_size_offset);
     }
 
+    public void setNonstaticOopMapSize(int neo){
+        unsafe.putInt(getAddress() + _nonstatic_oop_map_size_offset,neo);
+    }
+
     public boolean getIsMarkedDependent(){
         return unsafe.getByte(getAddress() + _is_marked_dependent_offset) != 0;
     }
 
     public int getVtableLen(){
         return unsafe.getInt(getAddress() + _vtable_len_offset);
+    }
+
+    public void setVtableLen(int neo){
+        unsafe.putInt(getAddress() + _vtable_len_offset,neo);
+    }
+    public void setItableLen(int neo){
+        unsafe.putInt(getAddress() + _itable_len_offset,neo);
     }
 
     public int getItableLen(){
@@ -432,8 +473,16 @@ public class InstanceKlass extends Klass {
         return unsafe.getShort(getAddress() + _minor_version_offset);
     }
 
+    public short getGenericSignatureIndex(){
+        return unsafe.getShort(getAddress() + _generic_signature_index_offset);
+    }
+
+    public void setGenericSignatureIndex(short neo){
+        unsafe.putShort(getAddress() + _generic_signature_index_offset,neo);
+    }
+
     public Symbol getGenericSignature() {
-        short index = unsafe.getShort(getAddress() + _generic_signature_index_offset);
+        short index = getGenericSignatureIndex();
         return index != 0L ? this.getConstants().getSymbolAt(index) : null;
     }
 
@@ -468,6 +517,10 @@ public class InstanceKlass extends Klass {
         return null;
     }
 
+    public void setLocalInterfaces(KlassArray neo){
+        unsafe.putAddress(getAddress() + _local_interfaces_offset,neo.getAddress());
+    }
+
     public KlassArray getLocalInterfaces(){
         return new KlassArray(unsafe.getAddress(getAddress() + _local_interfaces_offset));
     }
@@ -476,11 +529,16 @@ public class InstanceKlass extends Klass {
         return new KlassArray(unsafe.getAddress(getAddress() + _transitive_interfaces_offset));
     }
 
+    public void setTransitiveInterfaces(KlassArray neo){
+        unsafe.putAddress(getAddress() + _transitive_interfaces_offset,neo.getAddress());
+    }
+
     public long getObjectSize(Oop oop) {
         return getSizeHelper() * unsafe.addressSize();
     }
 
-    public void redefineClass(byte[] clazz_bytes){
+    public void redefineClass(byte[] clazz_bytes,ClassLoader cl){
+        unsafe.ensureClassInitialized((Class<?>) getMirror().getObject());
         ClassReader cr = new ClassReader(clazz_bytes);
         final String[] name = new String[1];
         ClassVisitor cv = new ClassVisitor(Opcodes.ASM5) {
@@ -495,59 +553,59 @@ public class InstanceKlass extends Klass {
             throw new ClassFormatError("Class name not the same!");
         }
 
-        ClassLoader cl = (ClassLoader) getClassLoaderData().getClassLoader().getObject();
+        cl = cl != null ? cl : (ClassLoader) getClassLoaderData().getClassLoader().getObject();
+        ClassLoader finalCl = cl;
         ClassLoader new_cl = new ClassLoader() {
             @Override
             public Class<?> loadClass(String name) throws ClassNotFoundException {
-                return cl.loadClass(name);
+                return finalCl.loadClass(name);
             }
 
             @Override
             public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-                return cl.loadClass(name, resolve);
+                return finalCl.loadClass(name, resolve);
             }
 
             @Override
             public Class<?> findClass(String name) throws ClassNotFoundException {
-                return cl.findClass(name);
+                return finalCl.findClass(name);
             }
 
             @Override
             public Package[] getPackages() {
-                return cl.getPackages();
+                return finalCl.getPackages();
             }
 
             @Override
             public Package getPackage(String name) {
-                return cl.getPackage(name);
+                return finalCl.getPackage(name);
             }
 
             @Override
             public InputStream getResourceAsStream(String name) {
-                return cl.getResourceAsStream(name);
+                return finalCl.getResourceAsStream(name);
             }
 
             @Override
             public Enumeration<URL> findResources(String name) throws IOException {
-                return cl.findResources(name);
+                return finalCl.findResources(name);
             }
 
             @Override
             public URL findResource(String name) {
-                return cl.findResource(name);
+                return finalCl.findResource(name);
             }
 
             @Override
             public Enumeration<URL> getResources(String name) throws IOException {
-                return cl.getResources(name);
+                return finalCl.getResources(name);
             }
         };
         Class<?> tmp = unsafe.defineClass(name[0].replace('/','.'),clazz_bytes,0,clazz_bytes.length,new_cl,((Class<?>)getMirror().getObject()).getProtectionDomain());
         unsafe.ensureClassInitialized(tmp);
         InstanceKlass neo = (InstanceKlass) Klass.getKlass(tmp);
-        Class<?> old = (Class<?>) getMirror().getObject();
         Map<String,Long> pointers = new HashMap<>();
-        InstanceKlass oldK = (InstanceKlass) Klass.getKlass(old);
+        InstanceKlass oldK = this;
         MethodArray methods = oldK.getMethods();
         for(int i = 0 ; i < methods.length();i++){
             miku.lib.jvm.hotspot.oops.Method method = methods.at(i);
@@ -563,6 +621,7 @@ public class InstanceKlass extends Klass {
             if(pointers.containsKey(m_name)){
                 m.setCODE(pointers.get(m_name));
             }
+            m.getMethodData();
             m.getConstMethod().getConstants().setPoolHolder(oldK);
         }
         neo.getConstants().setPoolHolder(oldK);
@@ -570,6 +629,33 @@ public class InstanceKlass extends Klass {
         oldK.setConstants(neo.getConstants());
         oldK.setFields(neo.getFields());
         oldK.setJavaFieldsCount(neo.getJavaFieldsCount());
+        oldK.setVtableLen(neo.getVtableLen());
+        oldK.setItableLen(neo.getItableLen());
+        oldK.setAccessFlags(neo.getAccessFlags().getFlags());
+        oldK.setNonstaticFieldSize(neo.getNonstaticFieldSize());
+        oldK.setNonstaticOopMapSize(neo.getNonstaticOopMapSize());
+        oldK.setLocalInterfaces(neo.getLocalInterfaces());
+        oldK.setSourceFileNameIndex(neo.getSourceFileNameIndex());
+        oldK.setGenericSignatureIndex(neo.getGenericSignatureIndex());
+        oldK.setInnerClasses(neo.getInnerClasses());
+        unsafe.putAddress(getAddress() + _methods_jmethod_ids_offset, unsafe.getAddress(neo.getAddress() + _methods_jmethod_ids_offset) );
+        oldK.setTransitiveInterfaces(neo.getTransitiveInterfaces());
+        unsafe.putAddress(getAddress() + _oop_map_cache_offset, unsafe.getAddress(neo.getAddress() + _oop_map_cache_offset) );
+        unsafe.putAddress(getAddress() + _default_vtable_indices_offset, unsafe.getAddress(neo.getAddress() + _default_vtable_indices_offset) );
+        unsafe.putAddress(getAddress() + _dependencies_offset, unsafe.getAddress(neo.getAddress() + _dependencies_offset) );
+        unsafe.putAddress(getAddress() + _osr_nmethods_head_offset, unsafe.getAddress(neo.getAddress() + _osr_nmethods_head_offset) );
+        unsafe.putAddress(getAddress() + _method_ordering_offset, unsafe.getAddress(neo.getAddress() + _method_ordering_offset) );
+        unsafe.putAddress(getAddress() + _default_methods_offset, unsafe.getAddress(neo.getAddress() + _default_methods_offset) );
+        unsafe.putAddress(getAddress() + _source_debug_extension_offset, unsafe.getAddress(neo.getAddress() + _source_debug_extension_offset) );
+        /*ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try {
+            new ClassWriter(this,bos).write();
+            byte[] data = bos.toByteArray();
+            FileUtils.write(Paths.get("redefined/"+name[0]+".class"),data);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+         */
     }
 
     public void setClassLoaderData(ClassLoaderData classLoaderData) {

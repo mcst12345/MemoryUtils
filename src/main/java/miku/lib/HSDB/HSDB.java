@@ -1,6 +1,7 @@
 package miku.lib.HSDB;
 
 import miku.lib.utils.InternalUtils;
+import miku.lib.utils.ProcessUtils;
 import one.helfy.Type;
 import sun.jvm.hotspot.debugger.MachineDescriptionAMD64;
 import sun.jvm.hotspot.debugger.linux.LinuxDebuggerLocal;
@@ -8,24 +9,18 @@ import sun.misc.Unsafe;
 
 import java.io.*;
 import java.lang.management.ManagementFactory;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+
 
 public class HSDB {
-    private static final boolean DEBUG = System.getProperty("miku.lib.hsdb.debug") != null;
 
-    private static Process attach;
-
-    public static long getSymbol(String s){
-        if(DEBUG){
-            System.out.println("target:" + s);
-        }
+    public synchronized static void getMultiply(String file,Type... args){
         final boolean win = System.getProperty("os.name").startsWith("Windows");
-        String jar = HSDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("!/miku/lib/HSDB/HDSB.class", "").replace("file:", "");
+        String jar = HSDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("!/miku/lib/HSDB/HSDB.class", "").replace("file:", "");
         if (win) {
             jar = jar.substring(1);
         }
@@ -51,45 +46,18 @@ public class HSDB {
             LAUNCH.insert(0, tmp);
         }
 
-        LAUNCH.append("-cp \"").append(jar).append(win ? ";" : ":").append(SaJDI.sa_jdi.getAbsolutePath()).append("\" ").append("miku.lib.HSDB.HSDB ").append(getProcessId("Nope.")).append(" ").append(s).append(" raw");
+        LAUNCH.append("-cp \"").append(jar).append(win ? ";" : ":").append(SaJDI.sa_jdi.getAbsolutePath()).append("\" ").append("miku.lib.HSDB.HSDB ").append(getProcessId()).append(" MULTIPLY ").append(file).append(" ");
 
-        try {
-            if (win) {
-                ProcessBuilder process = new ProcessBuilder("cmd /c " + LAUNCH);
-                process.redirectErrorStream(true);
-                attach = process.start();
-            } else {
-                attach = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", String.valueOf(LAUNCH)}, null, (File) null);
-            }
-        }
-        catch (Throwable t){
-            throw new RuntimeException(t);
+        for(Type type : args){
+            LAUNCH.append(type.name).append(":").append(type.name.length()).append(" ");
         }
 
-        InputStream is = attach.getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        String line = null;
-        while(true) {
-            try {
-                String tmp = reader.readLine();
-                if(DEBUG){
-                    System.out.println("[attach]" + tmp);
-                }
-                if(tmp == null){
-                    break;
-                }
-                line = tmp;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return line == null ? 0 : Long.parseLong(line);
+        ProcessUtils.runProcess(String.valueOf(LAUNCH));
     }
 
-    public static long getSymbol(Type type){
-        String s = type.name+":"+type.name.length();
+    public synchronized static void getMultiplyRaw(String file,String... args){
         final boolean win = System.getProperty("os.name").startsWith("Windows");
-        String jar = HSDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("!/miku/lib/HSDB/HDSB.class", "").replace("file:", "");
+        String jar = HSDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("!/miku/lib/HSDB/HSDB.class", "").replace("file:", "");
         if (win) {
             jar = jar.substring(1);
         }
@@ -115,42 +83,83 @@ public class HSDB {
             LAUNCH.insert(0, tmp);
         }
 
-        LAUNCH.append("-cp \"").append(jar).append(win ? ";" : ":").append(SaJDI.sa_jdi.getAbsolutePath()).append("\" ").append("miku.lib.HSDB.HSDB ").append(getProcessId("Nope.")).append(" ").append(s);
+        LAUNCH.append("-cp \"").append(jar).append(win ? ";" : ":").append(SaJDI.sa_jdi.getAbsolutePath()).append("\" ").append("miku.lib.HSDB.HSDB ").append(getProcessId()).append(" MULTIPLYRAW ").append(file).append(" ");
 
+        for(String s : args){
+            LAUNCH.append(s).append(" ");
+        }
+
+        ProcessUtils.runProcess(String.valueOf(LAUNCH));
+    }
+
+
+    public synchronized static long getSymbol(String s){
+        final boolean win = System.getProperty("os.name").startsWith("Windows");
+        String jar = HSDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("!/miku/lib/HSDB/HSDB.class", "").replace("file:", "");
+        if (win) {
+            jar = jar.substring(1);
+        }
         try {
+            jar = URLDecoder.decode(jar, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException ignored) {
+        }
+        StringBuilder LAUNCH = new StringBuilder();
+        String JAVA = System.getProperty("java.home");
+        if (JAVA.endsWith("jre")) {
+            String JavaHome = JAVA.substring(0, JAVA.length() - 3) + "bin" + File.separator + "java";
             if (win) {
-                ProcessBuilder process = new ProcessBuilder("cmd /c " + LAUNCH);
-                process.redirectErrorStream(true);
-                attach = process.start();
-            } else {
-                attach = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", String.valueOf(LAUNCH)}, null, (File) null);
+                JavaHome = JavaHome + ".exe";
             }
-        }
-        catch (Throwable t){
-            throw new RuntimeException(t);
+            JavaHome = "\"" + JavaHome + "\" ";
+            LAUNCH.insert(0, JavaHome);
+        } else {
+            String tmp = JAVA + File.separator + "bin" + File.separator + "java";
+            if (win) {
+                tmp = tmp + ".exe";
+            }
+            tmp = "\"" + tmp + "\" ";
+            LAUNCH.insert(0, tmp);
         }
 
-        InputStream is = attach.getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        String line = null;
-        while(true) {
-            try {
-                String tmp = reader.readLine();
-                if(tmp == null){
-                    break;
-                }
-                line = tmp;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        LAUNCH.append("-cp \"").append(jar).append(win ? ";" : ":").append(SaJDI.sa_jdi.getAbsolutePath()).append("\" ").append("miku.lib.HSDB.HSDB ").append(getProcessId()).append(" ").append(s).append(" raw");
+
+        String str = ProcessUtils.runProcess(String.valueOf(LAUNCH));
+        return str == null ? 0 : Long.parseLong(str);
+    }
+
+    public synchronized static long getSymbol(Type type){
+        String s = type.name+":"+type.name.length();
+        final boolean win = System.getProperty("os.name").startsWith("Windows");
+        String jar = HSDB.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("!/miku/lib/HSDB/HSDB.class", "").replace("file:", "");
+        if (win) {
+            jar = jar.substring(1);
         }
         try {
-            return Long.parseLong(line);
-        } catch (Throwable t){
-            System.out.println(line);
-            t.printStackTrace();
-            throw new RuntimeException(t);
+            jar = URLDecoder.decode(jar, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException ignored) {
         }
+        StringBuilder LAUNCH = new StringBuilder();
+        String JAVA = System.getProperty("java.home");
+        if (JAVA.endsWith("jre")) {
+            String JavaHome = JAVA.substring(0, JAVA.length() - 3) + "bin" + File.separator + "java";
+            if (win) {
+                JavaHome = JavaHome + ".exe";
+            }
+            JavaHome = "\"" + JavaHome + "\" ";
+            LAUNCH.insert(0, JavaHome);
+        } else {
+            String tmp = JAVA + File.separator + "bin" + File.separator + "java";
+            if (win) {
+                tmp = tmp + ".exe";
+            }
+            tmp = "\"" + tmp + "\" ";
+            LAUNCH.insert(0, tmp);
+        }
+
+        LAUNCH.append("-cp \"").append(jar).append(win ? ";" : ":").append(SaJDI.sa_jdi.getAbsolutePath()).append("\" ").append("miku.lib.HSDB.HSDB ").append(getProcessId()).append(" ").append(s);
+
+        String str = ProcessUtils.runProcess(String.valueOf(LAUNCH));
+        return str == null ? 0 : Long.parseLong(str);
     }
 
     private static final Unsafe unsafe = InternalUtils.getUnsafe();
@@ -161,6 +170,7 @@ public class HSDB {
         unsafe.ensureClassInitialized(clazz);
         Method lookup = getMethod(clazz,"lookupByName0",String.class,String.class);
         Method attach0 = getMethod(clazz,"attach0",int.class);
+        Method detach0 = getMethod(clazz,"detach0");
         LinuxDebuggerLocal debugger = new LinuxDebuggerLocal(new MachineDescriptionAMD64(),false);
         attach0.setAccessible(true);
         debugger.attach(Integer.parseInt(pid));
@@ -172,35 +182,37 @@ public class HSDB {
         else {
             vt = "__vt_";
         }
-        String symbol = args[1];
-        long result = (long) lookup.invoke(debugger,"libjvm.so",args.length == 2 ? vtblSymbolForType(symbol) : symbol);
-        System.out.println(result);
+        String str = args[1];
+        if(!str.endsWith("MULTIPLY") && !str.equals("MULTIPLYRAW")){
+            long result = (long) lookup.invoke(debugger, "libjvm.so", args.length == 2 ? vtblSymbolForType(str) : str);
+            System.out.println(result);
+        } else {
+            boolean flag = str.equals("MULTIPLYRAW");
+            File file = new File(args[2]);
+            if(!file.exists()){
+                Files.createFile(file.toPath());
+            } else {
+                Files.delete(file.toPath());
+                Files.createFile(file.toPath());
+            }
+            try(RandomAccessFile randomAccessFile = new RandomAccessFile(file,"rw")){
+                for(int i = 3 ; i < args.length ; i++){
+                    System.out.println(flag ? args[i] : vtblSymbolForType(args[i]));
+                    long s = (long) lookup.invoke(debugger, "libjvm.so",flag ? args[i] : vtblSymbolForType(args[i]));
+                    System.out.println(s);
+                    randomAccessFile.writeLong(s);
+                }
+            }
+        }
+        detach0.setAccessible(true);
+        detach0.invoke(debugger);
     }
 
     public static String vtblSymbolForType(String desc) {
-
         return vt + Integer.parseInt(desc.substring(desc.indexOf(':')+1)) + desc.substring(0,desc.indexOf(':'));
     }
 
     private static String vt;
-
-    private static Constructor<?> getConstructor(Class<?> clazz, Class<?>... parameterTypes) throws NoSuchMethodError {
-        for (Constructor<?> constructor : getConstructors(clazz)) {
-            if (arrayContentsEq(parameterTypes, constructor.getParameterTypes())) {
-                constructor.setAccessible(true);
-                return constructor;
-            }
-        }
-        throw new NoSuchMethodError();
-    }
-
-    private static Constructor<?>[] getConstructors(Class<?> clazz) {
-        try {
-            return (Constructor<?>[]) getDeclaredConstructors0.invoke(clazz, false);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            return new Constructor[0];
-        }
-    }
 
     private static Method[] getMethods(Class<?> clazz) {
         try {
@@ -243,26 +255,6 @@ public class HSDB {
     }
 
 
-    private static Field[] getFields(Class<?> clazz) {
-        if (clazz == null) {
-            return new Field[0];
-        }
-        try {
-            return (Field[]) getDeclaredFields0.invoke(clazz, false);
-        } catch (IllegalAccessException | InvocationTargetException | NullPointerException e) {
-            return new Field[0];
-        }
-    }
-
-    private static Field getField(Class<?> clazz, String name) throws NoSuchFieldException {
-        for (Field field : getFields(clazz)) {
-            if (field.getName().equals(name)) {
-                return field;
-            }
-        }
-        throw new NoSuchFieldException(name);
-    }
-
     private static final Method getDeclaredFields0;
     private static final Method getDeclaredConstructors0;
     private static final Method getDeclaredMethods0;
@@ -280,24 +272,16 @@ public class HSDB {
         }
     }
 
-    private static String getProcessId(final String fallback) {
+    private static String getProcessId() {
         // Note: may fail in some JVM implementations
         // therefore fallback has to be provided
-
         // something like '<pid>@<hostname>', at least in SUN / Oracle JVMs
         final String jvmName = ManagementFactory.getRuntimeMXBean().getName();
         final int index = jvmName.indexOf('@');
-
-        if (index < 1) {
-            // part before '@' empty (index = 0) / '@' not found (index = -1)
-            return fallback;
-        }
-
         try {
             return Long.toString(Long.parseLong(jvmName.substring(0, index)));
         } catch (NumberFormatException e) {
-            // ignore
+            throw new RuntimeException(e);
         }
-        return fallback;
     }
 }

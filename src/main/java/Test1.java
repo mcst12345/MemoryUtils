@@ -41,7 +41,7 @@ public class Test1 implements Opcodes {
         }
         org.objectweb.asm.ClassWriter cw = new org.objectweb.asm.ClassWriter(0);
         cn.accept(cw);
-        klass.redefineClass(cw.toByteArray());
+        klass.redefineClass(cw.toByteArray(),null);
         System.out.println("Call method from Test1,second time.");
         Clazz.method();
         Test.m1();

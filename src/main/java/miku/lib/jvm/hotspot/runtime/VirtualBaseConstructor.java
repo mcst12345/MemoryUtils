@@ -1,5 +1,6 @@
 package miku.lib.jvm.hotspot.runtime;
 
+import miku.lib.jvm.hotspot.code.*;
 import miku.lib.jvm.hotspot.oops.*;
 import one.helfy.JVM;
 import one.helfy.Type;
@@ -25,6 +26,17 @@ public class VirtualBaseConstructor<T> {
         INSTANCE.addMapping("ConstMethod", ConstMethod.class);
         INSTANCE.addMapping("ConstantPool", ConstantPool.class);
         INSTANCE.addMapping("ConstantPoolCache", ConstantPoolCache.class);
+        INSTANCE.addMapping("BufferBlob", BufferBlob.class);
+        INSTANCE.addMapping("nmethod", NMethod.class);
+        INSTANCE.addMapping("RuntimeStub", RuntimeStub.class);
+        INSTANCE.addMapping("AdapterBlob", AdapterBlob.class);
+        INSTANCE.addMapping("MethodHandlesAdapterBlob", MethodHandlesAdapterBlob.class);
+        INSTANCE.addMapping("SafepointBlob", SafepointBlob.class);
+        INSTANCE.addMapping("DeoptimizationBlob", DeoptimizationBlob.class);
+        if(VM.usingServerCompiler){
+            INSTANCE.addMapping("ExceptionBlob",ExceptionBlob.class);
+            INSTANCE.addMapping("UncommonTrapBlob",UncommonTrapBlob.class);
+        }
     }
 
     public T instantiateWrapperFor(long var1) throws IllegalArgumentException {

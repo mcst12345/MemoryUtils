@@ -6,6 +6,16 @@ import java.security.ProtectionDomain;
 @SuppressWarnings("unused")
 public interface MemoryHelper {
 
+    default byte[] getBytes(long addr, int size){
+        byte[] data = new byte[size];
+
+        for(int i = 0;i < size;i++){
+            data[i] = this.getByte(addr + i);
+        }
+
+        return data;
+    }
+
     static MemoryHelper getInstance(){
         try {
             return new NativeMemoryHelper();

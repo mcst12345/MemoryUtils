@@ -5,38 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e919c91c-a251-4b69-9445-f1ec07c31c1a" name="更改" comment=".">
-      <change afterPath="$PROJECT_DIR$/hs_err_pid3587191.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/java/lang/ClassFucked.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/java/lang/ClassLoaderFucked.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/replay_pid3587191.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Test1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/utils/memory/MemoryHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/utils/memory/NativeMemoryHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/utils/memory/UnsafeMemoryHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sun/reflect/NativeMethodAccessorImplFucked.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TempFile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TempFile1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/c1/Runtime1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/AdapterBlob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/BufferBlob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/CodeCache.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/CodeCacheVisitor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/DeoptimizationBlob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/ExceptionBlob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/MethodHandlesAdapterBlob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/RuntimeStub.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/SafepointBlob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/SingletonBlob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/UncommonTrapBlob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/CodeHeap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/HeapBlock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miku/lib/utils/ProcessUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/java/lang/ClassLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/java/lang/ClassLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/xdark/shell/ShellcodeRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/xdark/shell/ShellcodeRunner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Test1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Test1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/HSDB/HSDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/HSDB/HSDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/DictionaryEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/memory/DictionaryEntry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Array.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Array.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstantPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstantPool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstantPoolCacheEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/ConstantPoolCacheEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/NMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/code/NMethod.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/InstanceKlass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/InstanceKlass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Klass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Klass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Mark.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Mark.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Symbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Symbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/ObjectMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/ObjectMonitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/ObjectSynchronizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/ObjectSynchronizer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VMObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VMObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Method.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/oops/Method.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VirtualBaseConstructor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/VirtualBaseConstructor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/vmSymbols.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/runtime/vmSymbols.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/BasicHashtable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/BasicHashtable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/HashtableBucket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/HashtableBucket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/HashtableEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/jvm/hotspot/utilities/HashtableEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miku/lib/utils/memory/MemoryHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miku/lib/utils/memory/MemoryHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/one/helfy/JVM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/one/helfy/JVM.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -84,8 +78,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="package-info" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -115,59 +109,60 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Gradle.MemoryUtils [:BasicHashtable.main()].executor": "Run",
-    "Gradle.MemoryUtils [:BasicHashtableEntry.main()].executor": "Run",
-    "Gradle.MemoryUtils [:BinarySearch.main()].executor": "Run",
-    "Gradle.MemoryUtils [:ConstantPoolCacheEntry.main()].executor": "Run",
-    "Gradle.MemoryUtils [:DisableStructs.main()].executor": "Run",
-    "Gradle.MemoryUtils [:GetBytecode.main()].executor": "Run",
-    "Gradle.MemoryUtils [:GetMemoryUsage.main()].executor": "Run",
-    "Gradle.MemoryUtils [:HSDB.main()].executor": "Run",
-    "Gradle.MemoryUtils [:HashtableBucket.main()].executor": "Run",
-    "Gradle.MemoryUtils [:HeapInfo.main()].executor": "Run",
-    "Gradle.MemoryUtils [:JVM.main()].executor": "Run",
-    "Gradle.MemoryUtils [:LinuxDebugger.main()].executor": "Run",
-    "Gradle.MemoryUtils [:MethodEntry.main()].executor": "Run",
-    "Gradle.MemoryUtils [:ObjectSynchronizer.main()].executor": "Run",
-    "Gradle.MemoryUtils [:ObjectUtils.main()].executor": "Run",
-    "Gradle.MemoryUtils [:Oop.main()].executor": "Run",
-    "Gradle.MemoryUtils [:ParseSO.main()].executor": "Run",
-    "Gradle.MemoryUtils [:Queens.main()].executor": "Run",
-    "Gradle.MemoryUtils [:Space.main()].executor": "Run",
-    "Gradle.MemoryUtils [:StackTrace.main()].executor": "Run",
-    "Gradle.MemoryUtils [:Symbol.main()].executor": "Run",
-    "Gradle.MemoryUtils [:Symbols.main()].executor": "Run",
-    "Gradle.MemoryUtils [:SystemDictionary.main()].executor": "Run",
-    "Gradle.MemoryUtils [:SystemDictionaryHelper.main()].executor": "Run",
-    "Gradle.MemoryUtils [:Test.main()].executor": "Run",
-    "Gradle.MemoryUtils [:Test1.main()].executor": "Run",
-    "Gradle.MemoryUtils [:ThreadList.main()].executor": "Run",
-    "Gradle.MemoryUtils [buildDependents].executor": "Run",
-    "Gradle.MemoryUtils [build].executor": "Debug",
-    "Gradle.MemoryUtils [clean].executor": "Run",
-    "Gradle.MemoryUtils [dependencies].executor": "Run",
-    "Gradle.下载源代码.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/root/IdeaProjects/MemoryUtils/libs/sa-jdi.jar!/sun/jvm/hotspot/debugger",
-    "project.structure.last.edited": "模块",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Gradle.MemoryUtils [:BasicHashtable.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:BasicHashtableEntry.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:BinarySearch.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:ConstantPoolCacheEntry.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:DisableStructs.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:GetBytecode.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:GetMemoryUsage.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:HSDB.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:HashtableBucket.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:HeapInfo.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:JVM.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:LinuxDebugger.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:MethodEntry.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:ObjectSynchronizer.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:ObjectUtils.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:Oop.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:ParseSO.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:Queens.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:Space.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:StackTrace.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:Symbol.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:Symbols.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:SystemDictionary.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:SystemDictionaryHelper.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:Test.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:Test1.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [:ThreadList.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [buildDependents].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [build].executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.MemoryUtils [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.MemoryUtils [dependencies].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.下载源代码.executor&quot;: &quot;Run&quot;,
+    &quot;JAR 应用程序.!!!!!!!NPOP-Plus-2.1.jar.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/root/IdeaProjects/MemoryUtils/libs/sa-jdi.jar!/sun/jvm/hotspot/debugger&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/新建临时文件": [
-      "TEXT"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/新建临时文件&quot;: [
+      &quot;TEXT&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/libs/sa-jdi.jar!/sun/jvm/hotspot/debugger" />
@@ -185,12 +180,13 @@
       <recent name="miku.lib.memory" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="miku.lib.utils" />
       <recent name="java.lang" />
     </key>
   </component>
-  <component name="RunManager" selected="应用程序.Test1">
-    <configuration name="Test1 (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Test1" />
+  <component name="RunManager" selected="应用程序.Test">
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Test" />
       <module name="MemoryUtils.main" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -204,13 +200,6 @@
       </method>
     </configuration>
     <configuration name="Test1 (4)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Test1" />
-      <module name="MemoryUtils.main" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Test1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Test1" />
       <module name="MemoryUtils.main" />
       <method v="2">
@@ -239,13 +228,17 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="!!!!!!!NPOP-Plus-2.1.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/libs/!!!!!!!NPOP-Plus-2.1.jar" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.MemoryUtils [clean]" />
+        <item itemvalue="应用程序.Test" />
+        <item itemvalue="JAR 应用程序.!!!!!!!NPOP-Plus-2.1.jar" />
         <item itemvalue="应用程序.Test1 (3)" />
         <item itemvalue="应用程序.Test1 (4)" />
-        <item itemvalue="应用程序.Test1 (2)" />
-        <item itemvalue="应用程序.Test1" />
       </list>
     </recent_temporary>
   </component>
@@ -354,7 +347,23 @@
       <option name="project" value="LOCAL" />
       <updated>1725021386298</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary=".">
+      <option name="closed" value="true" />
+      <created>1726477112975</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1726477112975</updated>
+    </task>
+    <task id="LOCAL-00014" summary=".">
+      <option name="closed" value="true" />
+      <created>1726477171433</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1726477171433</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
