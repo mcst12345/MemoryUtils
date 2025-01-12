@@ -18,10 +18,10 @@ public interface MemoryHelper {
 
     static MemoryHelper getInstance(){
         try {
-            return new NativeMemoryHelper();
+            return NativeMemoryHelper.INSTANCE;
         } catch (Throwable t){
             t.printStackTrace();
-            return new UnsafeMemoryHelper();
+            return UnsafeMemoryHelper.INSTANCE;
         }
     }
 
@@ -129,9 +129,9 @@ public interface MemoryHelper {
 
     int pageSize();
 
-    Class<?> defineClass(String var1, byte[] var2, int var3, int var4, ClassLoader var5, ProtectionDomain var6);
+    Class<?> defineClazz(String var1, byte[] var2, int var3, int var4, ClassLoader var5, ProtectionDomain var6);
 
-    Class<?> defineAnonymousClass(Class<?> var1, byte[] var2, Object[] var3);
+    Class<?> defineAnonymousClazz(Class<?> var1, byte[] var2, Object[] var3);
 
     Object allocateInstance(Class<?> var1) throws InstantiationException;
 

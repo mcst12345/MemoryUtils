@@ -245,12 +245,12 @@ public class JNAMemoryHelper implements MemoryHelper{
     }
 
     @Override
-    public Class<?> defineClass(String var1, byte[] var2, int var3, int var4, ClassLoader var5, ProtectionDomain var6) {
+    public Class<?> defineClazz(String var1, byte[] var2, int var3, int var4, ClassLoader var5, ProtectionDomain var6) {
         return null;
     }
 
     @Override
-    public Class<?> defineAnonymousClass(Class<?> var1, byte[] var2, Object[] var3) {
+    public Class<?> defineAnonymousClazz(Class<?> var1, byte[] var2, Object[] var3) {
         return null;
     }
 

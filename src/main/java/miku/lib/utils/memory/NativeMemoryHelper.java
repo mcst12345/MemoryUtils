@@ -11,6 +11,11 @@ import java.security.ProtectionDomain;
 
 public class NativeMemoryHelper implements MemoryHelper {
 
+    public static final NativeMemoryHelper INSTANCE = new NativeMemoryHelper();
+
+    private NativeMemoryHelper() {
+    }
+
     static {
         unsafeInit();
     }
@@ -29,7 +34,7 @@ public class NativeMemoryHelper implements MemoryHelper {
         return new String(b, StandardCharsets.UTF_8);
     }
 
-    private static void nativeInit(){
+    private static void nativeInit() {
 
     }
 
@@ -50,7 +55,7 @@ public class NativeMemoryHelper implements MemoryHelper {
         long constantPoolOffset = constMethodType.offset("_constants");
         long nameIndexOffset = constMethodType.offset("_name_index");
         long signatureIndexOffset = constMethodType.offset("_signature_index");
-        for(int i = 0; i < methodCount;i ++){
+        for (int i = 0; i < methodCount; i++) {
             long method = unsafe.getAddress(methods + (long) i * oopSize);
             long constMethod = unsafe.getAddress(method + constMethodOffset);
             long constantPool = unsafe.getAddress(constMethod + constantPoolOffset);
@@ -60,164 +65,168 @@ public class NativeMemoryHelper implements MemoryHelper {
             String name = getSymbol(constantPool + constantPoolType.size + (long) nameIndex * oopSize);
             String desc = getSymbol(constantPool + constantPoolType.size + (long) signatureIndex * oopSize);
             if (name.equals("getInt0") && desc.equals("(Ljava/lang/Object;J)I")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetInt"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetInt"));
             } else if (name.equals("putInt0") && desc.equals("(Ljava/lang/Object;JI)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetInt"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetInt"));
             } else if (name.equals("getObject0") && desc.equals("(Ljava/lang/Object;J)Ljava/lang/Object;")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetObject"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetObject"));
             } else if (name.equals("putObject0") && desc.equals("(Ljava/lang/Object;JLjava/lang/Object;)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetObject"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetObject"));
             } else if (name.equals("getBoolean0") && desc.equals("(Ljava/lang/Object;J)Z")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetBoolean"));
-            } else if (name.equals("putBoolean0") && desc.equals("(Ljava/lang/Object;JZ)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetBoolean"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetBoolean"));
+            } else if (name.equals("setBoolean0") && desc.equals("(Ljava/lang/Object;JZ)V")) {
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetBoolean"));
             } else if (name.equals("getByte0") && desc.equals("(Ljava/lang/Object;J)B")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetByte"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetByte"));
             } else if (name.equals("setByte0") && desc.equals("(Ljava/lang/Object;JB)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetByte"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetByte"));
             } else if (name.equals("getShort0") && desc.equals("(Ljava/lang/Object;J)S")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetShort"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetShort"));
             } else if (name.equals("putShort0") && desc.equals("(Ljava/lang/Object;JS)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetShort"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetShort"));
             } else if (name.equals("getChar0") && desc.equals("(Ljava/lang/Object;J)C")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetChar"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetChar"));
             } else if (name.equals("setChar0") && desc.equals("(Ljava/lang/Object;JC)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetChar"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetChar"));
             } else if (name.equals("getLong0") && desc.equals("(Ljava/lang/Object;J)J")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetLong"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetLong"));
             } else if (name.equals("putLong0") && desc.equals("(Ljava/lang/Object;JJ)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetLong"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetLong"));
             } else if (name.equals("getLong0") && desc.equals("(J)J")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetNativeLong"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetNativeLong"));
             } else if (name.equals("putLong0") && desc.equals("(JJ)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetNativeLong"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetNativeLong"));
             } else if (name.equals("getInt0") && desc.equals("(J)I")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetNativeInt"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetNativeInt"));
             } else if (name.equals("putInt0") && desc.equals("(JI)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetNativeInt"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetNativeInt"));
             } else if (name.equals("getFloat0") && desc.equals("(J)F")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetNativeFloat"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetNativeFloat"));
             } else if (name.equals("putFloat0") && desc.equals("(JF)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetNativeFloat"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetNativeFloat"));
             } else if (name.equals("getDouble0") && desc.equals("(J)D")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetNativeDouble"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetNativeDouble"));
             } else if (name.equals("putDouble0") && desc.equals("(JD)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetNativeDouble"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetNativeDouble"));
             } else if (name.equals("getByte0") && desc.equals("(J)B")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetNativeByte"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetNativeByte"));
             } else if (name.equals("putByte0") && desc.equals("(JB)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetNativeByte"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetNativeByte"));
             } else if (name.equals("getShort0") && desc.equals("(J)S")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetNativeShort"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetNativeShort"));
             } else if (name.equals("putShort0") && desc.equals("(JS)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetNativeShort"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetNativeShort"));
             } else if (name.equals("getChar0") && desc.equals("(J)C")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetNativeChar"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetNativeChar"));
             } else if (name.equals("putChar0") && desc.equals("(JC)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetNativeChar"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetNativeChar"));
             } else if (name.equals("getAddress0") && desc.equals("(J)J")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetNativeAddress"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetNativeAddress"));
             } else if (name.equals("putAddress0") && desc.equals("(JJ)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetNativeAddress"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetNativeAddress"));
             } else if (name.equals("allocateMemory0") && desc.equals("(J)J")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_AllocateMemory"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_AllocateMemory"));
             } else if (name.equals("reallocateMemory0") && desc.equals("(JJ)J")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_ReallocateMemory"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_ReallocateMemory"));
             } else if (name.equals("setMemory0") && desc.equals("(Ljava/lang/Object;JJB)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetMemory"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetMemory"));
             } else if (name.equals("copyMemory0") && desc.equals("(Ljava/lang/Object;JLjava/lang/Object;JJ)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_CopyMemory"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_CopyMemory"));
             } else if (name.equals("freeMemory0") && desc.equals("(J)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_FreeMemory"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_FreeMemory"));
             } else if (name.equals("staticFieldOffset0") && desc.equals("(Ljava/lang/reflect/Field;)J")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_StaticFieldOffset"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_StaticFieldOffset"));
             } else if (name.equals("staticFieldBase0") && desc.equals("(Ljava/lang/reflect/Field;)Ljava/lang/Object;")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_StaticFieldBaseFromField"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_StaticFieldBaseFromField"));
             } else if (name.equals("objectFieldOffset0") && desc.equals("(Ljava/lang/reflect/Field;)J")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_ObjectFieldOffset"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_ObjectFieldOffset"));
             } else if (name.equals("shouldBeInitialized0") && desc.equals("(Ljava/lang/Class;)Z")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_ShouldBeInitialized"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_ShouldBeInitialized"));
             } else if (name.equals("ensureClassInitialized0") && desc.equals("(Ljava/lang/Class;)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_EnsureClassInitialized"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_EnsureClassInitialized"));
             } else if (name.equals("arrayBaseOffset0") && desc.equals("(Ljava/lang/Class;)I")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_ArrayBaseOffset"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_ArrayBaseOffset"));
             } else if (name.equals("arrayIndexScale0") && desc.equals("(Ljava/lang/Class;)I")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_ArrayIndexScale"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_ArrayIndexScale"));
             } else if (name.equals("addressSize0") && desc.equals("()I)")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_AddressSize"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_AddressSize"));
             } else if (name.equals("pageSize0") && desc.equals("()I")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_PageSize"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_PageSize"));
             } else if (name.equals("defineClass0") && desc.equals("(Ljava/lang/String;[BIILjava/lang/ClassLoader;Ljava/security/ProtectionDomain;)Ljava/lang/Class;")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_DefineClass"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_DefineClass"));
             } else if (name.equals("defineAnonymousClass0") && desc.equals("(Ljava/lang/Class;[B[Ljava/lang/Object;)Ljava/lang/Class;")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_DefineAnonymousClass"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_DefineAnonymousClass"));
             } else if (name.equals("allocateInstance0") && desc.equals("(Ljava/lang/Class;)Ljava/lang/Object;")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_AllocateInstance"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_AllocateInstance"));
             } else if (name.equals("monitorEnter0") && desc.equals("(Ljava/lang/Object;)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_MonitorEnter"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_MonitorEnter"));
             } else if (name.equals("monitorExit0") && desc.equals("(Ljava/lang/Object;)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_MonitorExit"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_MonitorExit"));
             } else if (name.equals("tryMonitorEnter0") && desc.equals("(Ljava/lang/Object;)Z")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_TryMonitorEnter"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_TryMonitorEnter"));
             } else if (name.equals("throwException0") && desc.equals("(Ljava/lang/Throwable;)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_ThrowException"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_ThrowException"));
             } else if (name.equals("compareAndSwapObject0") && desc.equals("(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_CompareAndSwapObject"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_CompareAndSwapObject"));
             } else if (name.equals("compareAndSwapInt0") && desc.equals("(Ljava/lang/Object;JII)Z")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_CompareAndSwapInt"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_CompareAndSwapInt"));
             } else if (name.equals("compareAndSwapLong0") && desc.equals("(Ljava/lang/Object;JJJ)Z")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_CompareAndSwapLong"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_CompareAndSwapLong"));
             } else if (name.equals("getIntVolatile0") && desc.equals("(Ljava/lang/Object;J)I")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetIntVolatile"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetIntVolatile"));
             } else if (name.equals("putIntVolatile0") && desc.equals("(Ljava/lang/Object;JI)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetIntVolatile"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetIntVolatile"));
             } else if (name.equals("getObjectVolatile0") && desc.equals("(Ljava/lang/Object;J)Ljava/lang/Object;")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetObjectVolatile"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetObjectVolatile"));
             } else if (name.equals("putObjectVolatile0") && desc.equals("(Ljava/lang/Object;JLjava/lang/Object;)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetObjectVolatile"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetObjectVolatile"));
             } else if (name.equals("getBooleanVolatile0") && desc.equals("(Ljava/lang/Object;J)Z")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetBooleanVolatile"));
-            } else if (name.equals("setBooleanVolatile0") && desc.equals("(Ljava/lang/Object;JZ)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetBooleanVolatile"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetBooleanVolatile"));
+            } else if (name.equals("putBooleanVolatile0") && desc.equals("(Ljava/lang/Object;JZ)V")) {
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetBooleanVolatile"));
             } else if (name.equals("getByteVolatile0") && desc.equals("(Ljava/lang/Object;J)B")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetByteVolatile"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetByteVolatile"));
             } else if (name.equals("setByteVolatile0") && desc.equals("(Ljava/lang/Object;JB)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetByteVolatile"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetByteVolatile"));
             } else if (name.equals("getShortVolatile0") && desc.equals("(Ljava/lang/Object;J)S")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetShortVolatile"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetShortVolatile"));
             } else if (name.equals("putShortVolatile0") && desc.equals("(Ljava/lang/Object;JS)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetShortVolatile"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetShortVolatile"));
+            } else if (name.equals("getFloatVolatile0") && desc.equals("(Ljava/lang/Object;J)S")) {
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetFloatVolatile"));
+            } else if (name.equals("putFloatVolatile0") && desc.equals("(Ljava/lang/Object;JS)V")) {
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetFloatVolatile"));
             } else if (name.equals("getCharVolatile0") && desc.equals("(Ljava/lang/Object;J)C")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetCharVolatile"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetCharVolatile"));
             } else if (name.equals("setCharVolatile0") && desc.equals("(Ljava/lang/Object;JC)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetCharVolatile"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetCharVolatile"));
             } else if (name.equals("getLongVolatile0") && desc.equals("(Ljava/lang/Object;J)J")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetLongVolatile"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_GetLongVolatile"));
             } else if (name.equals("putLongVolatile0") && desc.equals("(Ljava/lang/Object;JJ)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetLongVolatile"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetLongVolatile"));
             } else if (name.equals("putOrderedObject0") && desc.equals("(Ljava/lang/Object;JLjava/lang/Object;)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetOrderedObject"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetOrderedObject"));
             } else if (name.equals("putOrderedInt0") && desc.equals("(Ljava/lang/Object;JI)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetOrderedInt"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetOrderedInt"));
             } else if (name.equals("putOrderedLong0") && desc.equals("(Ljava/lang/Object;JJ)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetOrderedLong"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_SetOrderedLong"));
             } else if (name.equals("unpark0") && desc.equals("(Ljava/lang/Object;)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_Unpark"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_Unpark"));
             } else if (name.equals("park0") && desc.equals("(ZJ)V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_Park"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_Park"));
             } else if (name.equals("loadFence0") && desc.equals("()V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_LoadFence"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_LoadFence"));
             } else if (name.equals("getLoadAverage0") && desc.equals("([DI)I")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_Loadavg"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_Loadavg"));
             } else if (name.equals("storeFence0") && desc.equals("()V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_StoreFence"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_StoreFence"));
             } else if (name.equals("fullFence0") && desc.equals("()V")) {
-                unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_FullFence"));
+                unsafe.putAddress(method + size, JVM.getSymbol("Unsafe_FullFence"));
             }
         }
     }
 
-    private native int getInt0(Object var1,long var2);
+    private native int getInt0(Object var1, long var2);
 
     @Override
     public int getInt(Object var1, long var2) {
@@ -249,7 +258,7 @@ public class NativeMemoryHelper implements MemoryHelper {
 
     @Override
     public boolean getBoolean(Object var1, long var2) {
-        return getBoolean0(var1,var2);
+        return getBoolean0(var1, var2);
     }
 
     private native void putBoolean0(Object var1, long var2, boolean var4);
@@ -312,7 +321,7 @@ public class NativeMemoryHelper implements MemoryHelper {
 
     @Override
     public void putLong(Object var1, long var2, long var4) {
-            putLong0(var1, var2, var4);
+        putLong0(var1, var2, var4);
     }
 
     private native float getFloat0(Object var1, long var2);
@@ -354,7 +363,7 @@ public class NativeMemoryHelper implements MemoryHelper {
 
     @Override
     public void putByte(long var1, byte var3) {
-        putByte0(var1,var3);
+        putByte0(var1, var3);
     }
 
     private native short getShort0(long var1);
@@ -368,7 +377,7 @@ public class NativeMemoryHelper implements MemoryHelper {
 
     @Override
     public void putShort(long var1, short var3) {
-        putShort0(var1,var3);
+        putShort0(var1, var3);
     }
 
     private native char getChar0(long var1);
@@ -382,7 +391,7 @@ public class NativeMemoryHelper implements MemoryHelper {
 
     @Override
     public void putChar(long var1, char var3) {
-        putChar0(var1,var3);
+        putChar0(var1, var3);
     }
 
     private native int getInt0(long var1);
@@ -396,7 +405,7 @@ public class NativeMemoryHelper implements MemoryHelper {
 
     @Override
     public void putInt(long var1, int var3) {
-        putInt0(var1,var3);
+        putInt0(var1, var3);
     }
 
     private native long getLong0(long var1);
@@ -410,7 +419,7 @@ public class NativeMemoryHelper implements MemoryHelper {
 
     @Override
     public void putLong(long var1, long var3) {
-        putLong0(var1,var3);
+        putLong0(var1, var3);
     }
 
     private native float getFloat0(long var1);
@@ -424,7 +433,7 @@ public class NativeMemoryHelper implements MemoryHelper {
 
     @Override
     public void putFloat(long var1, float var3) {
-        putFloat0(var1,var3);
+        putFloat0(var1, var3);
     }
 
     private native double getDouble0(long var1);
@@ -438,7 +447,7 @@ public class NativeMemoryHelper implements MemoryHelper {
 
     @Override
     public void putDouble(long var1, double var3) {
-        putDouble0(var1,var3);
+        putDouble0(var1, var3);
     }
 
     private native long getAddress0(long var1);
@@ -556,14 +565,14 @@ public class NativeMemoryHelper implements MemoryHelper {
     private native Class<?> defineClass0(String var1, byte[] var2, int var3, int var4, ClassLoader var5, ProtectionDomain var6);
 
     @Override
-    public Class<?> defineClass(String var1, byte[] var2, int var3, int var4, ClassLoader var5, ProtectionDomain var6) {
+    public Class<?> defineClazz(String var1, byte[] var2, int var3, int var4, ClassLoader var5, ProtectionDomain var6) {
         return defineClass0(var1, var2, var3, var4, var5, var6);
     }
 
     private native Class<?> defineAnonymousClass0(Class<?> var1, byte[] var2, Object[] var3);
 
     @Override
-    public Class<?> defineAnonymousClass(Class<?> var1, byte[] var2, Object[] var3) {
+    public Class<?> defineAnonymousClazz(Class<?> var1, byte[] var2, Object[] var3) {
         return defineAnonymousClass0(var1, var2, var3);
     }
 

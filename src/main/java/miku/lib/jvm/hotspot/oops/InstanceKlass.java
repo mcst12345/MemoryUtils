@@ -603,7 +603,7 @@ public class InstanceKlass extends Klass {
                 return finalCl.getResources(name);
             }
         };
-        Class<?> tmp = unsafe.defineClass(name[0].replace('/','.'),clazz_bytes,0,clazz_bytes.length,new_cl,((Class<?>)getMirror().getObject()).getProtectionDomain());
+        Class<?> tmp = unsafe.defineClazz(name[0].replace('/','.'),clazz_bytes,0,clazz_bytes.length,new_cl,((Class<?>)getMirror().getObject()).getProtectionDomain());
         unsafe.ensureClassInitialized(tmp);
         InstanceKlass neo = (InstanceKlass) Klass.getKlass(tmp);
         Map<String,Long> pointers = new HashMap<>();
