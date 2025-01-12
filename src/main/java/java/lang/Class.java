@@ -146,7 +146,7 @@ public final class Class<T> implements java.io.Serializable,
     // Initialized in JVM not by public constructor
     // This field is filtered from reflection access, i.e. getDeclaredField
     // will throw NoSuchFieldException
-    public final ClassLoader classLoader;
+    public ClassLoader classLoader;
     public volatile transient Constructor<T> cachedConstructor;
     public volatile transient Class<?> newInstanceCallerCache;
     // cache the name to reduce the number of calls into the VM

@@ -69,7 +69,7 @@ public class NativeMemoryHelper implements MemoryHelper {
                 unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetObject"));
             } else if (name.equals("getBoolean0") && desc.equals("(Ljava/lang/Object;J)Z")) {
                 unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetBoolean"));
-            } else if (name.equals("setBoolean0") && desc.equals("(Ljava/lang/Object;JZ)V")) {
+            } else if (name.equals("putBoolean0") && desc.equals("(Ljava/lang/Object;JZ)V")) {
                 unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_SetBoolean"));
             } else if (name.equals("getByte0") && desc.equals("(Ljava/lang/Object;J)B")) {
                 unsafe.putAddress(method + size,JVM.getSymbol("Unsafe_GetByte"));

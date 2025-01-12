@@ -18,8 +18,36 @@ public class Test1 implements Opcodes {
 
     public static boolean flag = false;
 
+    public static void m(){
+        System.out.println(114514);
+    }
+
+    static ClassLoader cl = new ClassLoader() {
+        @Override
+        public Class<?> loadClass(String name) {
+            System.out.println("lookup:"+name);
+            return null;
+        }
+
+        @Override
+        public Class<?> loadClass(String name, boolean resolve) {
+            System.out.println("lookup:"+name);
+            return null;
+        }
+
+        @Override
+        public Class<?> findClass(String name) {
+            System.out.println("lookup:"+name);
+            return null;
+        }
+    };
+
     public static void main(String[] args) throws Throwable {
         Clazz.method();
+        Clazz inst = new Clazz();
+        inst.m();
+        inst.m1();
+        inst.m2();
         unsafe.ensureClassInitialized(JVM.class);
         InstanceKlass klass = (InstanceKlass) Klass.getKlass(Clazz.class);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -35,15 +63,6 @@ public class Test1 implements Opcodes {
             if(mn.name.equals("method")){
                 mn.localVariables.clear();
                 mn.instructions.clear();
-                mn.instructions.add(new FieldInsnNode(GETSTATIC,"java/lang/System","out","Ljava/io/PrintStream;"));
-                mn.instructions.add(new LdcInsnNode("Changed!!!"));
-                mn.instructions.add(new MethodInsnNode(INVOKEVIRTUAL,"java/io/PrintStream","println","(Ljava/lang/Object;)V",false));
-                mn.instructions.add(new FieldInsnNode(GETSTATIC,"java/lang/System","out","Ljava/io/PrintStream;"));
-                mn.instructions.add(new LdcInsnNode("123456789!!!"));
-                mn.instructions.add(new MethodInsnNode(INVOKEVIRTUAL,"java/io/PrintStream","println","(Ljava/lang/Object;)V",false));
-                mn.instructions.add(new FieldInsnNode(GETSTATIC,"java/lang/System","out","Ljava/io/PrintStream;"));
-                mn.instructions.add(new LdcInsnNode("Weeeeeeeeeeeee!!!"));
-                mn.instructions.add(new MethodInsnNode(INVOKEVIRTUAL,"java/io/PrintStream","println","(Ljava/lang/Object;)V",false));
                 mn.instructions.add(new FieldInsnNode(GETSTATIC,"java/lang/System","out","Ljava/io/PrintStream;"));
                 mn.instructions.add(new LdcInsnNode("喵喵喵喵!!!"));
                 mn.instructions.add(new MethodInsnNode(INVOKEVIRTUAL,"java/io/PrintStream","println","(Ljava/lang/Object;)V",false));
@@ -61,49 +80,36 @@ public class Test1 implements Opcodes {
         byte[] bytes = cw.toByteArray();
         FileUtils.write(Paths.get("/root/IdeaProjects/Sekai/correct.class"),bytes);
         klass.redefineClass(bytes,null);
-        System.out.println("Dump the class....");
-        bos = new ByteArrayOutputStream();
-        new ClassWriter(klass,bos).write();
-        byte[] changed = bos.toByteArray();
-        FileUtils.write(Paths.get("/root/IdeaProjects/Sekai/114514.class"),changed);
-        System.out.println("Data:");
-        System.out.println(Arrays.toString(data));
-        System.out.println("Changed:");
-        System.out.println(Arrays.toString(changed));
-        System.out.println("---");
-        System.out.println(data.length);
-        System.out.println(changed.length);
-        try {
-            cn = new ClassNode();
-            new ClassReader(changed).accept(cn,0);
-            System.out.println(cn.name);
-            for(MethodNode mn : cn.methods){
-                System.out.println(mn.name + ":" + mn.desc);
-            }
-            for(FieldNode fn : cn.fields){
-                System.out.println(fn.name + ":" + fn.desc);
-            }
-        } catch (Throwable t){
-            System.out.println("FUCK!");
-            System.out.println(t.getClass());
-            t.printStackTrace();
-        }
-        System.out.println(klass.getSourceFileName());
-        System.out.println(klass.getName());
-        System.out.println(klass.getGenericSignature());
         for(int i = 0; i < 20000; i++){
-            Test.m1();
             Clazz.method();
+            inst.m();
+            inst.m1();
+            inst.m2();
         }
         System.out.println(Arrays.toString(Clazz.class.getDeclaredFields()));
         System.out.println("喵喵喵喵喵喵");
     }
 
-    public static class Clazz {
+    public static class Clazz implements Api{
         int a;
 
         public static void method(){
             System.out.println("Called!");
+        }
+
+        @Override
+        public void m() {
+            System.out.println("i method!");
+        }
+
+        @Override
+        public void m1() {
+            System.out.println("1111111");
+        }
+
+        @Override
+        public void m2() {
+            System.out.println("de3de239qd72398df732");
         }
     }
 }

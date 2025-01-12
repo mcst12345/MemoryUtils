@@ -439,6 +439,7 @@ public class ClassWriter implements ClassConstants {
     }
 
     protected void rewriteByteCode(Method m, byte[] code) {
+        System.out.println(m.getName());
         ByteCodeRewriter r = new ByteCodeRewriter(m, this.cpool, code);
         r.rewrite();
     }

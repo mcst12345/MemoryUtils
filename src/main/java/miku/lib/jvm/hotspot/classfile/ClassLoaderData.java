@@ -6,16 +6,22 @@ import one.helfy.JVM;
 import one.helfy.Type;
 
 public class ClassLoaderData extends VMObject {
+    private static final long _class_loader_offset;
+    private static final long _next_offset;
+
+    static {
+        Type type = JVM.type("ClassLoaderData");
+        _class_loader_offset = type.offset("_class_loader");
+        _next_offset = type.offset("_next");
+    }
+
     private Oop _class_loader;
-    private long _next;
+    private final long _next;
 
     public ClassLoaderData(long address) {
         super(address);
-        Type type = JVM.type("ClassLoaderData");
-        long offset = type.offset("_class_loader");
-        _class_loader = new Oop(unsafe.getAddress(address + offset));
-        offset = type.offset("_next");
-        _next = unsafe.getAddress(address + offset);
+        _class_loader = new Oop(unsafe.getAddress(address + _class_loader_offset));
+        _next = unsafe.getAddress(address + _next_offset);
     }
 
     public ClassLoaderData next() {
@@ -24,5 +30,9 @@ public class ClassLoaderData extends VMObject {
 
     public Oop getClassLoader() {
         return _class_loader;
+    }
+    public void setClassLoader(Oop oop){
+        _class_loader = oop;
+        unsafe.putAddress(getAddress() + _class_loader_offset,oop.getAddress());
     }
 }
